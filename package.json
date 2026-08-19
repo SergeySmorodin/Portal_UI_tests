@@ -1,0 +1,35 @@
+{
+  "name": "portal_ui_tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report",
+    "test:chromium": "playwright test --project=chromium",
+    "test:login": "playwright test src/tests/login.spec.ts",
+    "test:headed:login": "playwright test src/tests/login.spec.ts --headed"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SergeySmorodin/Portal_UI_tests.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SergeySmorodin/Portal_UI_tests/issues"
+  },
+  "homepage": "https://github.com/SergeySmorodin/Portal_UI_tests#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^26.2.0",
+    "dotenv": "^17.4.2",
+    "prettier": "^3.9.6",
+    "typescript": "^7.0.2"
+  }
+}
