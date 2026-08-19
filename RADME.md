@@ -13,3 +13,11 @@
 # Создать tsconfig.json
 ```npx tsc --init```
 
+# Проверить типы
+```npx tsc --noEmit```
+
+# Запустить тесты
+npm test
+
+# Посмотреть отчет
+```npx playwright show-report```
