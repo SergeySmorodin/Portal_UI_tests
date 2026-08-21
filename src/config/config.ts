@@ -11,7 +11,7 @@ export interface VPNConfig {
     siteUrl: process.env.BASE_URL || 'https://example.com',
     login: process.env.LOGIN || '',
     password: process.env.PASSWORD || '',
-    timeout: parseInt(process.env.DEFAULT_TIMEOUT || '30000', 10),
+    timeout: parseInt(process.env.DEFAULT_TIMEOUT || '3000', 10),
     headless: (process.env.HEADLESS || 'false').toLowerCase() === 'true',
   };
   
