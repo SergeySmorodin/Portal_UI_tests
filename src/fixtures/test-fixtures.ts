@@ -1,16 +1,15 @@
-import { test as base, expect } from '@playwright/test';
-import { config } from '../config/config';
+import { Page, test as base, expect } from '@playwright/test';
+import { config, type VPNConfig } from '../config/config';
 import { createLoginPage } from '../pages/login-page';
-import { testData } from '../data/test-data';
 
 interface TestFixtures {
   testConfig: typeof config;
   loginPage: ReturnType<typeof createLoginPage>;
-  authenticatedPage: any;
+  authenticatedPage: Page;
 }
 
 export const test = base.extend<TestFixtures>({
-  testConfig: async ({}, use) => {
+  testConfig: async ({}: { page: Page }, use: (config: VPNConfig) => Promise<void>) => {
     await use(config);
   },
 
@@ -28,3 +27,4 @@ export const test = base.extend<TestFixtures>({
 });
 
 export { expect };
+ 

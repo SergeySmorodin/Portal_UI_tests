@@ -1,24 +1,39 @@
-import { TestData } from '../types';
+import { randomBytes } from 'node:crypto';
+import { UserCredentials } from '../types';
+import { config } from '../config/config';
 
-export const testData: TestData = {
-  users: {
-    admin: {
-      username: 'admin',
-      password: 'admin123',
-    },
-    regular: {
-      username: 'user',
-      password: 'user123',
-    },
-  },
-  urls: {
-    login: '/login',
-    dashboard: '/dashboard',
-    profile: '/profile',
-  },
+const randomToken = (): string => randomBytes(4).toString('hex');
+
+export const urls = {
+  login: '/login',
+  dashboard: '/dashboard',
+  profile: '/profile',
 };
 
-export const negativeTestData = {
-  wrongPasswords: ['wrong_password', '123456', 'password', ''],
-  invalidLogins: ['nonexistent_user', 'test@test.com', ''],
+/** Базовая фабрика: случайный пользователь + частичные переопределения. */
+export const createUser = (
+  overrides: Partial<UserCredentials> = {},
+): UserCredentials => ({
+  username: `user_${randomToken()}`,
+  password: `Pwd_${randomToken()}!1`,
+  ...overrides,
+});
+
+export const userFactory = {
+  admin: (overrides: Partial<UserCredentials> = {}) =>
+    createUser({
+      username: config.login || 'admin',
+      password: config.password || 'admin123',
+      ...overrides,
+    }),
+
+  regular: (overrides: Partial<UserCredentials> = {}) => createUser(overrides),
+
+  withWrongPassword: (username?: string) =>
+    createUser({
+      username: username ?? (config.login || 'admin'),
+      password: 'wrong_password',
+    }),
+
+  empty: () => createUser({ username: '', password: '' }),
 };

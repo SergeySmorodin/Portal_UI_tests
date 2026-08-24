@@ -5,18 +5,6 @@ export interface UserCredentials {
   password: string;
 }
 
-export interface TestData {
-  users: {
-    admin: UserCredentials;
-    regular: UserCredentials;
-  };
-  urls: {
-    login: string;
-    dashboard: string;
-    profile: string;
-  };
-}
-
 export interface ErrorInfo {
   message: string;
   code?: string;

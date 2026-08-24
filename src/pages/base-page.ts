@@ -48,10 +48,6 @@ export const createBasePage = (page: Page) => {
       await page.screenshot({ path, fullPage: true });
       return path;
     },
-
-    waitForTimeout: async (ms: number = 1000): Promise<void> => {
-      await page.waitForTimeout(ms);
-    },
   };
 };
 

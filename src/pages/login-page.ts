@@ -12,7 +12,7 @@ export const createLoginPage = (page: Page) => {
     usernameInput: page.locator('#username'),
     passwordInput: page.locator('#pass'),
     loginButton: page.getByRole('button', { name: 'Вход' }),
-    lkLink: page.getByRole('link', { name: 'Личный кабинет' }),
+    lkLink: page.getByRole('link', { name: 'Профиль сотрудника' }),
   };
 
   return {
@@ -31,7 +31,7 @@ export const createLoginPage = (page: Page) => {
         username: config.login,
         password: config.password,
       };
-      
+
       await locators.usernameInput.fill(userCredentials.username);
       await locators.passwordInput.fill(userCredentials.password);
       await locators.loginButton.click();
@@ -48,11 +48,6 @@ export const createLoginPage = (page: Page) => {
       } catch {
         return false;
       }
-    },
-
-    hasLkLink: async (): Promise<boolean> => {
-      await page.waitForTimeout(1000);
-      return await locators.lkLink.isVisible();
     },
   };
 };
