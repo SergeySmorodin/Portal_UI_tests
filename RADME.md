@@ -17,16 +17,14 @@
 
 # Проверка кода prettier
 
-* Только проверка (ничего не меняет):
-`npx prettier --check .`
-* Исправить форматирование:
-`npx prettier --write .`
-
+- Только проверка (ничего не меняет):
+  `npx prettier --check .`
+- Исправить форматирование:
+  `npx prettier --write .`
 
 # Проверить типы
 
 `npx tsc --noEmit`
-
 
 # Запустить тесты
 
@@ -35,4 +33,3 @@
 # Посмотреть отчет
 
 `npx playwright show-report`
-

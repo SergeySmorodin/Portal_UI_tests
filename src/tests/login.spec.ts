@@ -4,56 +4,87 @@ import { createUser, userFactory } from '../data/test-data';
 test.describe('Авторизация', () => {
   test.describe('Позитивные сценарии', () => {
     test('Отображение формы логина', async ({ loginPage }) => {
-      await loginPage.open();
+      await test.step('Открыть страницу логина', async () => {
+        await loginPage.open();
+      });
 
-      await expect(loginPage.locators.usernameInput).toBeVisible();
-      await expect(loginPage.locators.passwordInput).toBeVisible();
-      await expect(loginPage.locators.loginButton).toBeVisible();
+      await test.step('Проверить отображение поля "Имя пользователя"', async () => {
+        await expect(loginPage.locators.usernameInput).toBeVisible();
+      });
+
+      await test.step('Проверить отображение поля "Пароль"', async () => {
+        await expect(loginPage.locators.passwordInput).toBeVisible();
+      });
+
+      await test.step('Проверить отображение кнопки "Войти"', async () => {
+        await expect(loginPage.locators.loginButton).toBeVisible();
+      });
     });
 
-    test('Успешная авторизация', async ({ loginPage, page }) => {
-      await loginPage.open();
-      await loginPage.login(userFactory.admin());
+    test('Успешная авторизация', async ({ loginPage }) => {
+      await test.step('Открыть страницу логина', async () => {
+        await loginPage.open();
+      });
 
-      expect(await loginPage.isLoginSuccessful()).toBeTruthy();
-      await expect(loginPage.locators.lkLink).toBeVisible();
-      expect(page.url()).not.toContain('login');
+      await test.step('Ввести данные администратора и нажать кнопку входа', async () => {
+        await loginPage.login(userFactory.admin());
+      });
+
+      await test.step('Проверить успешную авторизацию', async () => {
+        await loginPage.verifySuccessfulLogin();
+      });
     });
   });
 
   test.describe('Негативные сценарии', () => {
-    test('Вход с неверным паролем', async ({ loginPage, page }) => {
-      await loginPage.open();
+    test('Вход с неверным паролем', async ({ loginPage }) => {
+      await test.step('Открыть страницу логина', async () => {
+        await loginPage.open();
+      });
 
-      await loginPage.login(userFactory.withWrongPassword());
+      await test.step('Ввести данные пользователя с неверным паролем', async () => {
+        await loginPage.login(userFactory.withWrongPassword());
+      });
 
-      await page.waitForLoadState('networkidle');
+      await test.step('Проверить сообщение об ошибке', async () => {
+        const errorText = await loginPage.verifyLoginError();
 
-      const errorText = await loginPage.getErrorMessage();
-
-      if (errorText) {
-        console.log(`Сообщение об ошибке: ${errorText}`);
-        await test.info().attach('error-message', {
-          body: errorText,
-          contentType: 'text/plain',
-        });
-      } else {
-        expect(await loginPage.isLoginSuccessful()).toBeFalsy();
-      }
+        // Проверяем только наличие ошибки и кода 401
+        expect(errorText).toBeTruthy();
+        expect(errorText).toContain('401');
+      });
     });
 
     test('Вход несуществующего пользователя', async ({ loginPage }) => {
-      await loginPage.open();
-      await loginPage.login(createUser());
+      await test.step('Открыть страницу логина', async () => {
+        await loginPage.open();
+      });
 
-      expect(await loginPage.isLoginSuccessful()).toBeFalsy();
+      await test.step('Ввести данные несуществующего пользователя', async () => {
+        await loginPage.login(createUser());
+      });
+
+      await test.step('Проверить сообщение об ошибке', async () => {
+        const errorText = await loginPage.verifyLoginError();
+
+        // Проверяем только наличие ошибки
+        expect(errorText).toBeTruthy();
+      });
     });
 
     test('Вход с пустыми полями', async ({ loginPage }) => {
-      await loginPage.open();
-      await loginPage.locators.loginButton.click();
+      await test.step('Открыть страницу логина', async () => {
+        await loginPage.open();
+      });
 
-      expect(await loginPage.isLoginSuccessful()).toBeFalsy();
+      await test.step('Нажать кнопку входа без заполнения полей', async () => {
+        await loginPage.locators.loginButton.click();
+        await loginPage.page.waitForLoadState('networkidle');
+      });
+
+      await test.step('Проверить сообщение об ошибке валидации', async () => {
+        await loginPage.verifyLoginError();
+      });
     });
   });
 });

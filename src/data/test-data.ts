@@ -11,9 +11,7 @@ export const urls = {
 };
 
 /** Базовая фабрика: случайный пользователь + частичные переопределения. */
-export const createUser = (
-  overrides: Partial<UserCredentials> = {},
-): UserCredentials => ({
+export const createUser = (overrides: Partial<UserCredentials> = {}): UserCredentials => ({
   username: `user_${randomToken()}`,
   password: `Pwd_${randomToken()}!1`,
   ...overrides,
