@@ -9,13 +9,11 @@ export const createBasePage = (page: Page) => {
 
     // Навигация
     navigate: async (url: string): Promise<void> => {
-      await page.goto(url);
-      await page.waitForLoadState('networkidle');
+      await page.goto(url, { waitUntil: 'domcontentloaded' });
     },
 
     openRelative: async (path: string): Promise<void> => {
-      await page.goto(`${config.siteUrl}${path}`);
-      await page.waitForLoadState('networkidle');
+      await page.goto(`${config.siteUrl}${path}`, { waitUntil: 'domcontentloaded' });
     },
 
     // Действия с элементами

@@ -79,7 +79,7 @@ test.describe('Авторизация', () => {
 
       await test.step('Нажать кнопку входа без заполнения полей', async () => {
         await loginPage.locators.loginButton.click();
-        await loginPage.page.waitForLoadState('networkidle');
+        await loginPage.page.waitForLoadState('domcontentloaded');
       });
 
       await test.step('Проверить сообщение об ошибке валидации', async () => {

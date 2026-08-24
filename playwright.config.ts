@@ -22,7 +22,7 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     actionTimeout: 15000,
-    navigationTimeout: 3000,
+    navigationTimeout: 30000,
     ignoreHTTPSErrors: true,
     viewport: { width: 1920, height: 1080 },
   },

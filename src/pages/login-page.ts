@@ -114,7 +114,7 @@ export const createLoginPage = (page: Page) => {
       await locators.loginButton.click();
 
       // Ждем завершения навигации
-      await page.waitForLoadState('networkidle');
+      await page.waitForLoadState('domcontentloaded');
     },
 
     // Публичные методы
