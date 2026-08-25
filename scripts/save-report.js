@@ -24,23 +24,16 @@ function copyDirSync(src, dest) {
   }
 }
 
-function getReportSummary() {
-  if (!fs.existsSync(JSON_REPORT)) return null;
-  try {
-    const data = JSON.parse(fs.readFileSync(JSON_REPORT, 'utf-8'));
-    const stats = data.stats || {};
-    const duration = data.stats?.duration ?? Object.values(stats).reduce((sum, s) => sum + (s.duration || 0), 0);
-    let expected = 0, unexpected = 0, flaky = 0, skipped = 0;
-    for (const suite of Object.values(stats)) {
-      expected += suite.expected ?? 0;
-      unexpected += suite.unexpected ?? 0;
-      flaky += suite.flaky ?? 0;
-      skipped += suite.skipped ?? 0;
-    }
-    return { expected, unexpected, flaky, skipped, duration };
-  } catch {
-    return null;
-  }
+function parseStats(data) {
+  const s = data?.stats;
+  if (!s) return null;
+  return {
+    expected: s.expected ?? 0,
+    unexpected: s.unexpected ?? 0,
+    flaky: s.flaky ?? 0,
+    skipped: s.skipped ?? 0,
+    duration: s.duration ?? 0,
+  };
 }
 
 function generateIndex(reportsDir) {
@@ -55,15 +48,7 @@ function generateIndex(reportsDir) {
     if (fs.existsSync(summaryJson)) {
       try {
         const data = JSON.parse(fs.readFileSync(summaryJson, 'utf-8'));
-        let expected = 0, unexpected = 0, flaky = 0, skipped = 0, duration = 0;
-        for (const suite of Object.values(data.stats || {})) {
-          expected += suite.expected ?? 0;
-          unexpected += suite.unexpected ?? 0;
-          flaky += suite.flaky ?? 0;
-          skipped += suite.skipped ?? 0;
-          duration += suite.duration ?? 0;
-        }
-        summary = { expected, unexpected, flaky, skipped, duration };
+        summary = parseStats(data);
       } catch {}
     }
 
@@ -74,7 +59,10 @@ function generateIndex(reportsDir) {
     const status = summary.unexpected === 0
       ? '<span style="color:#2ea043;font-weight:bold">PASS</span>'
       : '<span style="color:#f85149;font-weight:bold">FAIL</span>';
-    const durationMin = Math.round(summary.duration / 60000);
+    const durationMs = summary.duration;
+    const durationStr = durationMs >= 60000
+      ? `${Math.round(durationMs / 60000)} min`
+      : `${Math.round(durationMs / 1000)} sec`;
     return `<tr>
       <td>${i + 1}</td>
       <td><a href="${run}/index.html">${date}</a></td>
@@ -83,7 +71,7 @@ function generateIndex(reportsDir) {
       <td>${summary.unexpected}</td>
       <td>${summary.flaky}</td>
       <td>${summary.skipped}</td>
-      <td>${durationMin} min</td>
+      <td>${durationStr}</td>
     </tr>`;
   }).join('\n');
 
