@@ -15,3 +15,5 @@ debug/
 .DS_Store
 Thumbs.db
 *.log
+actions-runner/
+.vscode/
