@@ -45,6 +45,7 @@ jobs:
 `;
 
 const GITIGNORE = `node_modules/
+src/
 test-results/
 playwright-report/
 test-results.json
@@ -153,14 +154,14 @@ function main() {
     git(`clone --branch ${BRANCH} --single-branch "${remoteUrl}" "${tmpGit}"`);
   } else {
     console.log('Step 1: Creating reports branch...');
-    git(`init "${tmpGit}"`);
+    fs.mkdirSync(tmpGit, { recursive: true });
+    git('init', tmpGit);
     git('config user.email "report-bot@local"', tmpGit);
     git('config user.name "Report Bot"', tmpGit);
     git(`remote add origin "${remoteUrl}"`, tmpGit);
     git(`checkout --orphan ${BRANCH}`, tmpGit);
-    git('rm -rf . 2>NUL', tmpGit);
-    fs.writeFileSync(path.join(tmpGit, '.gitkeep'), '');
     fs.writeFileSync(path.join(tmpGit, '.gitignore'), GITIGNORE);
+    fs.mkdirSync(path.join(tmpGit, '.github', 'workflows'), { recursive: true });
     fs.writeFileSync(path.join(tmpGit, '.github', 'workflows', 'deploy.yml'), DEPLOY_YML);
     git('add .', tmpGit);
     git('commit -m "init reports"', tmpGit);
@@ -168,6 +169,8 @@ function main() {
   }
 
   fs.writeFileSync(path.join(tmpGit, '.gitignore'), GITIGNORE);
+  const gitkeep = path.join(tmpGit, '.gitkeep');
+  if (fs.existsSync(gitkeep)) fs.rmSync(gitkeep);
   fs.mkdirSync(path.join(tmpGit, '.github', 'workflows'), { recursive: true });
   fs.writeFileSync(path.join(tmpGit, '.github', 'workflows', 'deploy.yml'), DEPLOY_YML);
 
