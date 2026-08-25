@@ -86,5 +86,68 @@ test.describe('Авторизация', () => {
         await loginPage.verifyLoginError();
       });
     });
+
+    test('Пароль скрыт на форме ввода', async ({ loginPage }) => {
+      await test.step('Открыть страницу логина', async () => {
+        await loginPage.open();
+      });
+
+      await test.step('Проверить, что поле пароля имеет тип password', async () => {
+        await expect(loginPage.locators.passwordInput).toHaveAttribute('type', 'password');
+      });
+    });
+
+    test('Вход с пустым логином и заполненным паролем', async ({ loginPage }) => {
+      await test.step('Открыть страницу логина', async () => {
+        await loginPage.open();
+      });
+
+      await test.step('Заполнить только пароль и нажать кнопку входа', async () => {
+        await loginPage.login(userFactory.admin({ username: '' }));
+      });
+
+      await test.step('Проверить сообщение об ошибке', async () => {
+        const errorText = await loginPage.verifyLoginError();
+        expect(errorText).toBeTruthy();
+      });
+    });
+
+    test('Вход с заполненным логином и пустым паролем', async ({ loginPage }) => {
+      await test.step('Открыть страницу логина', async () => {
+        await loginPage.open();
+      });
+
+      await test.step('Заполнить только логин и нажать кнопку входа', async () => {
+        await loginPage.login(userFactory.admin({ password: '' }));
+      });
+
+      await test.step('Проверить сообщение об ошибке', async () => {
+        const errorText = await loginPage.verifyLoginError();
+        expect(errorText).toBeTruthy();
+      });
+    });
+
+    for (const [name, credentials] of [
+      ['SQL-инъекция', { username: "admin' OR '1'='1' --", password: "' OR '1'='1" }],
+      [
+        'XSS-строка',
+        { username: '<script>alert(1)</script>', password: '<img src=x onerror=alert(1)>' },
+      ],
+    ] as const) {
+      test(`Инъекция в поля авторизации: ${name}`, async ({ loginPage }) => {
+        await test.step('Открыть страницу логина', async () => {
+          await loginPage.open();
+        });
+
+        await test.step(`Ввести ${name.toLowerCase()} в поля логина`, async () => {
+          await loginPage.login(createUser(credentials));
+        });
+
+        await test.step('Проверить, что авторизация не выполнена и приложение не сломалось', async () => {
+          await loginPage.verifyLoginError();
+          await expect(loginPage.locators.usernameInput).toBeVisible();
+        });
+      });
+    }
   });
 });

@@ -1,5 +1,3 @@
-import { Page, Locator } from '@playwright/test';
-
 export interface UserCredentials {
   username: string;
   password: string;
