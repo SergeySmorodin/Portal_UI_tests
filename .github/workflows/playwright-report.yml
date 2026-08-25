@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'playwright-report/**'
+      - 'reports/**'
   workflow_dispatch:
 
 permissions:
@@ -28,7 +28,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: playwright-report
+          path: reports
 
       - name: Deploy to GitHub Pages
         id: deployment
