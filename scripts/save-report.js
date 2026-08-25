@@ -7,6 +7,46 @@ const REPORT_SOURCE = path.join(ROOT, 'playwright-report');
 const JSON_REPORT = path.join(ROOT, 'test-results.json');
 const BRANCH = 'reports';
 
+const DEPLOY_YML = `name: Deploy Playwright Report
+
+on:
+  push:
+    branches: [reports]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: \${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: reports
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: reports
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+`;
+
+const GITIGNORE = `*.tmp*
+`;
+
 function getTimestamp() {
   const now = new Date();
   const pad = (n) => String(n).padStart(2, '0');
@@ -113,49 +153,16 @@ function main() {
     git(`checkout --orphan ${BRANCH}`, tmpGit);
     git('rm -rf . 2>NUL', tmpGit);
     fs.writeFileSync(path.join(tmpGit, '.gitkeep'), '');
+    fs.writeFileSync(path.join(tmpGit, '.gitignore'), GITIGNORE);
+    fs.writeFileSync(path.join(tmpGit, '.github', 'workflows', 'deploy.yml'), DEPLOY_YML);
     git('add .', tmpGit);
     git('commit -m "init reports"', tmpGit);
     git(`push origin ${BRANCH}`, tmpGit);
   }
 
-  const workflowDir = path.join(tmpGit, '.github', 'workflows');
-  fs.mkdirSync(workflowDir, { recursive: true });
-  fs.writeFileSync(path.join(workflowDir, 'deploy.yml'), `name: Deploy Playwright Report
-
-on:
-  push:
-    branches: [reports]
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
-jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: \${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: reports
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: reports
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-`);
+  fs.writeFileSync(path.join(tmpGit, '.gitignore'), GITIGNORE);
+  fs.mkdirSync(path.join(tmpGit, '.github', 'workflows'), { recursive: true });
+  fs.writeFileSync(path.join(tmpGit, '.github', 'workflows', 'deploy.yml'), DEPLOY_YML);
 
   console.log(`Step 2: Saving report ${timestamp}...`);
   fs.mkdirSync(path.join(tmpGit, 'reports'), { recursive: true });
