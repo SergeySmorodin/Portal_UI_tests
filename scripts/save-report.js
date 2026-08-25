@@ -10,7 +10,7 @@ const BRANCH = 'reports';
 function getTimestamp() {
   const now = new Date();
   const pad = (n) => String(n).padStart(2, '0');
-  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}`;
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}_${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
 }
 
 function copyDirSync(src, dest) {
@@ -131,11 +131,16 @@ function main() {
   git('config user.email "report-bot@local"', tmpGit);
   git('config user.name "Report Bot"', tmpGit);
   git('add .', tmpGit);
-  git(`commit -m "report: ${timestamp}"`, tmpGit);
-  git(`push origin ${BRANCH}`, tmpGit);
+  const status = git('status --porcelain', tmpGit);
+  if (!status) {
+    console.log('No changes to commit.');
+  } else {
+    git(`commit -m "report: ${timestamp}"`, tmpGit);
+    git(`push origin ${BRANCH}`, tmpGit);
+    console.log(`Done! Report pushed to '${BRANCH}' branch.`);
+  }
 
   try { fs.rmSync(tmpGit, { recursive: true, force: true }); } catch {}
-  console.log(`Done! Report pushed to '${BRANCH}' branch.`);
 }
 
 main();
