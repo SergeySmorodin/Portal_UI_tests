@@ -44,7 +44,14 @@ jobs:
         uses: actions/deploy-pages@v4
 `;
 
-const GITIGNORE = `*.tmp*
+const GITIGNORE = `node_modules/
+test-results/
+playwright-report/
+test-results.json
+.tmp*
+.env
+.env.*
+*.log
 `;
 
 function getTimestamp() {
