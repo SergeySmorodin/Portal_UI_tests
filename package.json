@@ -13,7 +13,8 @@
     "test:login": "playwright test src/tests/login.spec.ts",
     "test:headed:login": "playwright test src/tests/login.spec.ts --headed",
     "test:main": "playwright test src/tests/main-page.spec.ts",
-    "test:lk": "playwright test src/tests/lk.spec.ts"
+    "test:lk": "playwright test src/tests/lk.spec.ts",
+    "test:contract": "playwright test src/tests/contract.spec.ts"
   },
   "repository": {
     "type": "git",

@@ -9,6 +9,14 @@ export interface ErrorInfo {
   details?: string;
 }
 
+export interface ContractData {
+  contractNumber: string;
+  date: string;
+  money: string;
+  status: string;
+  companySearch: string;
+}
+
 export interface TestArtifact {
   name: string;
   path: string;
