@@ -3,6 +3,7 @@ const path = require('path');
 
 const REPORT_SOURCE = path.resolve(__dirname, '..', 'playwright-report');
 const REPORTS_DIR = path.resolve(__dirname, '..', 'reports');
+const JSON_REPORT = path.resolve(__dirname, '..', 'test-results.json');
 
 function getTimestamp() {
   const now = new Date();
@@ -23,21 +24,20 @@ function copyDirSync(src, dest) {
   }
 }
 
-function getReportSummary(reportDir) {
-  const dataFile = path.join(reportDir, 'data');
-  if (!fs.existsSync(dataFile)) return null;
+function getReportSummary() {
+  if (!fs.existsSync(JSON_REPORT)) return null;
   try {
-    const files = fs.readdirSync(dataFile);
-    const statsFile = files.find(f => f.endsWith('.json'));
-    if (!statsFile) return null;
-    const stats = JSON.parse(fs.readFileSync(path.join(dataFile, statsFile), 'utf-8'));
-    return {
-      expected: stats.expected ?? 0,
-      unexpected: stats.unexpected ?? 0,
-      flaky: stats.flaky ?? 0,
-      skipped: stats.skipped ?? 0,
-      duration: stats.duration ?? 0,
-    };
+    const data = JSON.parse(fs.readFileSync(JSON_REPORT, 'utf-8'));
+    const stats = data.stats || {};
+    const duration = data.stats?.duration ?? Object.values(stats).reduce((sum, s) => sum + (s.duration || 0), 0);
+    let expected = 0, unexpected = 0, flaky = 0, skipped = 0;
+    for (const suite of Object.values(stats)) {
+      expected += suite.expected ?? 0;
+      unexpected += suite.unexpected ?? 0;
+      flaky += suite.flaky ?? 0;
+      skipped += suite.skipped ?? 0;
+    }
+    return { expected, unexpected, flaky, skipped, duration };
   } catch {
     return null;
   }
@@ -50,10 +50,26 @@ function generateIndex(reportsDir) {
     .reverse();
 
   const rows = runs.map((run, i) => {
-    const summary = getReportSummary(path.join(reportsDir, run));
-    const date = run.replace('_', ' ').replace(/-/g, (m, offset) => offset > 4 ? '-' : offset > 2 ? '-' : ' ');
+    const summaryJson = path.join(reportsDir, run, 'test-results.json');
+    let summary = null;
+    if (fs.existsSync(summaryJson)) {
+      try {
+        const data = JSON.parse(fs.readFileSync(summaryJson, 'utf-8'));
+        let expected = 0, unexpected = 0, flaky = 0, skipped = 0, duration = 0;
+        for (const suite of Object.values(data.stats || {})) {
+          expected += suite.expected ?? 0;
+          unexpected += suite.unexpected ?? 0;
+          flaky += suite.flaky ?? 0;
+          skipped += suite.skipped ?? 0;
+          duration += suite.duration ?? 0;
+        }
+        summary = { expected, unexpected, flaky, skipped, duration };
+      } catch {}
+    }
+
+    const date = run.replace('_', ' ');
     if (!summary) {
-      return `<tr><td>${i + 1}</td><td><a href="${run}/index.html">${date}</a></td><td colspan="4">—</td></tr>`;
+      return `<tr><td>${i + 1}</td><td><a href="${run}/index.html">${date}</a></td><td colspan="5">—</td></tr>`;
     }
     const status = summary.unexpected === 0
       ? '<span style="color:#2ea043;font-weight:bold">PASS</span>'
@@ -66,6 +82,7 @@ function generateIndex(reportsDir) {
       <td>${summary.expected}</td>
       <td>${summary.unexpected}</td>
       <td>${summary.flaky}</td>
+      <td>${summary.skipped}</td>
       <td>${durationMin} min</td>
     </tr>`;
   }).join('\n');
@@ -80,7 +97,7 @@ function generateIndex(reportsDir) {
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; padding: 2rem; }
     h1 { margin-bottom: 1.5rem; font-size: 1.5rem; }
-    table { border-collapse: collapse; width: 100%; max-width: 900px; }
+    table { border-collapse: collapse; width: 100%; max-width: 1000px; }
     th, td { padding: 0.6rem 1rem; text-align: left; border-bottom: 1px solid #21262d; }
     th { background: #161b22; font-weight: 600; }
     tr:hover { background: #161b22; }
@@ -92,7 +109,7 @@ function generateIndex(reportsDir) {
   <h1>Playwright Test Reports</h1>
   <table>
     <thead>
-      <tr><th>#</th><th>Date</th><th>Status</th><th>Passed</th><th>Failed</th><th>Flaky</th><th>Duration</th></tr>
+      <tr><th>#</th><th>Date</th><th>Status</th><th>Passed</th><th>Failed</th><th>Flaky</th><th>Skipped</th><th>Duration</th></tr>
     </thead>
     <tbody>
       ${rows}
@@ -115,6 +132,10 @@ function main() {
 
   console.log(`Saving report to reports/${timestamp}/`);
   copyDirSync(REPORT_SOURCE, dest);
+
+  if (fs.existsSync(JSON_REPORT)) {
+    fs.copyFileSync(JSON_REPORT, path.join(dest, 'test-results.json'));
+  }
 
   generateIndex(REPORTS_DIR);
   console.log('Index page updated.');
