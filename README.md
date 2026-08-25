@@ -2,6 +2,7 @@
 
 `npm init playwright@latest`
 
+
 # Установить
 
 - Type Script
@@ -11,9 +12,11 @@
 - Для форматирования кода
   `npm install -D prettier`
 
+
 # Создать tsconfig.json
 
 `npx tsc --init`
+
 
 # Проверка кода prettier
 
@@ -22,13 +25,21 @@
 - Исправить форматирование:
   `npx prettier --write .`
 
+
 # Проверить типы
 
 `npx tsc --noEmit`
 
+
 # Запустить тесты
 
 `npm test`
+
+
+# Сохранить историю отчета
+
+`npm run report:save`
+
 
 # Посмотреть отчет
 
