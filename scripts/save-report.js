@@ -118,6 +118,13 @@ function main() {
     git(`push origin ${BRANCH}`, tmpGit);
   }
 
+  const workflowDir = path.join(tmpGit, '.github', 'workflows');
+  fs.mkdirSync(workflowDir, { recursive: true });
+  const workflowSrc = path.join(ROOT, '.github', 'workflows', 'playwright-report.yml');
+  if (fs.existsSync(workflowSrc)) {
+    fs.copyFileSync(workflowSrc, path.join(workflowDir, 'playwright-report.yml'));
+  }
+
   console.log(`Step 2: Saving report ${timestamp}...`);
   fs.mkdirSync(path.join(tmpGit, 'reports'), { recursive: true });
   const destDir = path.join(tmpGit, 'reports', timestamp);
