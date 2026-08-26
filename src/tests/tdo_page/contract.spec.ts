@@ -40,7 +40,9 @@ test.describe('Создание договора', () => {
         mimeType: 'application/pdf',
         buffer: Buffer.from('Test contract file'),
       });
-      await expect(contractPage.locators.saveButton).toBeEnabled({ timeout: config.timeouts.short });
+      await expect(contractPage.locators.saveButton).toBeEnabled({
+        timeout: config.timeouts.short,
+      });
     });
 
     await test.step('Сохранить договор', async () => {
@@ -66,7 +68,9 @@ test.describe('Создание договора', () => {
       await searchInput.waitFor({ state: 'visible' });
       await searchInput.fill(contract.contractNumber);
 
-      await expect(page.getByText(contract.contractNumber)).toBeVisible({ timeout: config.timeouts.normal });
+      await expect(page.getByText(contract.contractNumber)).toBeVisible({
+        timeout: config.timeouts.normal,
+      });
     });
   });
 });

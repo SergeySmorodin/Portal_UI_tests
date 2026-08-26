@@ -55,7 +55,10 @@ export const createBasePage = (page: Page) => {
       return selected;
     },
 
-    selectRandomFromList: async (container: Locator, itemSelector: string = 'button'): Promise<string> => {
+    selectRandomFromList: async (
+      container: Locator,
+      itemSelector: string = 'button'
+    ): Promise<string> => {
       await container.waitFor({ state: 'visible', timeout });
       const items = container.locator(itemSelector);
       const count = await items.count();

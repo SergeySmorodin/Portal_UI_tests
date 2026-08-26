@@ -1,6 +1,9 @@
 import { Page } from '@playwright/test';
 import { createBasePage } from '../base-page';
-import { createProjectPageLocators, createProjectsListLocators } from '../../locators/project-page.locators';
+import {
+  createProjectPageLocators,
+  createProjectsListLocators,
+} from '../../locators/project-page.locators';
 import { ProjectData } from '../../types';
 
 export const createProjectPage = (page: Page) => {

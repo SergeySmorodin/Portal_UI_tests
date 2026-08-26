@@ -75,35 +75,47 @@ function parseStats(data) {
   const s = data?.stats;
   if (!s) return null;
   return {
-    expected: s.expected ?? 0, unexpected: s.unexpected ?? 0,
-    flaky: s.flaky ?? 0, skipped: s.skipped ?? 0, duration: s.duration ?? 0,
+    expected: s.expected ?? 0,
+    unexpected: s.unexpected ?? 0,
+    flaky: s.flaky ?? 0,
+    skipped: s.skipped ?? 0,
+    duration: s.duration ?? 0,
   };
 }
 
 function generateIndex(reportsDir) {
-  const runs = fs.readdirSync(reportsDir)
-    .filter(f => fs.statSync(path.join(reportsDir, f)).isDirectory())
-    .sort().reverse();
+  const runs = fs
+    .readdirSync(reportsDir)
+    .filter((f) => fs.statSync(path.join(reportsDir, f)).isDirectory())
+    .sort()
+    .reverse();
 
-  const rows = runs.map((run, i) => {
-    const jsonPath = path.join(reportsDir, run, 'test-results.json');
-    let summary = null;
-    if (fs.existsSync(jsonPath)) {
-      try { summary = parseStats(JSON.parse(fs.readFileSync(jsonPath, 'utf-8'))); } catch {}
-    }
-    const date = run.replace('_', ' ');
-    if (!summary) {
-      return `<tr><td>${i + 1}</td><td><a href="${run}/index.html">${date}</a></td><td colspan="5">—</td></tr>`;
-    }
-    const status = summary.unexpected === 0
-      ? '<span style="color:#2ea043;font-weight:bold">PASS</span>'
-      : '<span style="color:#f85149;font-weight:bold">FAIL</span>';
-    const d = summary.duration;
-    const dur = d >= 60000 ? `${Math.round(d / 60000)} min` : `${Math.round(d / 1000)} sec`;
-    return `<tr><td>${i + 1}</td><td><a href="${run}/index.html">${date}</a></td><td>${status}</td><td>${summary.expected}</td><td>${summary.unexpected}</td><td>${summary.flaky}</td><td>${summary.skipped}</td><td>${dur}</td></tr>`;
-  }).join('\n');
+  const rows = runs
+    .map((run, i) => {
+      const jsonPath = path.join(reportsDir, run, 'test-results.json');
+      let summary = null;
+      if (fs.existsSync(jsonPath)) {
+        try {
+          summary = parseStats(JSON.parse(fs.readFileSync(jsonPath, 'utf-8')));
+        } catch {}
+      }
+      const date = run.replace('_', ' ');
+      if (!summary) {
+        return `<tr><td>${i + 1}</td><td><a href="${run}/index.html">${date}</a></td><td colspan="5">—</td></tr>`;
+      }
+      const status =
+        summary.unexpected === 0
+          ? '<span style="color:#2ea043;font-weight:bold">PASS</span>'
+          : '<span style="color:#f85149;font-weight:bold">FAIL</span>';
+      const d = summary.duration;
+      const dur = d >= 60000 ? `${Math.round(d / 60000)} min` : `${Math.round(d / 1000)} sec`;
+      return `<tr><td>${i + 1}</td><td><a href="${run}/index.html">${date}</a></td><td>${status}</td><td>${summary.expected}</td><td>${summary.unexpected}</td><td>${summary.flaky}</td><td>${summary.skipped}</td><td>${dur}</td></tr>`;
+    })
+    .join('\n');
 
-  fs.writeFileSync(path.join(reportsDir, 'index.html'), `<!DOCTYPE html>
+  fs.writeFileSync(
+    path.join(reportsDir, 'index.html'),
+    `<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
@@ -128,11 +140,16 @@ function generateIndex(reportsDir) {
     <tbody>${rows}</tbody>
   </table>
 </body>
-</html>`);
+</html>`
+  );
 }
 
 function git(args, cwd) {
-  return execSync(`git ${args}`, { cwd: cwd || ROOT, encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] }).trim();
+  return execSync(`git ${args}`, {
+    cwd: cwd || ROOT,
+    encoding: 'utf-8',
+    stdio: ['pipe', 'pipe', 'pipe'],
+  }).trim();
 }
 
 function main() {
@@ -145,7 +162,9 @@ function main() {
   const remoteUrl = git('remote get-url origin');
 
   const tmpGit = path.join(ROOT, '.tmp-reports-repo');
-  try { fs.rmSync(tmpGit, { recursive: true, force: true }); } catch {}
+  try {
+    fs.rmSync(tmpGit, { recursive: true, force: true });
+  } catch {}
 
   const hasBranch = git('ls-remote --heads origin reports').length > 0;
 
@@ -179,7 +198,8 @@ function main() {
   const destDir = path.join(tmpGit, 'reports', timestamp);
   fs.rmSync(destDir, { recursive: true, force: true });
   copyDirSync(REPORT_SOURCE, destDir);
-  if (fs.existsSync(JSON_REPORT)) fs.copyFileSync(JSON_REPORT, path.join(destDir, 'test-results.json'));
+  if (fs.existsSync(JSON_REPORT))
+    fs.copyFileSync(JSON_REPORT, path.join(destDir, 'test-results.json'));
 
   generateIndex(path.join(tmpGit, 'reports'));
 
@@ -196,7 +216,9 @@ function main() {
     console.log(`Done! Report pushed to '${BRANCH}' branch.`);
   }
 
-  try { fs.rmSync(tmpGit, { recursive: true, force: true }); } catch {}
+  try {
+    fs.rmSync(tmpGit, { recursive: true, force: true });
+  } catch {}
 }
 
 main();

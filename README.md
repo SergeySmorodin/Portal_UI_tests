@@ -1,12 +1,10 @@
 # Отчеты
+
 https://sergeysmorodin.github.io/Portal_UI_tests/
-
-
 
 # Инициализация Playwright проекта
 
 `npm init playwright@latest`
-
 
 # Установить
 
@@ -17,11 +15,9 @@ https://sergeysmorodin.github.io/Portal_UI_tests/
 - Для форматирования кода
   `npm install -D prettier`
 
-
 # Создать tsconfig.json
 
 `npx tsc --init`
-
 
 # Проверка кода prettier
 
@@ -30,21 +26,17 @@ https://sergeysmorodin.github.io/Portal_UI_tests/
 - Исправить форматирование:
   `npx prettier --write .`
 
-
 # Проверить типы
 
 `npx tsc --noEmit`
-
 
 # Запустить тесты
 
 `npm test`
 
-
 # Сохранить историю отчета
 
 `npm run report:save`
-
 
 # Посмотреть отчет
 

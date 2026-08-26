@@ -21,7 +21,9 @@ export const createMainPage = (page: Page) => {
 
     navigateToProfile: async (): Promise<void> => {
       await locators.userProfileLink.click();
-      await page.waitForURL((url) => url.pathname.includes('/lk'), { timeout: config.timeouts.normal });
+      await page.waitForURL((url) => url.pathname.includes('/lk'), {
+        timeout: config.timeouts.normal,
+      });
     },
   };
 };

@@ -3,7 +3,11 @@ import { config } from '../../config/config';
 import { projectFactory } from '../../data/test-data';
 
 test.describe('Создание проекта', () => {
-  test('Заполнение формы, сохранение и проверка в списке', async ({ page, projectPage, projectsListPage }) => {
+  test('Заполнение формы, сохранение и проверка в списке', async ({
+    page,
+    projectPage,
+    projectsListPage,
+  }) => {
     const project = projectFactory.draft();
 
     await test.step('Открыть страницу создания проекта', async () => {
