@@ -1,8 +1,8 @@
 import { Page } from '@playwright/test';
-import { createBasePage } from './base-page';
-import { createContractPageLocators } from '../locators/contract-page.locators';
-import { ContractData } from '../types';
-import { testHelpers } from '../utils/helpers';
+import { createBasePage } from '../base-page';
+import { createContractPageLocators } from '../../locators/contract-page.locators';
+import { ContractData } from '../../types';
+import { testHelpers } from '../../utils/helpers';
 
 export const createContractPage = (page: Page) => {
   const basePage = createBasePage(page);
@@ -28,7 +28,7 @@ export const createContractPage = (page: Page) => {
       const searchInput = page.locator('input[placeholder="Поиск..."]').first();
       await testHelpers.waitForElement(searchInput);
       await searchInput.fill('');
-      await page.waitForTimeout(1500);
+      await locators.companyListContainer.locator('button').first().waitFor({ state: 'visible' });
       return testHelpers.selectRandomFromList(locators.companyListContainer);
     },
 
@@ -36,16 +36,15 @@ export const createContractPage = (page: Page) => {
       const addBtn = page.getByRole('button', { name: '+', exact: true }).first();
       await testHelpers.waitForElement(addBtn);
       await addBtn.click();
-      await page.waitForTimeout(1000);
       const nameBtn = page.locator('button:has(i.fa-chevron-down)').last();
+      await nameBtn.waitFor({ state: 'visible' });
       const managerName = (await nameBtn.textContent())?.trim() || '';
       await nameBtn.click();
-      await page.waitForTimeout(500);
       const searchInput = page.locator('input[placeholder="Поиск..."]').last();
       await testHelpers.waitForElement(searchInput);
       await searchInput.fill('');
-      await page.waitForTimeout(1500);
       const container = page.locator('.max-h-60').last();
+      await container.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {});
       if (await testHelpers.isElementPresent(container)) {
         return testHelpers.selectRandomFromList(container);
       }
@@ -56,8 +55,8 @@ export const createContractPage = (page: Page) => {
       const addBtn = page.getByRole('button', { name: '+', exact: true }).last();
       await testHelpers.waitForElement(addBtn);
       await addBtn.click();
-      await page.waitForTimeout(1000);
       const workSelect = page.locator('select:not([name="status"])').last();
+      await workSelect.waitFor({ state: 'visible' });
       return testHelpers.selectRandomOption(workSelect);
     },
 

@@ -1,9 +1,9 @@
 import { Page, test as base, expect } from '@playwright/test';
 import { config, type VPNConfig } from '../config/config';
-import { createLoginPage } from '../pages/login-page';
-import { createMainPage } from '../pages/main-page';
-import { createLkPage } from '../pages/lk-page';
-import { createContractPage } from '../pages/contract-page';
+import { createLoginPage } from '../pages/login/login-page';
+import { createMainPage } from '../pages/main/main-page';
+import { createLkPage } from '../pages/personal/lk-page';
+import { createContractPage } from '../pages/tdo/contract-page';
 
 interface TestFixtures {
   testConfig: typeof config;

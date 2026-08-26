@@ -1,8 +1,8 @@
 import { Page, expect, test } from '@playwright/test';
-import { createBasePage } from './base-page';
-import { createLoginPageLocators } from '../locators/login-page.locators';
-import { config } from '../config/config';
-import { UserCredentials } from '../types';
+import { createBasePage } from '../base-page';
+import { createLoginPageLocators } from '../../locators/login-page.locators';
+import { config } from '../../config/config';
+import { UserCredentials } from '../../types';
 
 export const createLoginPage = (page: Page) => {
   const basePage = createBasePage(page);

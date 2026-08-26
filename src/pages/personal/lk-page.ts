@@ -1,7 +1,7 @@
 import { Page } from '@playwright/test';
-import { createBasePage } from './base-page';
-import { createLkPageLocators } from '../locators/lk-page.locators';
-import { SIDEBAR_MENU_ITEMS } from '../locators/header.locators';
+import { createBasePage } from '../base-page';
+import { createLkPageLocators } from '../../locators/lk-page.locators';
+import { SIDEBAR_MENU_ITEMS } from '../../locators/header.locators';
 
 const TAB_NAMES = [
   'Общая информация',

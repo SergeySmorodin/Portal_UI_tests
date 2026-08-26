@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures/test-fixtures';
+import { test, expect } from '../../fixtures/test-fixtures';
 
 test.describe('Главная страница', () => {
   test('Отображение элементов главной страницы', async ({ mainPage }) => {
