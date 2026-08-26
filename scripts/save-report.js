@@ -48,7 +48,7 @@ const GITIGNORE = `node_modules/
 src/
 test-results/
 playwright-report/
-test-results.json
+/test-results.json
 .tmp*
 .env
 .env.*
