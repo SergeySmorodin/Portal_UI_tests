@@ -1,14 +1,6 @@
 import { test, expect } from '../fixtures/test-fixtures';
 
 test.describe('Главная страница', () => {
-  test.beforeEach(async ({ page, loginPage }) => {
-    await test.step('Авторизоваться', async () => {
-      await loginPage.open();
-      await loginPage.login();
-      await page.waitForURL((url) => !url.pathname.includes('/login'), { timeout: 15000 });
-    });
-  });
-
   test('Отображение элементов главной страницы', async ({ mainPage }) => {
     await test.step('Открыть главную страницу', async () => {
       await mainPage.open();

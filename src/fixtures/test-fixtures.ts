@@ -24,13 +24,13 @@ export const test = base.extend<TestFixtures>({
     await use(loginPage);
   },
 
-  mainPage: async ({ page }, use) => {
-    const mainPage = createMainPage(page);
+  mainPage: async ({ authenticatedPage }, use) => {
+    const mainPage = createMainPage(authenticatedPage);
     await use(mainPage);
   },
 
-  lkPage: async ({ page }, use) => {
-    const lkPage = createLkPage(page);
+  lkPage: async ({ authenticatedPage }, use) => {
+    const lkPage = createLkPage(authenticatedPage);
     await use(lkPage);
   },
 

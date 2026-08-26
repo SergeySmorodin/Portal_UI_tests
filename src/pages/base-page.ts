@@ -1,5 +1,6 @@
 import { Page, Locator, expect } from '@playwright/test';
 import { config } from '../config/config';
+import { testHelpers } from '../utils/helpers';
 
 export const createBasePage = (page: Page) => {
   const timeout = config.timeout;
@@ -7,44 +8,33 @@ export const createBasePage = (page: Page) => {
   return {
     page,
 
-    // Навигация
     navigate: async (url: string): Promise<void> => {
       await page.goto(url, { waitUntil: 'domcontentloaded' });
     },
 
     openRelative: async (path: string): Promise<void> => {
-      await page.goto(`${config.siteUrl}${path}`, { waitUntil: 'domcontentloaded' });
+      await testHelpers.openPage(page, config.siteUrl, path);
     },
 
-    // Действия с элементами
     click: async (locator: Locator): Promise<void> => {
-      await expect(locator).toBeVisible({ timeout });
-      await locator.click();
+      await testHelpers.clickWhenVisible(locator, timeout);
     },
 
     fill: async (locator: Locator, text: string): Promise<void> => {
-      await expect(locator).toBeVisible({ timeout });
-      await locator.fill(text);
+      await testHelpers.fillField(locator, text, timeout);
     },
 
-    // Проверки
     expectVisible: async (locator: Locator): Promise<void> => {
-      await expect(locator).toBeVisible({ timeout });
+      await testHelpers.waitForElement(locator, timeout);
     },
 
-    // Утилиты
     getErrorMessage: async (): Promise<string> => {
       const errorLocator = page.locator('.error-message, .alert-danger').first();
-      if (await errorLocator.isVisible()) {
-        return (await errorLocator.textContent())?.trim() || '';
-      }
-      return '';
+      return testHelpers.getText(errorLocator);
     },
 
     takeScreenshot: async (name: string): Promise<string> => {
-      const path = `screenshots/${name}-${Date.now()}.png`;
-      await page.screenshot({ path, fullPage: true });
-      return path;
+      return testHelpers.createScreenshot(page, name);
     },
   };
 };

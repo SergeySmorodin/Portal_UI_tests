@@ -1,14 +1,6 @@
 import { test, expect } from '../fixtures/test-fixtures';
 
 test.describe('Профиль сотрудника (ЛК)', () => {
-  test.beforeEach(async ({ page, loginPage }) => {
-    await test.step('Авторизоваться и открыть профиль', async () => {
-      await loginPage.open();
-      await loginPage.login();
-      await page.waitForURL((url) => !url.pathname.includes('/login'), { timeout: 15000 });
-    });
-  });
-
   test('Отображение вкладок профиля', async ({ lkPage }) => {
     await test.step('Открыть профиль сотрудника', async () => {
       await lkPage.open();
