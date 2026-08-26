@@ -3,7 +3,6 @@ import { createBasePage } from '../base-page';
 import { createContractPageLocators } from '../../locators/contract-page.locators';
 import { config } from '../../config/config';
 import { ContractData } from '../../types';
-import { testHelpers } from '../../utils/helpers';
 
 export const createContractPage = (page: Page) => {
   const basePage = createBasePage(page);
@@ -21,44 +20,44 @@ export const createContractPage = (page: Page) => {
     },
 
     selectRandomStatus: async (): Promise<string> => {
-      return testHelpers.selectRandomOption(locators.statusSelect);
+      return basePage.selectRandomOption(locators.statusSelect);
     },
 
     selectRandomCompany: async (): Promise<string> => {
       await locators.companyButton.click();
       const searchInput = page.locator('input[placeholder="Поиск..."]').first();
-      await testHelpers.waitForElement(searchInput);
+      await basePage.waitForElement(searchInput);
       await searchInput.fill('');
       await locators.companyListContainer.locator('button').first().waitFor({ state: 'visible' });
-      return testHelpers.selectRandomFromList(locators.companyListContainer);
+      return basePage.selectRandomFromList(locators.companyListContainer);
     },
 
     selectRandomManager: async (): Promise<string> => {
       const addBtn = page.getByRole('button', { name: '+', exact: true }).first();
-      await testHelpers.waitForElement(addBtn);
+      await basePage.waitForElement(addBtn);
       await addBtn.click();
       const nameBtn = page.locator('button:has(i.fa-chevron-down)').last();
       await nameBtn.waitFor({ state: 'visible' });
       const managerName = (await nameBtn.textContent())?.trim() || '';
       await nameBtn.click();
       const searchInput = page.locator('input[placeholder="Поиск..."]').last();
-      await testHelpers.waitForElement(searchInput);
+      await basePage.waitForElement(searchInput);
       await searchInput.fill('');
       const container = page.locator('.max-h-60').last();
       await container.waitFor({ state: 'visible', timeout: config.timeouts.short }).catch(() => {});
-      if (await testHelpers.isElementPresent(container)) {
-        return testHelpers.selectRandomFromList(container);
+      if (await basePage.isElementPresent(container)) {
+        return basePage.selectRandomFromList(container);
       }
       return managerName;
     },
 
     selectRandomWorkType: async (): Promise<string> => {
       const addBtn = page.getByRole('button', { name: '+', exact: true }).last();
-      await testHelpers.waitForElement(addBtn);
+      await basePage.waitForElement(addBtn);
       await addBtn.click();
       const workSelect = page.locator('select:not([name="status"])').last();
       await workSelect.waitFor({ state: 'visible' });
-      return testHelpers.selectRandomOption(workSelect);
+      return basePage.selectRandomOption(workSelect);
     },
 
     fillBasicFields: async (data: ContractData): Promise<void> => {

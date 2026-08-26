@@ -2,7 +2,6 @@ import { Page } from '@playwright/test';
 import { createBasePage } from '../base-page';
 import { createProjectPageLocators, createProjectsListLocators } from '../../locators/project-page.locators';
 import { ProjectData } from '../../types';
-import { testHelpers } from '../../utils/helpers';
 
 export const createProjectPage = (page: Page) => {
   const basePage = createBasePage(page);
@@ -20,23 +19,23 @@ export const createProjectPage = (page: Page) => {
     },
 
     selectRandomStatus: async (): Promise<string> => {
-      return testHelpers.selectRandomOption(locators.statusSelect);
+      return basePage.selectRandomOption(locators.statusSelect);
     },
 
     selectRandomGroupProject: async (): Promise<string> => {
-      return testHelpers.selectRandomOption(locators.groupProjectSelect);
+      return basePage.selectRandomOption(locators.groupProjectSelect);
     },
 
     selectRandomTypeProject: async (): Promise<string> => {
-      return testHelpers.selectRandomOption(locators.typeProjectSelect);
+      return basePage.selectRandomOption(locators.typeProjectSelect);
     },
 
     selectRandomDepartment: async (): Promise<string> => {
-      return testHelpers.selectRandomOption(locators.departmentProjectSelect);
+      return basePage.selectRandomOption(locators.departmentProjectSelect);
     },
 
     selectRandomKindProject: async (): Promise<string> => {
-      return testHelpers.selectRandomOption(locators.kindProjectSelect);
+      return basePage.selectRandomOption(locators.kindProjectSelect);
     },
 
     fillBasicFields: async (data: ProjectData): Promise<void> => {
@@ -68,13 +67,9 @@ export const createProjectsListPage = (page: Page) => {
     },
 
     searchByCode: async (code: string): Promise<void> => {
-      await testHelpers.waitForElement(locators.searchInput);
+      await basePage.waitForElement(locators.searchInput);
       await locators.searchInput.fill(code);
       await page.waitForLoadState('networkidle').catch(() => {});
-    },
-
-    findProjectRow: async (code: string) => {
-      return locators.projectCodeCell(code);
     },
   };
 };
