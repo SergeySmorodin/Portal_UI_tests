@@ -1,7 +1,8 @@
 import { Page, Locator, expect } from '@playwright/test';
+import { config } from '../config/config';
 
 export const testHelpers = {
-  waitForElement: async (locator: Locator, timeout: number = 10000): Promise<void> => {
+  waitForElement: async (locator: Locator, timeout: number = config.timeouts.normal): Promise<void> => {
     await locator.waitFor({ state: 'visible', timeout });
   },
 
@@ -26,21 +27,21 @@ export const testHelpers = {
     return path;
   },
 
-  clickWhenVisible: async (locator: Locator, timeout: number = 10000): Promise<void> => {
+  clickWhenVisible: async (locator: Locator, timeout: number = config.timeouts.normal): Promise<void> => {
     await expect(locator).toBeVisible({ timeout });
     await locator.click();
   },
 
-  fillField: async (locator: Locator, text: string, timeout: number = 10000): Promise<void> => {
+  fillField: async (locator: Locator, text: string, timeout: number = config.timeouts.normal): Promise<void> => {
     await expect(locator).toBeVisible({ timeout });
     await locator.fill(text);
   },
 
-  waitForNavigation: async (page: Page, pathname: string, timeout: number = 15000): Promise<void> => {
+  waitForNavigation: async (page: Page, pathname: string, timeout: number = config.timeouts.long): Promise<void> => {
     await page.waitForURL((url) => !url.pathname.includes(pathname), { timeout });
   },
 
-  waitForUrlContains: async (page: Page, pathname: string, timeout: number = 10000): Promise<void> => {
+  waitForUrlContains: async (page: Page, pathname: string, timeout: number = config.timeouts.normal): Promise<void> => {
     await page.waitForURL((url) => url.pathname.includes(pathname), { timeout });
   },
 
@@ -63,7 +64,7 @@ export const testHelpers = {
   },
 
   selectRandomFromList: async (container: Locator, itemSelector: string = 'button'): Promise<string> => {
-    await container.waitFor({ state: 'visible', timeout: 10000 });
+    await container.waitFor({ state: 'visible', timeout: config.timeouts.normal });
     const items = container.locator(itemSelector);
     const count = await items.count();
     const randomIndex = Math.floor(Math.random() * count);

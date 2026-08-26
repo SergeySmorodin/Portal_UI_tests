@@ -1,4 +1,5 @@
 import { test, expect } from '../../fixtures/test-fixtures';
+import { config } from '../../config/config';
 import { contractFactory } from '../../data/test-data';
 
 test.describe('Создание договора', () => {
@@ -39,13 +40,13 @@ test.describe('Создание договора', () => {
         mimeType: 'application/pdf',
         buffer: Buffer.from('Test contract file'),
       });
-      await expect(contractPage.locators.saveButton).toBeEnabled({ timeout: 5000 });
+      await expect(contractPage.locators.saveButton).toBeEnabled({ timeout: config.timeouts.short });
     });
 
     await test.step('Сохранить договор', async () => {
       const responsePromise = page.waitForResponse(
         (resp) => resp.url().includes('/api/contract/') && resp.request().method() === 'POST',
-        { timeout: 15000 }
+        { timeout: config.timeouts.long }
       );
       await contractPage.save();
       const response = await responsePromise;
@@ -54,7 +55,7 @@ test.describe('Создание договора', () => {
 
     await test.step('Проверить редирект после успешного сохранения', async () => {
       await page.waitForURL((url) => !url.pathname.includes('/TDO/Contract/new'), {
-        timeout: 15000,
+        timeout: config.timeouts.long,
       });
     });
 
@@ -65,7 +66,7 @@ test.describe('Создание договора', () => {
       await searchInput.waitFor({ state: 'visible' });
       await searchInput.fill(contract.contractNumber);
 
-      await expect(page.getByText(contract.contractNumber)).toBeVisible({ timeout: 10000 });
+      await expect(page.getByText(contract.contractNumber)).toBeVisible({ timeout: config.timeouts.normal });
     });
   });
 });

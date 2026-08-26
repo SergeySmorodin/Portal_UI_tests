@@ -1,6 +1,7 @@
 import { Page } from '@playwright/test';
 import { createBasePage } from '../base-page';
 import { createContractPageLocators } from '../../locators/contract-page.locators';
+import { config } from '../../config/config';
 import { ContractData } from '../../types';
 import { testHelpers } from '../../utils/helpers';
 
@@ -44,7 +45,7 @@ export const createContractPage = (page: Page) => {
       await testHelpers.waitForElement(searchInput);
       await searchInput.fill('');
       const container = page.locator('.max-h-60').last();
-      await container.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {});
+      await container.waitFor({ state: 'visible', timeout: config.timeouts.short }).catch(() => {});
       if (await testHelpers.isElementPresent(container)) {
         return testHelpers.selectRandomFromList(container);
       }

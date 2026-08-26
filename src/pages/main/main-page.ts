@@ -1,6 +1,7 @@
 import { Page } from '@playwright/test';
 import { createBasePage } from '../base-page';
 import { createMainPageLocators, MAIN_PAGE_SECTIONS } from '../../locators/main-page.locators';
+import { config } from '../../config/config';
 
 export const createMainPage = (page: Page) => {
   const basePage = createBasePage(page);
@@ -20,7 +21,7 @@ export const createMainPage = (page: Page) => {
 
     navigateToProfile: async (): Promise<void> => {
       await locators.userProfileLink.click();
-      await page.waitForURL((url) => url.pathname.includes('/lk'), { timeout: 10000 });
+      await page.waitForURL((url) => url.pathname.includes('/lk'), { timeout: config.timeouts.normal });
     },
   };
 };

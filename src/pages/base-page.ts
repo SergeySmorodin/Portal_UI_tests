@@ -3,7 +3,7 @@ import { config } from '../config/config';
 import { testHelpers } from '../utils/helpers';
 
 export const createBasePage = (page: Page) => {
-  const timeout = config.timeout;
+  const timeout = config.timeouts.normal;
 
   return {
     page,

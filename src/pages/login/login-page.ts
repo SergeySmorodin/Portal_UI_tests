@@ -20,7 +20,7 @@ export const createLoginPage = (page: Page) => {
     try {
       await locators.errorMessage.waitFor({
         state: 'visible',
-        timeout: 5000,
+        timeout: config.timeouts.short,
       });
       return (await locators.errorMessage.textContent())?.trim() || '';
     } catch {
@@ -57,7 +57,7 @@ export const createLoginPage = (page: Page) => {
 
   const waitForLoginSuccess = async (): Promise<void> => {
     await page.waitForURL((url) => !url.pathname.includes(PAGE_PATH), {
-      timeout: 5000,
+      timeout: config.timeouts.short,
     });
   };
 

@@ -43,7 +43,7 @@ export const test = base.extend<TestFixtures>({
     const loginPage = createLoginPage(page);
     await loginPage.open();
     await loginPage.login();
-    await page.waitForURL((url) => !url.pathname.includes('/login'), { timeout: 15000 });
+    await page.waitForURL((url) => !url.pathname.includes('/login'), { timeout: config.timeouts.long });
     await use(page);
   },
 });
