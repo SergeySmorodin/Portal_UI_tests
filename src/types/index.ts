@@ -22,3 +22,15 @@ export interface TestArtifact {
   path: string;
   type: 'screenshot' | 'video' | 'trace' | 'html';
 }
+
+export interface ProjectData {
+  code: string;
+  status: string;
+  startDate: string;
+  stopDate: string;
+  groupProject: string;
+  typeProject: string;
+  departmentProject: string;
+  kindProject: string;
+  note: string;
+}

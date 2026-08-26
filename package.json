@@ -10,11 +10,11 @@
     "test:ui": "playwright test --ui",
     "test:report": "playwright show-report",
     "test:chromium": "playwright test --project=chromium",
-    "test:login": "playwright test src/tests/login.spec.ts",
-    "test:headed:login": "playwright test src/tests/login.spec.ts --headed",
-    "test:main": "playwright test src/tests/main-page.spec.ts",
-    "test:lk": "playwright test src/tests/lk.spec.ts",
-    "test:contract": "playwright test src/tests/contract.spec.ts",
+    "test:login": "playwright test src/tests/login_page/login.spec.ts",
+    "test:main": "playwright test src/tests/main_page/main-page.spec.ts",
+    "test:lk": "playwright test src/tests/personal_page/lk.spec.ts",
+    "test:contract": "playwright test src/tests/tdo_page/contract.spec.ts",
+    "test:project": "playwright test src/tests/tdo_page/project.spec.ts",
     "report:save": "node scripts/save-report.js"
   },
   "repository": {
