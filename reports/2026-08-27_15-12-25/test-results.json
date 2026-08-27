@@ -1,0 +1,1566 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "D:\\WORK\\Projects\\Portal_UI_tests\\node_modules\\@playwright\\test\\cli.js",
+      "test"
+    ],
+    "configFile": "D:\\WORK\\Projects\\Portal_UI_tests\\playwright.config.ts",
+    "rootDir": "D:/WORK/Projects/Portal_UI_tests/src/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 4
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/WORK/Projects/Portal_UI_tests/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "D:/WORK/Projects/Portal_UI_tests/src/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results.json"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 4,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "company_page\\company.spec.ts",
+      "file": "company_page/company.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Создание компании",
+          "file": "company_page/company.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Заполнение формы, сохранение и проверка в списке",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4306,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу создания компании",
+                          "duration": 472
+                        },
+                        {
+                          "title": "Заполнить основные поля",
+                          "duration": 169
+                        },
+                        {
+                          "title": "Сохранить компанию",
+                          "duration": 228
+                        },
+                        {
+                          "title": "Найти компанию в списке через поиск",
+                          "duration": 953
+                        }
+                      ],
+                      "startTime": "2026-08-27T12:11:50.629Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "81b905a10a4d406dd02e-f44c2e2aad9e1efb6856",
+              "file": "company_page/company.spec.ts",
+              "line": 7,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "curator_page\\curator.spec.ts",
+      "file": "curator_page/curator.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Создание куратора",
+          "file": "curator_page/curator.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Заполнение формы, сохранение и проверка в списке",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 3588,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m400\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m400\u001b[39m\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\curator_page\\curator.spec.ts:39:33\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\curator_page\\curator.spec.ts:30:5",
+                        "location": {
+                          "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\curator_page\\curator.spec.ts",
+                          "column": 33,
+                          "line": 39
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 37 |\u001b[39m       \u001b[36mawait\u001b[39m curatorPage\u001b[33m.\u001b[39msave()\u001b[33m;\u001b[39m\n \u001b[90m 38 |\u001b[39m       \u001b[36mconst\u001b[39m response \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m responsePromise\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 39 |\u001b[39m       expect(response\u001b[33m.\u001b[39mstatus())\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 40 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 41 |\u001b[39m\n \u001b[90m 42 |\u001b[39m     \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Найти куратора в списке через поиск'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\curator_page\\curator.spec.ts",
+                            "column": 33,
+                            "line": 39
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m400\u001b[39m\n\n\u001b[0m \u001b[90m 37 |\u001b[39m       \u001b[36mawait\u001b[39m curatorPage\u001b[33m.\u001b[39msave()\u001b[33m;\u001b[39m\n \u001b[90m 38 |\u001b[39m       \u001b[36mconst\u001b[39m response \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m responsePromise\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 39 |\u001b[39m       expect(response\u001b[33m.\u001b[39mstatus())\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 40 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 41 |\u001b[39m\n \u001b[90m 42 |\u001b[39m     \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Найти куратора в списке через поиск'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\curator_page\\curator.spec.ts:39:33\u001b[22m\n\u001b[2m    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\curator_page\\curator.spec.ts:30:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу создания куратора",
+                          "duration": 435
+                        },
+                        {
+                          "title": "Заполнить основные поля",
+                          "duration": 336
+                        },
+                        {
+                          "title": "Выбрать рандомную компанию",
+                          "duration": 194
+                        },
+                        {
+                          "title": "Сохранить куратора",
+                          "duration": 127,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m400\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m400\u001b[39m\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\curator_page\\curator.spec.ts:39:33\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\curator_page\\curator.spec.ts:30:5",
+                            "location": {
+                              "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\curator_page\\curator.spec.ts",
+                              "column": 33,
+                              "line": 39
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 37 |\u001b[39m       \u001b[36mawait\u001b[39m curatorPage\u001b[33m.\u001b[39msave()\u001b[33m;\u001b[39m\n \u001b[90m 38 |\u001b[39m       \u001b[36mconst\u001b[39m response \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m responsePromise\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 39 |\u001b[39m       expect(response\u001b[33m.\u001b[39mstatus())\u001b[33m.\u001b[39mtoBe(\u001b[35m201\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 40 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 41 |\u001b[39m\n \u001b[90m 42 |\u001b[39m     \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Найти куратора в списке через поиск'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-08-27T12:11:50.607Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\curator_page-curator-Созда-6b90c-ранение-и-проверка-в-списке-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\curator_page-curator-Созда-6b90c-ранение-и-проверка-в-списке-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\curator_page-curator-Созда-6b90c-ранение-и-проверка-в-списке-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\curator_page\\curator.spec.ts",
+                        "column": 33,
+                        "line": 39
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "aec52b410e099ec6937b-5ec0bae7f841193a7bc7",
+              "file": "curator_page/curator.spec.ts",
+              "line": 7,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "login_page\\login.spec.ts",
+      "file": "login_page/login.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Авторизация",
+          "file": "login_page/login.spec.ts",
+          "line": 4,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "Позитивные сценарии",
+              "file": "login_page/login.spec.ts",
+              "line": 5,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "Отображение формы логина",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 1297,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 629
+                            },
+                            {
+                              "title": "Проверить отображение поля \"Имя пользователя\"",
+                              "duration": 21
+                            },
+                            {
+                              "title": "Проверить отображение поля \"Пароль\"",
+                              "duration": 10
+                            },
+                            {
+                              "title": "Проверить отображение кнопки \"Войти\"",
+                              "duration": 14
+                            }
+                          ],
+                          "startTime": "2026-08-27T12:11:50.603Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "449c7949e29701a7e337-e5acaaccddc649a390f2",
+                  "file": "login_page/login.spec.ts",
+                  "line": 6,
+                  "column": 9
+                },
+                {
+                  "title": "Успешная авторизация",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 3,
+                          "status": "passed",
+                          "duration": 2970,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 690
+                            },
+                            {
+                              "title": "Ввести данные администратора и нажать кнопку входа",
+                              "duration": 153
+                            },
+                            {
+                              "title": "Проверить успешную авторизацию",
+                              "duration": 927
+                            }
+                          ],
+                          "startTime": "2026-08-27T12:11:50.597Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "449c7949e29701a7e337-e85f21f60656b9e496f3",
+                  "file": "login_page/login.spec.ts",
+                  "line": 24,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "Негативные сценарии",
+              "file": "login_page/login.spec.ts",
+              "line": 39,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "Вход с неверным паролем",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 1921,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 544
+                            },
+                            {
+                              "title": "Ввести данные пользователя с неверным паролем",
+                              "duration": 119
+                            },
+                            {
+                              "title": "Проверить сообщение об ошибке",
+                              "duration": 894
+                            }
+                          ],
+                          "startTime": "2026-08-27T12:11:52.248Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAx0J3QtSDQvdCw0LnQtNC10L3QviDQsNC60YLQuNCy0L3QvtC5INGD0YfQtdGC0L3QvtC5INC30LDQv9C40YHQuCDRgSDRg9C60LDQt9Cw0L3QvdGL0LzQuCDQtNCw0L3QvdGL0LzQuNCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80Lh7ImRldGFpbCI6ItCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80LgifQ=="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "449c7949e29701a7e337-950618aa152a9aad0789",
+                  "file": "login_page/login.spec.ts",
+                  "line": 40,
+                  "column": 9
+                },
+                {
+                  "title": "Вход несуществующего пользователя",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 3,
+                          "status": "passed",
+                          "duration": 2018,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 630
+                            },
+                            {
+                              "title": "Ввести данные несуществующего пользователя",
+                              "duration": 126
+                            },
+                            {
+                              "title": "Проверить сообщение об ошибке",
+                              "duration": 845
+                            }
+                          ],
+                          "startTime": "2026-08-27T12:11:53.911Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAx0J3QtSDQvdCw0LnQtNC10L3QviDQsNC60YLQuNCy0L3QvtC5INGD0YfQtdGC0L3QvtC5INC30LDQv9C40YHQuCDRgSDRg9C60LDQt9Cw0L3QvdGL0LzQuCDQtNCw0L3QvdGL0LzQuNCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80Lh7ImRldGFpbCI6ItCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80LgifQ=="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "449c7949e29701a7e337-37683bf8054a7559d4b6",
+                  "file": "login_page/login.spec.ts",
+                  "line": 58,
+                  "column": 9
+                },
+                {
+                  "title": "Вход с пустыми полями",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 1125,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 609
+                            },
+                            {
+                              "title": "Нажать кнопку входа без заполнения полей",
+                              "duration": 41
+                            },
+                            {
+                              "title": "Проверить сообщение об ошибке валидации",
+                              "duration": 113
+                            }
+                          ],
+                          "startTime": "2026-08-27T12:11:54.195Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAwUmVxdWVzdCBmYWlsZWQgd2l0aCBzdGF0dXMgY29kZSA0MDB7InVzZXJuYW1lIjpbItCt0YLQviDQv9C+0LvQtSDQvdC1INC80L7QttC10YIg0LHRi9GC0Ywg0L/Rg9GB0YLRi9C8LiJdLCJwYXNzd29yZCI6WyLQrdGC0L4g0L/QvtC70LUg0L3QtSDQvNC+0LbQtdGCINCx0YvRgtGMINC/0YPRgdGC0YvQvC4iXX0="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "449c7949e29701a7e337-2e57dadd406106bf6175",
+                  "file": "login_page/login.spec.ts",
+                  "line": 75,
+                  "column": 9
+                },
+                {
+                  "title": "Пароль скрыт на форме ввода",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 4,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 971,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 559
+                            },
+                            {
+                              "title": "Проверить, что поле пароля имеет тип password",
+                              "duration": 16
+                            }
+                          ],
+                          "startTime": "2026-08-27T12:11:55.735Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "449c7949e29701a7e337-55e725ab02d392e35d38",
+                  "file": "login_page/login.spec.ts",
+                  "line": 90,
+                  "column": 9
+                },
+                {
+                  "title": "Вход с пустым логином и заполненным паролем",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1229,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 592
+                            },
+                            {
+                              "title": "Заполнить только пароль и нажать кнопку входа",
+                              "duration": 145
+                            },
+                            {
+                              "title": "Проверить сообщение об ошибке",
+                              "duration": 104
+                            }
+                          ],
+                          "startTime": "2026-08-27T12:11:55.323Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAwUmVxdWVzdCBmYWlsZWQgd2l0aCBzdGF0dXMgY29kZSA0MDB7InVzZXJuYW1lIjpbItCt0YLQviDQv9C+0LvQtSDQvdC1INC80L7QttC10YIg0LHRi9GC0Ywg0L/Rg9GB0YLRi9C8LiJdfQ=="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "449c7949e29701a7e337-0206ba476b906de9b245",
+                  "file": "login_page/login.spec.ts",
+                  "line": 100,
+                  "column": 9
+                },
+                {
+                  "title": "Вход с заполненным логином и пустым паролем",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 1020,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 507
+                            },
+                            {
+                              "title": "Заполнить только логин и нажать кнопку входа",
+                              "duration": 103
+                            },
+                            {
+                              "title": "Проверить сообщение об ошибке",
+                              "duration": 62
+                            }
+                          ],
+                          "startTime": "2026-08-27T12:11:55.343Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAwUmVxdWVzdCBmYWlsZWQgd2l0aCBzdGF0dXMgY29kZSA0MDB7InBhc3N3b3JkIjpbItCt0YLQviDQv9C+0LvQtSDQvdC1INC80L7QttC10YIg0LHRi9GC0Ywg0L/Rg9GB0YLRi9C8LiJdfQ=="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "449c7949e29701a7e337-0c79c46e505c8ad00d92",
+                  "file": "login_page/login.spec.ts",
+                  "line": 115,
+                  "column": 9
+                },
+                {
+                  "title": "Инъекция в поля авторизации: SQL-инъекция",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 3,
+                          "status": "passed",
+                          "duration": 1929,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 571
+                            },
+                            {
+                              "title": "Ввести sql-инъекция в поля логина",
+                              "duration": 93
+                            },
+                            {
+                              "title": "Проверить, что авторизация не выполнена и приложение не сломалось",
+                              "duration": 832
+                            }
+                          ],
+                          "startTime": "2026-08-27T12:11:55.997Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAx0J3QtSDQvdCw0LnQtNC10L3QviDQsNC60YLQuNCy0L3QvtC5INGD0YfQtdGC0L3QvtC5INC30LDQv9C40YHQuCDRgSDRg9C60LDQt9Cw0L3QvdGL0LzQuCDQtNCw0L3QvdGL0LzQuNCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80Lh7ImRldGFpbCI6ItCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80LgifQ=="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "449c7949e29701a7e337-c8d652a6a441822485df",
+                  "file": "login_page/login.spec.ts",
+                  "line": 137,
+                  "column": 11
+                },
+                {
+                  "title": "Инъекция в поля авторизации: XSS-строка",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 2448,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 619
+                            },
+                            {
+                              "title": "Ввести xss-строка в поля логина",
+                              "duration": 98
+                            },
+                            {
+                              "title": "Проверить, что авторизация не выполнена и приложение не сломалось",
+                              "duration": 1335
+                            }
+                          ],
+                          "startTime": "2026-08-27T12:11:56.379Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAx0J3QtSDQvdCw0LnQtNC10L3QviDQsNC60YLQuNCy0L3QvtC5INGD0YfQtdGC0L3QvtC5INC30LDQv9C40YHQuCDRgSDRg9C60LDQt9Cw0L3QvdGL0LzQuCDQtNCw0L3QvdGL0LzQuNCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80Lh7ImRldGFpbCI6ItCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80LgifQ=="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "449c7949e29701a7e337-049a26a324138785fb50",
+                  "file": "login_page/login.spec.ts",
+                  "line": 137,
+                  "column": 11
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "main_page\\main-page.spec.ts",
+      "file": "main_page/main-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Главная страница",
+          "file": "main_page/main-page.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Отображение элементов главной страницы",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2684,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть главную страницу",
+                          "duration": 382
+                        },
+                        {
+                          "title": "Проверить ссылку на профиль сотрудника",
+                          "duration": 9
+                        }
+                      ],
+                      "startTime": "2026-08-27T12:11:56.572Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a66da85306ab5f08ab39-02562e98348f34e54b86",
+              "file": "main_page/main-page.spec.ts",
+              "line": 4,
+              "column": 7
+            },
+            {
+              "title": "Переход в профиль сотрудника с главной страницы",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2594,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть главную страницу",
+                          "duration": 391
+                        },
+                        {
+                          "title": "Кликнуть \"Профиль сотрудника\"",
+                          "duration": 412
+                        },
+                        {
+                          "title": "Проверить переход на страницу профиля",
+                          "duration": 3
+                        }
+                      ],
+                      "startTime": "2026-08-27T12:11:57.147Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a66da85306ab5f08ab39-86d243669a859672cc0b",
+              "file": "main_page/main-page.spec.ts",
+              "line": 14,
+              "column": 7
+            },
+            {
+              "title": "Схема разделов отображается на главной странице",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2167,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть главную страницу",
+                          "duration": 409
+                        },
+                        {
+                          "title": "Проверить раздел \"Сертификаты\"",
+                          "duration": 13
+                        },
+                        {
+                          "title": "Проверить раздел \"Контрагенты\"",
+                          "duration": 9
+                        },
+                        {
+                          "title": "Проверить раздел \"Договоры\"",
+                          "duration": 8
+                        },
+                        {
+                          "title": "Проверить раздел \"Проекты\"",
+                          "duration": 7
+                        },
+                        {
+                          "title": "Проверить раздел \"Работы\"",
+                          "duration": 9
+                        },
+                        {
+                          "title": "Проверить раздел \"Центр аналитики\"",
+                          "duration": 9
+                        }
+                      ],
+                      "startTime": "2026-08-27T12:11:57.950Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a66da85306ab5f08ab39-224a10ba1ebdc779a73f",
+              "file": "main_page/main-page.spec.ts",
+              "line": 28,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "profile_page\\lk.spec.ts",
+      "file": "profile_page/lk.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Профиль сотрудника (ЛК)",
+          "file": "profile_page/lk.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Отображение вкладок профиля",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2464,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть профиль сотрудника",
+                          "duration": 737
+                        },
+                        {
+                          "title": "Проверить вкладку \"Общая информация\"",
+                          "duration": 10
+                        },
+                        {
+                          "title": "Проверить вкладку \"История проектов\"",
+                          "duration": 6
+                        },
+                        {
+                          "title": "Проверить вкладку \"Аттестация\"",
+                          "duration": 8
+                        },
+                        {
+                          "title": "Проверить вкладку \"Доп. образование\"",
+                          "duration": 13
+                        },
+                        {
+                          "title": "Проверить вкладку \"Настройки\"",
+                          "duration": 22
+                        }
+                      ],
+                      "startTime": "2026-08-27T12:11:58.848Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cdf20a7fde7f6d832c73-5bfdd9c8d9a528112770",
+              "file": "profile_page/lk.spec.ts",
+              "line": 4,
+              "column": 7
+            },
+            {
+              "title": "Вкладка \"Общая информация\" содержит основные данные сотрудника",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2291,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть профиль сотрудника",
+                          "duration": 447
+                        },
+                        {
+                          "title": "Проверить заголовок с ФИО пользователя",
+                          "duration": 10
+                        },
+                        {
+                          "title": "Проверить отображение основных полей",
+                          "duration": 143
+                        }
+                      ],
+                      "startTime": "2026-08-27T12:11:59.277Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cdf20a7fde7f6d832c73-89a5ec60a1bf6b2a5549",
+              "file": "profile_page/lk.spec.ts",
+              "line": 16,
+              "column": 7
+            },
+            {
+              "title": "Вкладка \"История проектов\" показывает пустое состояние",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2283,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть вкладку \"История проектов\"",
+                          "duration": 471
+                        },
+                        {
+                          "title": "Проверить сообщение об отсутствии проектов",
+                          "duration": 9
+                        }
+                      ],
+                      "startTime": "2026-08-27T12:11:59.773Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cdf20a7fde7f6d832c73-55e0716f4665ff680a87",
+              "file": "profile_page/lk.spec.ts",
+              "line": 33,
+              "column": 7
+            },
+            {
+              "title": "Переключение между вкладками профиля",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2799,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть профиль сотрудника",
+                          "duration": 448
+                        },
+                        {
+                          "title": "Открыть вкладку \"Аттестация\" и проверить заголовок раздела",
+                          "duration": 80
+                        },
+                        {
+                          "title": "Открыть вкладку \"Доп. образование\" и проверить заголовок раздела",
+                          "duration": 172
+                        },
+                        {
+                          "title": "Вернуться на вкладку \"Общая информация\"",
+                          "duration": 248
+                        }
+                      ],
+                      "startTime": "2026-08-27T12:12:00.140Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cdf20a7fde7f6d832c73-6e8b1c36c28a403f474e",
+              "file": "profile_page/lk.spec.ts",
+              "line": 44,
+              "column": 7
+            },
+            {
+              "title": "Боковое меню содержит основные разделы портала",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2348,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть профиль сотрудника",
+                          "duration": 402
+                        },
+                        {
+                          "title": "Открыть боковое меню",
+                          "duration": 70
+                        },
+                        {
+                          "title": "Проверить пункт меню \"Главная\"",
+                          "duration": 10
+                        },
+                        {
+                          "title": "Проверить пункт меню \"СКиП\"",
+                          "duration": 7
+                        },
+                        {
+                          "title": "Проверить пункт меню \"ТДО\"",
+                          "duration": 9
+                        },
+                        {
+                          "title": "Проверить пункт меню \"Сопровождение проектов\"",
+                          "duration": 9
+                        },
+                        {
+                          "title": "Проверить пункт меню \"Сервисы\"",
+                          "duration": 7
+                        },
+                        {
+                          "title": "Проверить пункт меню \"Охрана труда\"",
+                          "duration": 9
+                        }
+                      ],
+                      "startTime": "2026-08-27T12:12:01.331Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cdf20a7fde7f6d832c73-34c407e3f879d0c38d10",
+              "file": "profile_page/lk.spec.ts",
+              "line": 67,
+              "column": 7
+            },
+            {
+              "title": "Вкладка \"Настройки\" содержит форму изменения пароля",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2384,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть вкладку \"Настройки\"",
+                          "duration": 501
+                        },
+                        {
+                          "title": "Проверить элементы управления настройками",
+                          "duration": 30
+                        }
+                      ],
+                      "startTime": "2026-08-27T12:12:01.584Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cdf20a7fde7f6d832c73-2435e833af7cc0fbf0ea",
+              "file": "profile_page/lk.spec.ts",
+              "line": 83,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "tdo_page\\contract.spec.ts",
+      "file": "tdo_page/contract.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Создание договора",
+          "file": "tdo_page/contract.spec.ts",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Заполнение формы, сохранение и проверка в списке",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4885,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу создания договора",
+                          "duration": 423
+                        },
+                        {
+                          "title": "Заполнить основные поля",
+                          "duration": 297
+                        },
+                        {
+                          "title": "Выбрать рандомный статус",
+                          "duration": 50
+                        },
+                        {
+                          "title": "Выбрать рандомную компанию",
+                          "duration": 132
+                        },
+                        {
+                          "title": "Добавить рандомного менеджера",
+                          "duration": 144
+                        },
+                        {
+                          "title": "Добавить рандомный вид работ",
+                          "duration": 137
+                        },
+                        {
+                          "title": "Загрузить файл договора",
+                          "duration": 20
+                        },
+                        {
+                          "title": "Сохранить договор",
+                          "duration": 120
+                        },
+                        {
+                          "title": "Проверить редирект после успешного сохранения",
+                          "duration": 211
+                        },
+                        {
+                          "title": "Найти договор в списке через поиск",
+                          "duration": 1510
+                        }
+                      ],
+                      "startTime": "2026-08-27T12:12:02.081Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f24483c5c1af6312bddb-28737bb48d2f1ae0fcc9",
+              "file": "tdo_page/contract.spec.ts",
+              "line": 6,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "tdo_page\\project.spec.ts",
+      "file": "tdo_page/project.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Создание проекта",
+          "file": "tdo_page/project.spec.ts",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Заполнение формы, сохранение и проверка в списке",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 10218,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('table tbody tr').filter({ hasText: 'ТЕСТ-1787832724572-d9fc2aee' })\nExpected: visible\nTimeout: 6000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 6000ms\u001b[22m\n\u001b[2m  - waiting for locator('table tbody tr').filter({ hasText: 'ТЕСТ-1787832724572-d9fc2aee' })\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('table tbody tr').filter({ hasText: 'ТЕСТ-1787832724572-d9fc2aee' })\nExpected: visible\nTimeout: 6000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 6000ms\u001b[22m\n\u001b[2m  - waiting for locator('table tbody tr').filter({ hasText: 'ТЕСТ-1787832724572-d9fc2aee' })\u001b[22m\n\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\tdo_page\\project.spec.ts:62:32\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\tdo_page\\project.spec.ts:56:5",
+                        "location": {
+                          "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\tdo_page\\project.spec.ts",
+                          "column": 32,
+                          "line": 62
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 60 |\u001b[39m\n \u001b[90m 61 |\u001b[39m       \u001b[36mconst\u001b[39m projectRow \u001b[33m=\u001b[39m projectsListPage\u001b[33m.\u001b[39mlocators\u001b[33m.\u001b[39mprojectCodeCell(project\u001b[33m.\u001b[39mcode)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 62 |\u001b[39m       \u001b[36mawait\u001b[39m expect(projectRow)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m config\u001b[33m.\u001b[39mtimeouts\u001b[33m.\u001b[39mnormal })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 63 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 64 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 65 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\tdo_page\\project.spec.ts",
+                            "column": 32,
+                            "line": 62
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('table tbody tr').filter({ hasText: 'ТЕСТ-1787832724572-d9fc2aee' })\nExpected: visible\nTimeout: 6000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 6000ms\u001b[22m\n\u001b[2m  - waiting for locator('table tbody tr').filter({ hasText: 'ТЕСТ-1787832724572-d9fc2aee' })\u001b[22m\n\n\n\u001b[0m \u001b[90m 60 |\u001b[39m\n \u001b[90m 61 |\u001b[39m       \u001b[36mconst\u001b[39m projectRow \u001b[33m=\u001b[39m projectsListPage\u001b[33m.\u001b[39mlocators\u001b[33m.\u001b[39mprojectCodeCell(project\u001b[33m.\u001b[39mcode)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 62 |\u001b[39m       \u001b[36mawait\u001b[39m expect(projectRow)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m config\u001b[33m.\u001b[39mtimeouts\u001b[33m.\u001b[39mnormal })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 63 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 64 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 65 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\tdo_page\\project.spec.ts:62:32\u001b[22m\n\u001b[2m    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\tdo_page\\project.spec.ts:56:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу создания проекта",
+                          "duration": 385
+                        },
+                        {
+                          "title": "Заполнить основные поля",
+                          "duration": 197
+                        },
+                        {
+                          "title": "Выбрать рандомный статус",
+                          "duration": 66
+                        },
+                        {
+                          "title": "Выбрать рандомную группу проектов",
+                          "duration": 137
+                        },
+                        {
+                          "title": "Выбрать рандомный тип проекта",
+                          "duration": 45
+                        },
+                        {
+                          "title": "Выбрать рандомное подразделение",
+                          "duration": 103
+                        },
+                        {
+                          "title": "Выбрать рандомный вид проекта",
+                          "duration": 60
+                        },
+                        {
+                          "title": "Сохранить проект",
+                          "duration": 177
+                        },
+                        {
+                          "title": "Найти проект в списке через поиск",
+                          "duration": 7209,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('table tbody tr').filter({ hasText: 'ТЕСТ-1787832724572-d9fc2aee' })\nExpected: visible\nTimeout: 6000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 6000ms\u001b[22m\n\u001b[2m  - waiting for locator('table tbody tr').filter({ hasText: 'ТЕСТ-1787832724572-d9fc2aee' })\u001b[22m\n",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('table tbody tr').filter({ hasText: 'ТЕСТ-1787832724572-d9fc2aee' })\nExpected: visible\nTimeout: 6000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 6000ms\u001b[22m\n\u001b[2m  - waiting for locator('table tbody tr').filter({ hasText: 'ТЕСТ-1787832724572-d9fc2aee' })\u001b[22m\n\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\tdo_page\\project.spec.ts:62:32\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\tdo_page\\project.spec.ts:56:5",
+                            "location": {
+                              "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\tdo_page\\project.spec.ts",
+                              "column": 32,
+                              "line": 62
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 60 |\u001b[39m\n \u001b[90m 61 |\u001b[39m       \u001b[36mconst\u001b[39m projectRow \u001b[33m=\u001b[39m projectsListPage\u001b[33m.\u001b[39mlocators\u001b[33m.\u001b[39mprojectCodeCell(project\u001b[33m.\u001b[39mcode)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 62 |\u001b[39m       \u001b[36mawait\u001b[39m expect(projectRow)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m config\u001b[33m.\u001b[39mtimeouts\u001b[33m.\u001b[39mnormal })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 63 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 64 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 65 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-08-27T12:12:02.966Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\tdo_page-project-Создание--785be-ранение-и-проверка-в-списке-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\tdo_page-project-Создание--785be-ранение-и-проверка-в-списке-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\tdo_page-project-Создание--785be-ранение-и-проверка-в-списке-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\tdo_page\\project.spec.ts",
+                        "column": 32,
+                        "line": 62
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "1f04d7bb40291876e9a2-14178f503641fdda01f3",
+              "file": "tdo_page/project.spec.ts",
+              "line": 6,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-08-27T12:11:49.852Z",
+    "duration": 23598.862,
+    "expected": 21,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}
