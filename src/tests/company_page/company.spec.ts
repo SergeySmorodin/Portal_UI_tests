@@ -1,11 +1,11 @@
 import { test, expect } from '../../fixtures/test-fixtures';
 import { config } from '../../config/config';
 import { companyFactory } from '../../data/company-factory';
+import { api } from '../../data/api';
 import { CompanyData } from '../../types';
 
 test.describe('Создание компании', () => {
   test('Заполнение формы, сохранение и проверка в списке', async ({
-    page,
     companyPage,
     companiesListPage,
   }) => {
@@ -23,13 +23,7 @@ test.describe('Создание компании', () => {
     });
 
     await test.step('Сохранить компанию', async () => {
-      const responsePromise = page.waitForResponse(
-        (resp) => resp.url().includes('/api/company/') && resp.request().method() === 'POST',
-        { timeout: config.timeouts.long }
-      );
-      await companyPage.save();
-      const response = await responsePromise;
-      expect(response.status()).toBe(201);
+      await companyPage.runAndCheckResponse(api.company, () => companyPage.save());
     });
 
     await test.step('Найти компанию в списке через поиск', async () => {

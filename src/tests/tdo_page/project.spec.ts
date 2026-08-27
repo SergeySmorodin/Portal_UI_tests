@@ -1,6 +1,7 @@
 import { test, expect } from '../../fixtures/test-fixtures';
 import { config } from '../../config/config';
 import { projectFactory } from '../../data/project-factory';
+import { api } from '../../data/api';
 
 test.describe('Создание проекта', () => {
   test('Заполнение формы, сохранение и проверка в списке', async ({
@@ -46,7 +47,7 @@ test.describe('Создание проекта', () => {
     });
 
     await test.step('Сохранить проект', async () => {
-      await projectPage.save();
+      await projectPage.runAndCheckResponse(api.project, () => projectPage.save());
       await page.waitForURL((url) => url.pathname.includes('/TDO/Project/edit/'), {
         timeout: config.timeouts.long,
       });

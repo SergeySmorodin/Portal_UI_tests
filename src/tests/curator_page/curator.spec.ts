@@ -1,11 +1,11 @@
 import { test, expect } from '../../fixtures/test-fixtures';
 import { config } from '../../config/config';
 import { curatorFactory } from '../../data/curator-factory';
+import { api } from '../../data/api';
 import { CuratorData } from '../../types';
 
 test.describe('Создание куратора', () => {
   test('Заполнение формы, сохранение и проверка в списке', async ({
-    page,
     curatorPage,
     curatorsListPage,
   }) => {
@@ -28,15 +28,7 @@ test.describe('Создание куратора', () => {
     });
 
     await test.step('Сохранить куратора', async () => {
-      const responsePromise = page.waitForResponse(
-        (resp) =>
-          resp.url().includes('/api/company_physical_person/') &&
-          resp.request().method() === 'POST',
-        { timeout: config.timeouts.long }
-      );
-      await curatorPage.save();
-      const response = await responsePromise;
-      expect(response.status()).toBe(201);
+      await curatorPage.runAndCheckResponse(api.curator, () => curatorPage.save());
     });
 
     await test.step('Найти куратора в списке через поиск', async () => {

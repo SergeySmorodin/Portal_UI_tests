@@ -1,6 +1,7 @@
 import { test, expect } from '../../fixtures/test-fixtures';
 import { config } from '../../config/config';
 import { contractFactory } from '../../data/contract-factory';
+import { api } from '../../data/api';
 
 test.describe('Создание договора', () => {
   test('Заполнение формы, сохранение и проверка в списке', async ({ page, contractPage }) => {
@@ -46,13 +47,11 @@ test.describe('Создание договора', () => {
     });
 
     await test.step('Сохранить договор', async () => {
-      const responsePromise = page.waitForResponse(
-        (resp) => resp.url().includes('/api/contract/') && resp.request().method() === 'POST',
-        { timeout: config.timeouts.long }
+      await contractPage.runAndCheckResponse(
+        api.contract,
+        () => contractPage.save(),
+        (status) => expect(status).toBeLessThan(400)
       );
-      await contractPage.save();
-      const response = await responsePromise;
-      expect(response.status()).toBeLessThan(400);
     });
 
     await test.step('Проверить редирект после успешного сохранения', async () => {

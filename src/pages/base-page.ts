@@ -97,6 +97,20 @@ export const createBasePage = (page: Page) => {
       return '';
     },
 
+    runAndCheckResponse: async (
+      urlPart: string,
+      action: () => Promise<void>,
+      assertStatus: (status: number) => void = (status) => expect(status).toBe(201)
+    ): Promise<void> => {
+      const responsePromise = page.waitForResponse(
+        (resp) => resp.url().includes(urlPart) && resp.request().method() === 'POST',
+        { timeout: config.timeouts.long }
+      );
+      await action();
+      const response = await responsePromise;
+      assertStatus(response.status());
+    },
+
     takeScreenshot: async (name: string): Promise<string> => {
       const path = `screenshots/${name}-${Date.now()}.png`;
       await page.screenshot({ path, fullPage: true });

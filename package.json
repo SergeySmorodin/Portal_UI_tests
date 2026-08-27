@@ -19,6 +19,7 @@
     "test:curator": "playwright test src/tests/curator_page/curator.spec.ts",
     "recon:company": "node scripts/recon/company-recon.mjs",
     "recon:curator": "node scripts/recon/curator-recon.mjs",
+    "recon:project": "node scripts/recon/project-save-recon.mjs",
     "report:save": "node scripts/save-report.js"
   },
   "repository": {
