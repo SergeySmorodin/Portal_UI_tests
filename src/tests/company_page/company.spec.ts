@@ -1,6 +1,6 @@
 import { test, expect } from '../../fixtures/test-fixtures';
 import { config } from '../../config/config';
-import { companyFactory } from '../../data/test-data';
+import { companyFactory } from '../../data/company-factory';
 import { CompanyData } from '../../types';
 
 test.describe('Создание компании', () => {

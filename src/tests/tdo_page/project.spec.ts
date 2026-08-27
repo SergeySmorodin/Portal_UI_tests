@@ -1,6 +1,6 @@
 import { test, expect } from '../../fixtures/test-fixtures';
 import { config } from '../../config/config';
-import { projectFactory } from '../../data/test-data';
+import { projectFactory } from '../../data/project-factory';
 
 test.describe('Создание проекта', () => {
   test('Заполнение формы, сохранение и проверка в списке', async ({

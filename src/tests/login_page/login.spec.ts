@@ -1,5 +1,5 @@
 import { test, expect } from '../../fixtures/test-fixtures';
-import { createUser, userFactory } from '../../data/test-data';
+import { createUser, userFactory } from '../../data/user-factory';
 
 test.describe('Авторизация', () => {
   test.describe('Позитивные сценарии', () => {

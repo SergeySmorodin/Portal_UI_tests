@@ -1,6 +1,6 @@
 import { test, expect } from '../../fixtures/test-fixtures';
 import { config } from '../../config/config';
-import { contractFactory } from '../../data/test-data';
+import { contractFactory } from '../../data/contract-factory';
 
 test.describe('Создание договора', () => {
   test('Заполнение формы, сохранение и проверка в списке', async ({ page, contractPage }) => {
