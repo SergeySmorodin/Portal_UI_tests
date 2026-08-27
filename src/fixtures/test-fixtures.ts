@@ -5,8 +5,8 @@ import { createMainPage } from '../pages/main/main-page';
 import { createLkPage } from '../pages/profile/lk-page';
 import { createContractPage } from '../pages/tdo/contract-page';
 import { createProjectPage, createProjectsListPage } from '../pages/tdo/project-page';
-import { createCompanyPage, createCompaniesListPage } from '../pages/company/company-page';
-import { createCuratorPage, createCuratorsListPage } from '../pages/curator/curator-page';
+import { createCompanyPage, createCompaniesListPage } from '../pages/contragents/company-page';
+import { createCuratorPage, createCuratorsListPage } from '../pages/contragents/curator-page';
 
 interface TestFixtures {
   testConfig: typeof config;
