@@ -2,9 +2,11 @@ import { Page, test as base, expect } from '@playwright/test';
 import { config, type VPNConfig } from '../config/config';
 import { createLoginPage } from '../pages/login/login-page';
 import { createMainPage } from '../pages/main/main-page';
-import { createLkPage } from '../pages/personal/lk-page';
+import { createLkPage } from '../pages/profile/lk-page';
 import { createContractPage } from '../pages/tdo/contract-page';
 import { createProjectPage, createProjectsListPage } from '../pages/tdo/project-page';
+import { createCompanyPage, createCompaniesListPage } from '../pages/company/company-page';
+import { createCuratorPage, createCuratorsListPage } from '../pages/curator/curator-page';
 
 interface TestFixtures {
   testConfig: typeof config;
@@ -14,6 +16,10 @@ interface TestFixtures {
   contractPage: ReturnType<typeof createContractPage>;
   projectPage: ReturnType<typeof createProjectPage>;
   projectsListPage: ReturnType<typeof createProjectsListPage>;
+  companyPage: ReturnType<typeof createCompanyPage>;
+  companiesListPage: ReturnType<typeof createCompaniesListPage>;
+  curatorPage: ReturnType<typeof createCuratorPage>;
+  curatorsListPage: ReturnType<typeof createCuratorsListPage>;
   authenticatedPage: Page;
 }
 
@@ -50,6 +56,26 @@ export const test = base.extend<TestFixtures>({
   projectsListPage: async ({ authenticatedPage }, use) => {
     const projectsListPage = createProjectsListPage(authenticatedPage);
     await use(projectsListPage);
+  },
+
+  companyPage: async ({ authenticatedPage }, use) => {
+    const companyPage = createCompanyPage(authenticatedPage);
+    await use(companyPage);
+  },
+
+  companiesListPage: async ({ authenticatedPage }, use) => {
+    const companiesListPage = createCompaniesListPage(authenticatedPage);
+    await use(companiesListPage);
+  },
+
+  curatorPage: async ({ authenticatedPage }, use) => {
+    const curatorPage = createCuratorPage(authenticatedPage);
+    await use(curatorPage);
+  },
+
+  curatorsListPage: async ({ authenticatedPage }, use) => {
+    const curatorsListPage = createCuratorsListPage(authenticatedPage);
+    await use(curatorsListPage);
   },
 
   authenticatedPage: async ({ page }, use) => {

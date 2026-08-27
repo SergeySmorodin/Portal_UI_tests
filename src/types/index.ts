@@ -17,6 +17,28 @@ export interface ContractData {
   companySearch: string;
 }
 
+export interface CompanyData {
+  structure: string;
+  name: string;
+  address: string;
+  factAddress: string;
+  inn: string;
+  ogrn: string;
+  email: string;
+}
+
+export interface CuratorData {
+  lastName: string;
+  firstName: string;
+  patronymic: string;
+  position: string;
+  department: string;
+  email: string;
+  dateBirth: string;
+  about: string;
+  companySearch: string;
+}
+
 export interface TestArtifact {
   name: string;
   path: string;

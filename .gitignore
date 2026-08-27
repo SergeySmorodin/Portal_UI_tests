@@ -20,3 +20,4 @@ Thumbs.db
 actions-runner/
 .vscode/
 reports/
+*recon
