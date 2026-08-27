@@ -3,6 +3,13 @@ export const api = {
   contract: '/api/contract/',
   curator: '/api/company_physical_person/',
   project: '/api/megaproject/',
+  certification: {
+    certificate: '/api/certifications/certificates/',
+    protocol: '/api/certifications/protocols/',
+    techSpec: '/api/certifications/tech-specs/',
+    manual: '/api/certifications/manuals/',
+    passport: '/api/certifications/passports/',
+  },
 } as const;
 
 export type ApiPath = (typeof api)[keyof typeof api];

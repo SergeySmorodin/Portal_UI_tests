@@ -7,6 +7,10 @@ import { createContractPage } from '../pages/tdo/contract-page';
 import { createProjectPage, createProjectsListPage } from '../pages/tdo/project-page';
 import { createCompanyPage, createCompaniesListPage } from '../pages/contragents/company-page';
 import { createCuratorPage, createCuratorsListPage } from '../pages/contragents/curator-page';
+import {
+  createCertificationUploadPage,
+  createCertificationSearchPage,
+} from '../pages/certification/certification-page';
 
 interface TestFixtures {
   testConfig: typeof config;
@@ -20,6 +24,8 @@ interface TestFixtures {
   companiesListPage: ReturnType<typeof createCompaniesListPage>;
   curatorPage: ReturnType<typeof createCuratorPage>;
   curatorsListPage: ReturnType<typeof createCuratorsListPage>;
+  certificationUploadPage: ReturnType<typeof createCertificationUploadPage>;
+  certificationSearchPage: ReturnType<typeof createCertificationSearchPage>;
   authenticatedPage: Page;
 }
 
@@ -76,6 +82,16 @@ export const test = base.extend<TestFixtures>({
   curatorsListPage: async ({ authenticatedPage }, use) => {
     const curatorsListPage = createCuratorsListPage(authenticatedPage);
     await use(curatorsListPage);
+  },
+
+  certificationUploadPage: async ({ authenticatedPage }, use) => {
+    const certificationUploadPage = createCertificationUploadPage(authenticatedPage);
+    await use(certificationUploadPage);
+  },
+
+  certificationSearchPage: async ({ authenticatedPage }, use) => {
+    const certificationSearchPage = createCertificationSearchPage(authenticatedPage);
+    await use(certificationSearchPage);
   },
 
   authenticatedPage: async ({ page }, use) => {

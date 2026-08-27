@@ -56,3 +56,14 @@ export interface ProjectData {
   kindProject: string;
   note: string;
 }
+
+export interface CertificationData {
+  resourceType: string;
+  docType?: string;
+  name: string;
+  number: string;
+  status: string;
+  startDate: string;
+  expiryDate: string;
+  warningPeriod: string;
+}
