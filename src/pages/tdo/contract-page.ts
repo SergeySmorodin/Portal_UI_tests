@@ -1,7 +1,6 @@
 import { Page } from '@playwright/test';
 import { createBasePage } from '../base-page';
 import { createContractPageLocators } from '../../locators/contract-page.locators';
-import { config } from '../../config/config';
 import { ContractData } from '../../types';
 
 export const createContractPage = (page: Page) => {
@@ -24,12 +23,12 @@ export const createContractPage = (page: Page) => {
     },
 
     selectRandomCompany: async (): Promise<string> => {
-      await locators.companyButton.click();
-      const searchInput = page.locator('input[placeholder="Поиск..."]').first();
-      await basePage.waitForElement(searchInput);
-      await searchInput.fill('');
-      await locators.companyListContainer.locator('button').first().waitFor({ state: 'visible' });
-      return basePage.selectRandomFromList(locators.companyListContainer);
+      const { container, opened } = await basePage.openSearchableDropdown(
+        locators.companyButton,
+        'first'
+      );
+      if (!opened) return '';
+      return basePage.selectRandomFromList(container);
     },
 
     selectRandomManager: async (): Promise<string> => {
@@ -39,13 +38,8 @@ export const createContractPage = (page: Page) => {
       const nameBtn = page.locator('button:has(i.fa-chevron-down)').last();
       await nameBtn.waitFor({ state: 'visible' });
       const managerName = (await nameBtn.textContent())?.trim() || '';
-      await nameBtn.click();
-      const searchInput = page.locator('input[placeholder="Поиск..."]').last();
-      await basePage.waitForElement(searchInput);
-      await searchInput.fill('');
-      const container = page.locator('.max-h-60').last();
-      await container.waitFor({ state: 'visible', timeout: config.timeouts.short }).catch(() => {});
-      if (await basePage.isElementPresent(container)) {
+      const { container, opened } = await basePage.openSearchableDropdown(nameBtn, 'last');
+      if (opened) {
         return basePage.selectRandomFromList(container);
       }
       return managerName;

@@ -22,12 +22,12 @@ export const createCuratorPage = (page: Page) => {
     },
 
     selectRandomCompany: async (): Promise<string> => {
-      await locators.companyButton.click();
-      const searchInput = page.locator('input[placeholder="Поиск..."]').first();
-      await basePage.waitForElement(searchInput);
-      await searchInput.fill('');
-      await locators.companyListContainer.locator('button').first().waitFor({ state: 'visible' });
-      return basePage.selectRandomFromList(locators.companyListContainer);
+      const { container, opened } = await basePage.openSearchableDropdown(
+        locators.companyButton,
+        'first'
+      );
+      if (!opened) return '';
+      return basePage.selectRandomFromList(container);
     },
 
     fillBasicFields: async (data: CuratorData): Promise<void> => {

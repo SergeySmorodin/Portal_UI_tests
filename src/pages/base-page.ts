@@ -68,6 +68,27 @@ export const createBasePage = (page: Page) => {
       return selectedText;
     },
 
+    openSearchableDropdown: async (
+      trigger: Locator,
+      match: 'first' | 'last' = 'first'
+    ): Promise<{ container: Locator; opened: boolean }> => {
+      await trigger.waitFor({ state: 'visible', timeout: config.timeouts.short });
+      await trigger.click();
+      const idx = match === 'last' ? -1 : 0;
+      const searchInput = page.locator('input[placeholder="Поиск..."]').nth(idx);
+      const container = page.locator('.max-h-60').nth(idx);
+      try {
+        await searchInput.waitFor({ state: 'visible', timeout: config.timeouts.short });
+        await searchInput.fill('');
+      } catch {}
+      let opened = false;
+      try {
+        await container.waitFor({ state: 'visible', timeout: config.timeouts.short });
+        opened = true;
+      } catch {}
+      return { container, opened };
+    },
+
     getErrorMessage: async (): Promise<string> => {
       const errorLocator = page.locator('.error-message, .alert-danger').first();
       if (await errorLocator.isVisible()) {
