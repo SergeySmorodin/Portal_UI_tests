@@ -122,13 +122,10 @@ Portal_UI_tests/
 
 ---
 
-## npm-скрипты (issue #19)
+## npm-скрипты
 
 - `npm test` — весь набор; `test:headed`, `test:ui`, `test:debug`, `test:report`, `test:chromium`.
 - Per-area скрипты **по директориям** (новые спеки подхватываются сами): `test:login`, `test:main`, `test:lk`, `test:tdo`, `test:counterparties`, `test:certification`, `test:workflows`.
 - Качество: `lint`, `lint:fix`, `format`, `format:check`, `typecheck` (`tsc --noEmit`), единый `check` = `lint && format:check && typecheck`.
 - `report:save` — публикация истории отчётов.
 
-## Модульная система (issue #20)
-
-Весь проект — на **ESM**: `"type": "module"` в `package.json`. TS-код и `playwright.config.ts` транслируются Playwright'ом; `scripts/save-report.js` переведён на `import`/`import.meta.url`; развед-скрипты — `*.mjs`. Отдельных CJS-файлов не осталось, смешение CJS/ESM устранено.
