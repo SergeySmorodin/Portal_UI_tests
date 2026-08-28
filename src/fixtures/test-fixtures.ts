@@ -1,5 +1,6 @@
-import { Page, test as base, expect } from '@playwright/test';
+import { BrowserContext, Page, test as base, expect } from '@playwright/test';
 import { config, type AppConfig } from '../config/config';
+import { authUsers } from '../../global-setup';
 import { createLoginPage } from '../pages/login/login-page';
 import { createMainPage } from '../pages/main/main-page';
 import { createLkPage } from '../pages/profile/lk-page';
@@ -11,6 +12,13 @@ import {
   createCertificationUploadPage,
   createCertificationSearchPage,
 } from '../pages/certification/certification-page';
+
+export interface UserContextKit {
+  page: Page;
+  context: BrowserContext;
+}
+
+type CreateUserPage = (userId: string) => Promise<UserContextKit>;
 
 interface TestFixtures {
   testConfig: typeof config;
@@ -28,6 +36,7 @@ interface TestFixtures {
   certificationUploadPage: ReturnType<typeof createCertificationUploadPage>;
   certificationSearchPage: ReturnType<typeof createCertificationSearchPage>;
   authenticatedPage: Page;
+  createUserPage: CreateUserPage;
 }
 
 export const test = base.extend<TestFixtures>({
@@ -101,13 +110,22 @@ export const test = base.extend<TestFixtures>({
   },
 
   authenticatedPage: async ({ page }, use) => {
-    const loginPage = createLoginPage(page);
-    await loginPage.open();
-    await loginPage.login();
-    await page.waitForURL((url) => !url.pathname.includes('/login'), {
-      timeout: config.timeouts.long,
-    });
     await use(page);
+  },
+
+  createUserPage: async ({ browser }, use) => {
+    const createUserPage: CreateUserPage = async (userId) => {
+      const user = authUsers.find((u) => u.id === userId);
+      if (!user) {
+        throw new Error(
+          `Пользователь "${userId}" не настроен. Укажите соответствующие LOGIN_*/PASSWORD_* в .env. Доступно: ${authUsers.map((u) => u.id).join(', ')}.`
+        );
+      }
+      const context = await browser.newContext({ storageState: user.storageStatePath });
+      const page = await context.newPage();
+      return { page, context };
+    };
+    await use(createUserPage);
   },
 });
 
