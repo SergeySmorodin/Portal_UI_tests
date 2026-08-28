@@ -40,7 +40,13 @@ interface TestFixtures {
 }
 
 export const test = base.extend<TestFixtures>({
-  testConfig: async ({}: { page: Page }, use: (config: AppConfig) => Promise<void>) => {
+  testConfig: async (
+    // Playwright требует объектный деструктуринг в сигнатуре фикстуры,
+    // хотя фикстура не использует входящие fixture-объекты.
+    /* eslint-disable-next-line no-empty-pattern */
+    {}: { page: Page },
+    use: (config: AppConfig) => Promise<void>
+  ) => {
     await use(config);
   },
 

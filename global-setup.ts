@@ -17,8 +17,8 @@ const AUTH_DIR = path.join(process.cwd(), 'playwright', '.auth');
 
 const userFor = (suffix: string, index?: number): AuthUser => ({
   id: suffix || 'user1',
-  login: index ? process.env[`LOGIN_${index}`] || '' : (config.login || ''),
-  password: index ? process.env[`PASSWORD_${index}`] || '' : (config.password || ''),
+  login: index ? process.env[`LOGIN_${index}`] || '' : config.login || '',
+  password: index ? process.env[`PASSWORD_${index}`] || '' : config.password || '',
   storageStatePath: path.join(AUTH_DIR, `${suffix || 'user1'}.json`),
 });
 

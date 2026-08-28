@@ -18,7 +18,7 @@ const randomDigits = (count: number, firstNonZero = false): number[] => {
 const generateRandomInn = (): string => {
   const innWeights = [2, 4, 10, 3, 5, 9, 4, 6, 8];
   const digits = randomDigits(9, true);
-  const check = innWeights.reduce((sum, w, i) => sum + digits[i] * w, 0) % 11 % 10;
+  const check = (innWeights.reduce((sum, w, i) => sum + digits[i] * w, 0) % 11) % 10;
   return `${digits.join('')}${check}`;
 };
 
@@ -26,7 +26,7 @@ const generateRandomInn = (): string => {
 const generateRandomOgrn = (): string => {
   const digits = randomDigits(12, true);
   const prefix = BigInt(digits.join(''));
-  const check = Number(prefix % 11n % 10n);
+  const check = Number((prefix % 11n) % 10n);
   return `${digits.join('')}${check}`;
 };
 

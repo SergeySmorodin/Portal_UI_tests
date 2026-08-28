@@ -19,12 +19,16 @@ https://sergeysmorodin.github.io/Portal_UI_tests/
 
 `npx tsc --init`
 
-# Проверка кода prettier
+# Линтер и форматирование
 
-- Только проверка (ничего не меняет):
-  `npx prettier --check .`
+- Проверить линтером (ESLint):
+  `npm run lint`
+- Автоисправить по линтеру:
+  `npm run lint:fix`
+- Проверить форматирование (Prettier, ничего не меняет):
+  `npm run format:check`
 - Исправить форматирование:
-  `npx prettier --write .`
+  `npm run format`
 
 # Проверить типы
 

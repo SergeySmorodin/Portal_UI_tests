@@ -18,7 +18,10 @@
     "test:company": "playwright test src/tests/counterparties_page/company-page.spec.ts",
     "test:curator": "playwright test src/tests/counterparties_page/curator-page.spec.ts",
     "test:certification": "playwright test src/tests/certification_page/certification-page.spec.ts",
-    
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "report:save": "node scripts/save-report.js"
   },
   "repository": {
@@ -34,10 +37,14 @@
   },
   "homepage": "https://github.com/SergeySmorodin/Portal_UI_tests#readme",
   "devDependencies": {
+    "@eslint/js": "^9.39.5",
     "@playwright/test": "^1.62.1",
     "@types/node": "^26.2.0",
     "dotenv": "^17.4.2",
+    "eslint": "^9.39.5",
+    "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.9.6",
-    "typescript": "^7.0.2"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.68.0"
   }
 }

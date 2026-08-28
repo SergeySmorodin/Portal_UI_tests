@@ -3,13 +3,7 @@ import { config } from '../../config/config';
 import { projectFactory } from '../../data/project-factory';
 import { api } from '../../data/api';
 
-
-
 // TODO: Добавить тест создание работы (создать или выбрать мегапроект, перейти по ссылке Работа для добавление работы)
-
-
-
-
 
 test.describe('Создание мегапроекта', () => {
   test('Заполнение формы, сохранение и проверка в списке', async ({
