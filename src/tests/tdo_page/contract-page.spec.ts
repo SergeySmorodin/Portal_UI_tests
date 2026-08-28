@@ -4,7 +4,11 @@ import { contractFactory } from '../../data/contract-factory';
 import { api } from '../../data/api';
 
 test.describe('Создание договора', () => {
-  test('Заполнение формы, сохранение и проверка в списке', async ({ page, contractPage }) => {
+  test('Заполнение формы, сохранение и проверка в списке', async ({
+    page,
+    contractPage,
+    contractsListPage,
+  }) => {
     const contract = contractFactory.signed();
 
     await test.step('Открыть страницу создания договора', async () => {
@@ -61,15 +65,12 @@ test.describe('Создание договора', () => {
     });
 
     await test.step('Найти договор в списке через поиск', async () => {
-      await page.goto('/TDO/Contracts', { waitUntil: 'domcontentloaded' });
+      await contractsListPage.open();
 
-      const searchInput = page.getByPlaceholder('Номер договора');
-      await searchInput.waitFor({ state: 'visible' });
-      await searchInput.fill(contract.contractNumber);
+      await contractsListPage.searchByContractNumber(contract.contractNumber);
 
-      await expect(page.getByText(contract.contractNumber)).toBeVisible({
-        timeout: config.timeouts.normal,
-      });
+      const contractRow = contractsListPage.locators.contractNumberCell(contract.contractNumber);
+      await expect(contractRow).toBeVisible({ timeout: config.timeouts.normal });
     });
   });
 });

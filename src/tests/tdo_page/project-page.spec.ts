@@ -3,7 +3,15 @@ import { config } from '../../config/config';
 import { projectFactory } from '../../data/project-factory';
 import { api } from '../../data/api';
 
-test.describe('Создание проекта', () => {
+
+
+// TODO: Добавить тест создание работы (создать или выбрать мегапроект, перейти по ссылке Работа для добавление работы)
+
+
+
+
+
+test.describe('Создание мегапроекта', () => {
   test('Заполнение формы, сохранение и проверка в списке', async ({
     page,
     projectPage,
@@ -11,7 +19,7 @@ test.describe('Создание проекта', () => {
   }) => {
     const project = projectFactory.draft();
 
-    await test.step('Открыть страницу создания проекта', async () => {
+    await test.step('Открыть страницу создания мегапроекта', async () => {
       await projectPage.open();
       await expect(projectPage.locators.heading).toHaveText('Создание проекта');
     });
@@ -46,7 +54,7 @@ test.describe('Создание проекта', () => {
       expect(kind).toBeTruthy();
     });
 
-    await test.step('Сохранить проект', async () => {
+    await test.step('Сохранить мегапроект', async () => {
       await projectPage.runAndCheckResponse(api.project, () => projectPage.save());
       await page.waitForURL((url) => url.pathname.includes('/TDO/Project/edit/'), {
         timeout: config.timeouts.long,
@@ -54,7 +62,7 @@ test.describe('Создание проекта', () => {
       await expect(projectPage.locators.heading).toHaveText('Редактирование проекта');
     });
 
-    await test.step('Найти проект в списке через поиск', async () => {
+    await test.step('Найти мегапроект в списке через поиск', async () => {
       await projectsListPage.open();
 
       await projectsListPage.searchByCode(project.code);

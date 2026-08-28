@@ -1,12 +1,12 @@
 import { Page, test as base, expect } from '@playwright/test';
-import { config, type VPNConfig } from '../config/config';
+import { config, type AppConfig } from '../config/config';
 import { createLoginPage } from '../pages/login/login-page';
 import { createMainPage } from '../pages/main/main-page';
 import { createLkPage } from '../pages/profile/lk-page';
-import { createContractPage } from '../pages/tdo/contract-page';
+import { createContractPage, createContractsListPage } from '../pages/tdo/contract-page';
 import { createProjectPage, createProjectsListPage } from '../pages/tdo/project-page';
-import { createCompanyPage, createCompaniesListPage } from '../pages/contragents/company-page';
-import { createCuratorPage, createCuratorsListPage } from '../pages/contragents/curator-page';
+import { createCompanyPage, createCompaniesListPage } from '../pages/counterparties/company-page';
+import { createCuratorPage, createCuratorsListPage } from '../pages/counterparties/curator-page';
 import {
   createCertificationUploadPage,
   createCertificationSearchPage,
@@ -18,6 +18,7 @@ interface TestFixtures {
   mainPage: ReturnType<typeof createMainPage>;
   lkPage: ReturnType<typeof createLkPage>;
   contractPage: ReturnType<typeof createContractPage>;
+  contractsListPage: ReturnType<typeof createContractsListPage>;
   projectPage: ReturnType<typeof createProjectPage>;
   projectsListPage: ReturnType<typeof createProjectsListPage>;
   companyPage: ReturnType<typeof createCompanyPage>;
@@ -30,7 +31,7 @@ interface TestFixtures {
 }
 
 export const test = base.extend<TestFixtures>({
-  testConfig: async ({}: { page: Page }, use: (config: VPNConfig) => Promise<void>) => {
+  testConfig: async ({}: { page: Page }, use: (config: AppConfig) => Promise<void>) => {
     await use(config);
   },
 
@@ -52,6 +53,11 @@ export const test = base.extend<TestFixtures>({
   contractPage: async ({ authenticatedPage }, use) => {
     const contractPage = createContractPage(authenticatedPage);
     await use(contractPage);
+  },
+
+  contractsListPage: async ({ authenticatedPage }, use) => {
+    const contractsListPage = createContractsListPage(authenticatedPage);
+    await use(contractsListPage);
   },
 
   projectPage: async ({ authenticatedPage }, use) => {

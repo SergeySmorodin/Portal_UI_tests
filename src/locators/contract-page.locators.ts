@@ -22,4 +22,18 @@ export const createContractPageLocators = (page: Page) => ({
   closeButton: page.getByRole('button', { name: 'Закрыть' }),
 });
 
+export const createContractsListLocators = (page: Page) => ({
+  heading: page.locator('h1:has-text("Договоры")'),
+
+  // Поиск и фильтры
+  searchInput: page.getByPlaceholder('Номер договора'),
+
+  // Таблица
+  table: page.locator('table'),
+  tableRows: page.locator('table tbody tr'),
+  contractNumberCell: (contractNumber: string) =>
+    page.locator('table tbody tr').filter({ hasText: contractNumber }),
+});
+
 export type ContractPageLocators = ReturnType<typeof createContractPageLocators>;
+export type ContractsListLocators = ReturnType<typeof createContractsListLocators>;

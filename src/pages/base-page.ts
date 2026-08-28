@@ -4,7 +4,7 @@ import { config } from '../config/config';
 export const createBasePage = (page: Page) => {
   const timeout = config.timeouts.normal;
 
-  return {
+  const api = {
     page,
 
     navigate: async (url: string): Promise<void> => {
@@ -12,7 +12,7 @@ export const createBasePage = (page: Page) => {
     },
 
     openRelative: async (path: string): Promise<void> => {
-      await page.goto(`${config.siteUrl}${path}`, { waitUntil: 'domcontentloaded' });
+      await page.goto(path, { waitUntil: 'domcontentloaded' });
     },
 
     click: async (locator: Locator): Promise<void> => {
@@ -89,6 +89,37 @@ export const createBasePage = (page: Page) => {
       return { container, opened };
     },
 
+    selectRandomFromSearchable: async (trigger: Locator): Promise<string> => {
+      const { container, opened } = await api.openSearchableDropdown(trigger);
+      if (!opened) return '';
+      return api.selectRandomFromList(container);
+    },
+
+    addRowAndSelectFromSearchable: async (
+      addButton: Locator,
+      rowButton: Locator
+    ): Promise<string> => {
+      await api.waitForElement(addButton);
+      await addButton.click();
+      const rowName = (await rowButton.textContent())?.trim() || '';
+      await rowButton.waitFor({ state: 'visible' });
+      const { container, opened } = await api.openSearchableDropdown(rowButton, 'last');
+      if (opened) {
+        return api.selectRandomFromList(container);
+      }
+      return rowName;
+    },
+
+    addRowAndSelectRandomOption: async (
+      addButton: Locator,
+      rowSelect: Locator
+    ): Promise<string> => {
+      await api.waitForElement(addButton);
+      await addButton.click();
+      await rowSelect.waitFor({ state: 'visible' });
+      return api.selectRandomOption(rowSelect);
+    },
+
     getErrorMessage: async (): Promise<string> => {
       const errorLocator = page.locator('.error-message, .alert-danger').first();
       if (await errorLocator.isVisible()) {
@@ -117,6 +148,8 @@ export const createBasePage = (page: Page) => {
       return path;
     },
   };
+
+  return api;
 };
 
 export type BasePage = ReturnType<typeof createBasePage>;

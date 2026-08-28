@@ -22,12 +22,7 @@ export const createCuratorPage = (page: Page) => {
     },
 
     selectRandomCompany: async (): Promise<string> => {
-      const { container, opened } = await basePage.openSearchableDropdown(
-        locators.companyButton,
-        'first'
-      );
-      if (!opened) return '';
-      return basePage.selectRandomFromList(container);
+      return basePage.selectRandomFromSearchable(locators.companyButton);
     },
 
     fillBasicFields: async (data: CuratorData): Promise<void> => {
