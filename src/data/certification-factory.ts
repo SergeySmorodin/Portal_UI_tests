@@ -1,32 +1,14 @@
 import { randomBytes } from 'node:crypto';
 import { CertificationData } from '../types';
+import { addMonths, addYears, formatYmd, today } from '../utils/date';
 
 const randomToken = (): string => randomBytes(4).toString('hex');
 
-const generateStartDate = (): string => {
-  const now = new Date();
-  now.setFullYear(now.getFullYear() + 1);
-  const mm = String(now.getMonth() + 1).padStart(2, '0');
-  const dd = String(now.getDate()).padStart(2, '0');
-  return `${now.getFullYear()}-${mm}-${dd}`;
-};
+const generateStartDate = (): string => formatYmd(addYears(today(), 1));
 
-const generateExpiryDate = (): string => {
-  const now = new Date();
-  now.setFullYear(now.getFullYear() + 3);
-  const mm = String(now.getMonth() + 1).padStart(2, '0');
-  const dd = String(now.getDate()).padStart(2, '0');
-  return `${now.getFullYear()}-${mm}-${dd}`;
-};
+const generateExpiryDate = (): string => formatYmd(addYears(today(), 3));
 
-const generateWarningPeriod = (): string => {
-  const now = new Date();
-  now.setFullYear(now.getFullYear() + 1);
-  now.setMonth(now.getMonth() + 6);
-  const mm = String(now.getMonth() + 1).padStart(2, '0');
-  const dd = String(now.getDate()).padStart(2, '0');
-  return `${now.getFullYear()}-${mm}-${dd}`;
-};
+const generateWarningPeriod = (): string => formatYmd(addMonths(addYears(today(), 1), 6));
 
 /** Базовая фабрика сертификационного документа. */
 export const createCertification = (

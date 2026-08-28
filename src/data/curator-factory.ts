@@ -1,13 +1,13 @@
 import { randomBytes } from 'node:crypto';
 import { CuratorData } from '../types';
+import { formatDmy, randomDate } from '../utils/date';
 
 const randomToken = (): string => randomBytes(4).toString('hex');
 
 const generateBirthDate = (): string => {
-  const day = String(Math.floor(Math.random() * 27) + 1).padStart(2, '0');
-  const month = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
-  const year = String(Math.floor(Math.random() * 40) + 1960);
-  return `${day}-${month}-${year}`;
+  const from = new Date(1960, 0, 1);
+  const to = new Date(2000, 11, 31);
+  return formatDmy(randomDate(from, to));
 };
 
 /** Базовая фабрика куратора: уникальное ФИО + частичные переопределения. */

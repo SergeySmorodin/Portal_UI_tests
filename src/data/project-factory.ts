@@ -1,30 +1,14 @@
 import { randomBytes } from 'node:crypto';
 import { ProjectData } from '../types';
+import { addMonths, formatDmy, today } from '../utils/date';
 
 const randomToken = (): string => randomBytes(4).toString('hex');
-
-const generateStartDate = (): string => {
-  const now = new Date();
-  const dd = String(now.getDate()).padStart(2, '0');
-  const mm = String(now.getMonth() + 1).padStart(2, '0');
-  const yyyy = now.getFullYear();
-  return `${dd}-${mm}-${yyyy}`;
-};
-
-const generateStopDate = (): string => {
-  const now = new Date();
-  now.setMonth(now.getMonth() + 3);
-  const dd = String(now.getDate()).padStart(2, '0');
-  const mm = String(now.getMonth() + 1).padStart(2, '0');
-  const yyyy = now.getFullYear();
-  return `${dd}-${mm}-${yyyy}`;
-};
 
 export const createProject = (overrides: Partial<ProjectData> = {}): ProjectData => ({
   code: `ТЕСТ-${Date.now()}-${randomToken()}`,
   status: 'Черновик',
-  startDate: generateStartDate(),
-  stopDate: generateStopDate(),
+  startDate: formatDmy(today()),
+  stopDate: formatDmy(addMonths(today(), 3)),
   groupProject: '',
   typeProject: '',
   departmentProject: '',
