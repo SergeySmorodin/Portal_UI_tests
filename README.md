@@ -30,13 +30,27 @@ https://sergeysmorodin.github.io/Portal_UI_tests/
 - Исправить форматирование:
   `npm run format`
 
-# Проверить типы
+# Проверка типов
 
-`npx tsc --noEmit`
+`npm run typecheck`
+
+# Единая проверка (lint + формат + типы)
+
+`npm run check`
 
 # Запустить тесты
 
-`npm test`
+- Все тесты: `npm test`
+- По области (директория, новые спеки подхватываются автоматически):
+  - `npm run test:login` — авторизация
+  - `npm run test:main` — главная страница
+  - `npm run test:lk` — профиль (ЛК)
+  - `npm run test:tdo` — договоры/проекты
+  - `npm run test:counterparties` — компании/кураторы
+  - `npm run test:certification` — сертификация
+  - `npm run test:workflows` — multi-user сценарии
+- Головной режим: `npm run test:headed`
+- UI-режим: `npm run test:ui`
 
 # Сохранить историю отчета
 

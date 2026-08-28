@@ -24,26 +24,9 @@ export default tseslint.config(
   },
 
   // Отдельные Node-скрипты (вне основного тестового кода):
-  // - scripts/**/*.js, *.cjs — CommonJS (require), Node globals
-  // - scripts/**/*.mjs — ESM Node-скрипты (используют document внутри page.evaluate, process, Buffer)
+  // ESM скрипты (scripts/*.js, *.mjs) с Node-глобалами и document внутри page.evaluate.
   {
-    files: ['scripts/**/*.{js,cjs}'],
-    languageOptions: {
-      globals: {
-        require: 'readonly',
-        process: 'readonly',
-        console: 'readonly',
-        Buffer: 'readonly',
-        __dirname: 'readonly',
-      },
-    },
-    rules: {
-      '@typescript-eslint/no-require-imports': 'off',
-      '@typescript-eslint/no-unused-vars': 'off',
-    },
-  },
-  {
-    files: ['scripts/**/*.mjs'],
+    files: ['scripts/**/*.{js,mjs}'],
     languageOptions: {
       globals: {
         process: 'readonly',

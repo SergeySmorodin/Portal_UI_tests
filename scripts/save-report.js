@@ -1,8 +1,9 @@
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process');
+import fs from 'node:fs';
+import path from 'node:path';
+import { execSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
-const ROOT = path.resolve(__dirname, '..');
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPORT_SOURCE = path.join(ROOT, 'playwright-report');
 const JSON_REPORT = path.join(ROOT, 'test-results.json');
 const BRANCH = 'reports';
