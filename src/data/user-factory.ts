@@ -14,8 +14,8 @@ export const createUser = (overrides: Partial<UserCredentials> = {}): UserCreden
 export const userFactory = {
   admin: (overrides: Partial<UserCredentials> = {}) =>
     createUser({
-      username: config.login || 'admin',
-      password: config.password || 'admin123',
+      username: config.login,
+      password: config.password,
       ...overrides,
     }),
 
@@ -23,7 +23,7 @@ export const userFactory = {
 
   withWrongPassword: (username?: string) =>
     createUser({
-      username: username ?? (config.login || 'admin'),
+      username: username ?? config.login,
       password: 'wrong_password',
     }),
 

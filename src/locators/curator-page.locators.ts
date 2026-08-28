@@ -15,7 +15,6 @@ export const createCuratorPageLocators = (page: Page) => ({
 
   // Компания (обязательное поле)
   companyButton: page.getByRole('button', { name: 'Выберите компанию' }),
-  companyListContainer: page.locator('.max-h-60'),
 
   // Кнопки управления
   saveButton: page.getByRole('button', { name: 'Сохранить' }),

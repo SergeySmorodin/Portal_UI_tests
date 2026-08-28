@@ -43,15 +43,19 @@ test.describe('Авторизация', () => {
       });
 
       await test.step('Ввести данные пользователя с неверным паролем', async () => {
+        const responsePromise = loginPage.page.waitForResponse(
+          (resp) => resp.request().method() === 'POST' && resp.url().includes('/jwt/create'),
+          { timeout: 10000 }
+        );
         await loginPage.login(userFactory.withWrongPassword());
+        const response = await responsePromise;
+        // Проверяем именно HTTP-статус, а не текст/локализацию ошибки
+        expect(response.status()).toBe(401);
       });
 
       await test.step('Проверить сообщение об ошибке', async () => {
         const errorText = await loginPage.verifyLoginError();
-
-        // Проверяем только наличие ошибки и кода 401
         expect(errorText).toBeTruthy();
-        expect(errorText).toContain('401');
       });
     });
 

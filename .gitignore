@@ -10,7 +10,6 @@ playwright/.auth/
 .env.*.local
 *.tsbuildinfo
 dist/
-screenshots/
 debug/
 .cursor/
 .cursorignore
@@ -22,4 +21,3 @@ actions-runner/
 .vscode/
 reports/
 *recon
-PROJECT_STRUCTURE.md

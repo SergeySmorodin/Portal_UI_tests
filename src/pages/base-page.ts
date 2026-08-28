@@ -81,7 +81,7 @@ export const createBasePage = (page: Page) => {
       await trigger.waitFor({ state: 'visible', timeout: config.timeouts.short });
       await trigger.click();
       const idx = match === 'last' ? -1 : 0;
-      const searchInput = page.locator('input[placeholder="Поиск..."]').nth(idx);
+      const searchInput = page.getByPlaceholder('Поиск...').nth(idx);
       const container = page.locator('.max-h-60').nth(idx);
       try {
         await searchInput.waitFor({ state: 'visible', timeout: config.timeouts.short });
@@ -146,12 +146,6 @@ export const createBasePage = (page: Page) => {
       await action();
       const response = await responsePromise;
       assertStatus(response.status());
-    },
-
-    takeScreenshot: async (name: string): Promise<string> => {
-      const path = `screenshots/${name}-${Date.now()}.png`;
-      await page.screenshot({ path, fullPage: true });
-      return path;
     },
   };
 

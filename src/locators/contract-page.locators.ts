@@ -11,10 +11,13 @@ export const createContractPageLocators = (page: Page) => ({
 
   // Компания
   companyButton: page.getByRole('button', { name: 'Выберите компанию' }),
-  companyListContainer: page.locator('.max-h-60'),
 
   // Файл (обязательное поле)
   fileInput: page.locator('input[type="file"]'),
+
+  // Строки договора: переключатель менеджера (список с поиском) и select вида работ
+  managerToggle: page.locator('button:has(i.fa-chevron-down)').last(),
+  workTypeSelect: page.locator('select:not([name="status"])').last(),
 
   // Кнопки управления
   saveButton: page.getByRole('button', { name: 'Сохранить' }),

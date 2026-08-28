@@ -31,14 +31,12 @@ export const createContractPage = (page: Page) => {
 
     selectRandomManager: async (): Promise<string> => {
       const addBtn = page.getByRole('button', { name: '+', exact: true }).first();
-      const nameBtn = page.locator('button:has(i.fa-chevron-down)').last();
-      return basePage.addRowAndSelectFromSearchable(addBtn, nameBtn);
+      return basePage.addRowAndSelectFromSearchable(addBtn, locators.managerToggle);
     },
 
     selectRandomWorkType: async (): Promise<string> => {
       const addBtn = page.getByRole('button', { name: '+', exact: true }).last();
-      const workSelect = page.locator('select:not([name="status"])').last();
-      return basePage.addRowAndSelectRandomOption(addBtn, workSelect);
+      return basePage.addRowAndSelectRandomOption(addBtn, locators.workTypeSelect);
     },
 
     fillBasicFields: async (data: ContractData): Promise<void> => {

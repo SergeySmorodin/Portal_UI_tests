@@ -39,12 +39,6 @@ export interface CuratorData {
   companySearch: string;
 }
 
-export interface TestArtifact {
-  name: string;
-  path: string;
-  type: 'screenshot' | 'video' | 'trace' | 'html';
-}
-
 export interface ProjectData {
   code: string;
   status: string;
