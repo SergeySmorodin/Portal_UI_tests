@@ -1,4 +1,7 @@
 export const api = {
+  auth: {
+    login: '/api/auth/jwt/create/',
+  },
   company: '/api/company/',
   contract: '/api/contract/',
   curator: '/api/company_physical_person/',

@@ -1,5 +1,6 @@
 import { test, expect } from '../../fixtures/test-fixtures';
 import { createUser, userFactory } from '../../data/user-factory';
+import { api } from '../../data/api';
 
 test.describe('Авторизация', () => {
   test.describe('Позитивные сценарии', () => {
@@ -43,14 +44,11 @@ test.describe('Авторизация', () => {
       });
 
       await test.step('Ввести данные пользователя с неверным паролем', async () => {
-        const responsePromise = loginPage.page.waitForResponse(
-          (resp) => resp.request().method() === 'POST' && resp.url().includes('/jwt/create'),
-          { timeout: 10000 }
+        await loginPage.runAndCheckResponse(
+          api.auth.login,
+          () => loginPage.login(userFactory.withWrongPassword()),
+          (status) => expect(status).toBe(401)
         );
-        await loginPage.login(userFactory.withWrongPassword());
-        const response = await responsePromise;
-        // Проверяем именно HTTP-статус, а не текст/локализацию ошибки
-        expect(response.status()).toBe(401);
       });
 
       await test.step('Проверить сообщение об ошибке', async () => {
