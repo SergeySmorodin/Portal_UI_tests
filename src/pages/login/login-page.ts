@@ -16,7 +16,6 @@ export const createLoginPage = (page: Page) => {
   };
 
   const getErrorMessage = async (): Promise<string> => {
-    // Ждем появления ошибки
     try {
       await locators.errorMessage.waitFor({
         state: 'visible',
@@ -24,33 +23,6 @@ export const createLoginPage = (page: Page) => {
       });
       return (await locators.errorMessage.textContent())?.trim() || '';
     } catch {
-      // Если стандартный локатор не нашел, пробуем найти любой текст с ошибкой
-      const bodyText = (await page.locator('body').textContent()) || '';
-
-      // Поиск по ключевым словам
-      const errorPatterns = [
-        'неверн',
-        'ошибк',
-        'error',
-        'неправильн',
-        'invalid',
-        'не найден',
-        'not found',
-        'incorrect',
-        'wrong',
-        'неверный логин или пароль',
-      ];
-
-      for (const pattern of errorPatterns) {
-        if (bodyText.toLowerCase().includes(pattern.toLowerCase())) {
-          // Ищем элемент с этим текстом
-          const errorElement = page.getByText(pattern, { exact: false }).first();
-          if (await errorElement.isVisible()) {
-            return (await errorElement.textContent())?.trim() || '';
-          }
-        }
-      }
-
       return '';
     }
   };

@@ -49,6 +49,9 @@ export const createBasePage = (page: Page) => {
         const val = await options.nth(i).getAttribute('value');
         if (val) values.push(val);
       }
+      if (values.length === 0) {
+        throw new Error(`selectRandomOption: no options with a value found in ${locator}`);
+      }
       const randomIndex = Math.floor(Math.random() * values.length);
       const selected = values[randomIndex];
       await locator.selectOption(selected);
@@ -62,6 +65,9 @@ export const createBasePage = (page: Page) => {
       await container.waitFor({ state: 'visible', timeout });
       const items = container.locator(itemSelector);
       const count = await items.count();
+      if (count === 0) {
+        throw new Error(`selectRandomFromList: no "${itemSelector}" items found in ${container}`);
+      }
       const randomIndex = Math.floor(Math.random() * count);
       const selectedText = (await items.nth(randomIndex).textContent())?.trim() || '';
       await items.nth(randomIndex).click();
