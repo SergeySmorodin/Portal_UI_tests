@@ -32,6 +32,8 @@ export const createProjectsListLocators = (page: Page) => ({
   table: page.locator('table'),
   tableRows: page.locator('table tbody tr'),
   projectCodeCell: (code: string) => page.locator('table tbody tr').filter({ hasText: code }),
+  worksButton: (code: string) =>
+    page.locator('table tbody tr').filter({ hasText: code }).locator('button:has-text("Работы")'),
 });
 
 export type ProjectPageLocators = ReturnType<typeof createProjectPageLocators>;

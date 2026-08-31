@@ -5,6 +5,7 @@ import {
   createProjectsListLocators,
 } from '../../locators/project-page.locators';
 import { ProjectData } from '../../types';
+import { config } from '../../config/config';
 
 export const createProjectPage = (page: Page) => {
   const basePage = createBasePage(page);
@@ -78,6 +79,14 @@ export const createProjectsListPage = (page: Page) => {
       await basePage.waitForElement(locators.searchInput);
       await locators.searchInput.fill(code);
       await page.waitForLoadState('networkidle').catch(() => {});
+    },
+
+    openWorks: async (code: string): Promise<void> => {
+      await basePage.waitForElement(locators.worksButton(code));
+      await locators.worksButton(code).click();
+      await page.waitForURL((url) => url.pathname.includes('/TDO/Works'), {
+        timeout: config.timeouts.long,
+      });
     },
   };
 };

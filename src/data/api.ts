@@ -6,6 +6,7 @@ export const api = {
   contract: '/api/contract/',
   curator: '/api/company_physical_person/',
   project: '/api/megaproject/',
+  work: '/api/project/create/',
   certification: {
     certificate: '/api/certifications/certificates/',
     protocol: '/api/certifications/protocols/',

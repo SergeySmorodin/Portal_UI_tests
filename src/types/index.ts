@@ -61,3 +61,12 @@ export interface CertificationData {
   expiryDate: string;
   warningPeriod: string;
 }
+
+export interface WorkData {
+  name: string;
+  direction: string;
+  startDate: string;
+  stopDate: string;
+  temporaryPersonal: string;
+  workShift: string;
+}

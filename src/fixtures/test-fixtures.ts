@@ -6,6 +6,11 @@ import { createMainPage } from '../pages/main/main-page';
 import { createLkPage } from '../pages/profile/lk-page';
 import { createContractPage, createContractsListPage } from '../pages/tdo/contract-page';
 import { createProjectPage, createProjectsListPage } from '../pages/tdo/project-page';
+import {
+  createWorkPage,
+  createWorksListPage,
+  createAllWorksListPage,
+} from '../pages/tdo/work-page';
 import { createCompanyPage, createCompaniesListPage } from '../pages/counterparties/company-page';
 import { createCuratorPage, createCuratorsListPage } from '../pages/counterparties/curator-page';
 import {
@@ -29,6 +34,9 @@ interface TestFixtures {
   contractsListPage: ReturnType<typeof createContractsListPage>;
   projectPage: ReturnType<typeof createProjectPage>;
   projectsListPage: ReturnType<typeof createProjectsListPage>;
+  workPage: ReturnType<typeof createWorkPage>;
+  worksListPage: ReturnType<typeof createWorksListPage>;
+  allWorksListPage: ReturnType<typeof createAllWorksListPage>;
   companyPage: ReturnType<typeof createCompanyPage>;
   companiesListPage: ReturnType<typeof createCompaniesListPage>;
   curatorPage: ReturnType<typeof createCuratorPage>;
@@ -83,6 +91,21 @@ export const test = base.extend<TestFixtures>({
   projectsListPage: async ({ authenticatedPage }, use) => {
     const projectsListPage = createProjectsListPage(authenticatedPage);
     await use(projectsListPage);
+  },
+
+  workPage: async ({ authenticatedPage }, use) => {
+    const workPage = createWorkPage(authenticatedPage);
+    await use(workPage);
+  },
+
+  worksListPage: async ({ authenticatedPage }, use) => {
+    const worksListPage = createWorksListPage(authenticatedPage);
+    await use(worksListPage);
+  },
+
+  allWorksListPage: async ({ authenticatedPage }, use) => {
+    const allWorksListPage = createAllWorksListPage(authenticatedPage);
+    await use(allWorksListPage);
   },
 
   companyPage: async ({ authenticatedPage }, use) => {
