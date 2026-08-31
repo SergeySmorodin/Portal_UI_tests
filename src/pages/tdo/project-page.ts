@@ -25,6 +25,11 @@ export const createProjectPage = (page: Page) => {
       return basePage.selectRandomOption(locators.statusSelect);
     },
 
+    selectStatus: async (statusValue: string): Promise<string> => {
+      await locators.statusSelect.selectOption(statusValue);
+      return statusValue;
+    },
+
     selectRandomGroupProject: async (): Promise<string> => {
       return basePage.selectRandomOption(locators.groupProjectSelect);
     },

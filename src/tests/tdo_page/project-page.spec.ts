@@ -23,8 +23,8 @@ test.describe('Создание мегапроекта', () => {
       await expect(projectPage.locators.codeInput).toHaveValue(project.code);
     });
 
-    await test.step('Выбрать рандомный статус', async () => {
-      const status = await projectPage.selectRandomStatus();
+    await test.step('Выбрать статус Действующий', async () => {
+      const status = await projectPage.selectStatus('Действующий');
       expect(status).toBeTruthy();
     });
 

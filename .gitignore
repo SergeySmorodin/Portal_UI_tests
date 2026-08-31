@@ -21,3 +21,4 @@ actions-runner/
 .vscode/
 reports/
 *recon
+html-snapshots/
