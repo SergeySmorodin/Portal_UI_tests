@@ -17,6 +17,7 @@ import {
   createCertificationUploadPage,
   createCertificationSearchPage,
 } from '../pages/certification/certification-page';
+import { createResourcePlanningPage } from '../pages/services/supervision/resource-planning-page';
 
 export interface UserContextKit {
   page: Page;
@@ -43,6 +44,7 @@ interface TestFixtures {
   curatorsListPage: ReturnType<typeof createCuratorsListPage>;
   certificationUploadPage: ReturnType<typeof createCertificationUploadPage>;
   certificationSearchPage: ReturnType<typeof createCertificationSearchPage>;
+  resourcePlanningPage: ReturnType<typeof createResourcePlanningPage>;
   authenticatedPage: Page;
   apiRequest: APIRequestContext;
   createUserPage: CreateUserPage;
@@ -137,6 +139,11 @@ export const test = base.extend<TestFixtures>({
   certificationSearchPage: async ({ authenticatedPage }, use) => {
     const certificationSearchPage = createCertificationSearchPage(authenticatedPage);
     await use(certificationSearchPage);
+  },
+
+  resourcePlanningPage: async ({ authenticatedPage }, use) => {
+    const resourcePlanningPage = createResourcePlanningPage(authenticatedPage);
+    await use(resourcePlanningPage);
   },
 
   authenticatedPage: async ({ page }, use) => {

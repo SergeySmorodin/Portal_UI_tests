@@ -7,6 +7,9 @@ export const api = {
   curator: '/api/company_physical_person/',
   project: '/api/megaproject/',
   work: '/api/project/create/',
+  resourcePlanning: {
+    workOptions: '/api/project/opt1/',
+  },
   certification: {
     certificate: '/api/certifications/certificates/',
     protocol: '/api/certifications/protocols/',

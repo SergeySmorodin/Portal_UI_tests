@@ -1,15 +1,22 @@
 import { APIRequestContext } from '@playwright/test';
-import { ProjectData } from '../../types';
+import { ProjectData, WorkData } from '../../types';
 import { api } from './api';
+
+export interface WorkCreateOptions {
+  megaProjectPk: string;
+  contractPk: string;
+  status?: string;
+  equipment?: string;
+}
 
 /**
  * Создаёт мегапроект через API /api/megaproject/ (вместо прохождения формы в UI).
- * Возвращает код созданного мегапроекта.
+ * Возвращает код и pk созданного мегапроекта.
  */
 export const createProjectViaApi = async (
   request: APIRequestContext,
   project: ProjectData
-): Promise<string> => {
+): Promise<{ code: string; pk: string }> => {
   const response = await request.post(api.project, {
     data: {
       code: project.code,
@@ -30,5 +37,41 @@ export const createProjectViaApi = async (
     );
   }
 
-  return project.code;
+  const body = (await response.json()) as { code: string; pk: string };
+  return { code: body.code, pk: body.pk };
+};
+
+/**
+ * Создаёт работу через API /api/project/create/ и привязывает её к мегапроекту.
+ * Возвращает pk созданной работы.
+ */
+export const createWorkViaApi = async (
+  request: APIRequestContext,
+  work: WorkData,
+  options: WorkCreateOptions
+): Promise<string> => {
+  const response = await request.post(api.work, {
+    data: {
+      name: work.name,
+      status: options.status || 'Подготовка',
+      fact_start: work.startDate,
+      fact_stop: work.stopDate,
+      temporary_personal: Number(work.temporaryPersonal) || 0,
+      work_shift: Number(work.workShift) || 0,
+      to_contract: [{ pk: options.contractPk }],
+      to_cfo: null,
+      to_mega_project: { pk: options.megaProjectPk },
+      place: [],
+      project_supervision: { equipment: options.equipment || work.direction },
+    },
+  });
+
+  if (!response.ok()) {
+    throw new Error(
+      `Создание работы через API не удалось (${response.status()}): ${await response.text()}`
+    );
+  }
+
+  const body = (await response.json()) as { pk: string };
+  return body.pk;
 };
