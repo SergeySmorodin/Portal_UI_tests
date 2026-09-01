@@ -41,7 +41,7 @@ https://sergeysmorodin.github.io/Portal_UI_tests/
 # Запустить тесты
 
 - Все тесты: `npm test`
-- По области (директория, новые спеки подхватываются автоматически):
+- По области:
   - `npm run test:login` — авторизация
   - `npm run test:main` — главная страница
   - `npm run test:lk` — профиль (ЛК)

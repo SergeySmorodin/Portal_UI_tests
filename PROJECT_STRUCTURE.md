@@ -99,23 +99,29 @@ Portal_UI_tests/
 ## Как устроен слой (паттерны)
 
 ### Page Object (`src/pages/*`)
+
 Каждая страница — **фабричная функция** `createXxxPage(page)`, возвращает объект методов. Все модели наследуют базовые действия через `...createBasePage(page)`. Отдельно вынесены страницы-«списки» (`createContractsListPage`, `createProjectsListPage`, `createCompaniesListPage`, `createCuratorsListPage`, `createCertificationSearchPage`).
 
 `base-page.ts` содержит общие действия (`navigate/openRelative/click/fill`) и хелперы выпадающих списков: `selectRandomOption`, `selectRandomFromList`, `openSearchableDropdown`, `selectRandomFromSearchable`, `addRowAndSelectFromSearchable`, `addRowAndSelectRandomOption`. Хелперы **проверяют пустой список** и бросают внятную ошибку вместо `NaN`-индекса.
 
 ### Локаторы (`src/locators/*`)
+
 Локаторы каждой страницы выделены в собственную фабрику `createXxxPageLocators(page)`. Часть локаторов — «умные» (по ролям/тексту: `getByRole`, `getByText`, `getByPlaceholder`). Часть — привязана к вёрстке UI-фреймворка (`.max-h-60`, `button:has(i.fa-chevron-down)`, `select:not([name="status"])`) — такие сосредоточены в модулях локаторов для удобства сопровождения.
 
 ### Данные (`src/data/*`)
+
 `xxxFactory.xxx(overrides)` генерируют тестовые объекты (уникальные имена, контрольные суммы ИНН/ОГРН, даты через `src/utils/date.ts`). `api.ts` хранит пути API для проверки ответов в `runAndCheckResponse`. Креды не захардкожены — берутся из `config` (валидированный `.env`).
 
 ### Fixtures (`src/fixtures/test-fixtures.ts`)
+
 Наследуют `test` Playwright и инжектят все Page Object'ы. Дополнительно:
+
 - `testConfig` — экземпляр конфигурации;
 - `authenticatedPage` — авторизованная `page` (через `storageState`);
 - `createUserPage(userId)` — создание `{page, context}` под конкретного пользователя для multi-user.
 
 ### Конфигурация
+
 - `playwright.config.ts` и `global-setup.ts` читают `.env`; ключевой момент — загрузка `dotenv` **первым импортом** (из-за хойстинга ESM-импортов), иначе `config` вычислится до загрузки env.
 - `src/config/config.ts` читает env и **валидирует** наличие `LOGIN`/`PASSWORD` — при их отсутствии падает с понятной ошибкой вместо подстановки фейковых кредов.
 - В проекте нет хардкода `BASE_URL` в POM (используются относительные пути `openRelative` + `baseURL` Playwright).
@@ -128,4 +134,3 @@ Portal_UI_tests/
 - Per-area скрипты **по директориям** (новые спеки подхватываются сами): `test:login`, `test:main`, `test:lk`, `test:tdo`, `test:counterparties`, `test:certification`, `test:workflows`.
 - Качество: `lint`, `lint:fix`, `format`, `format:check`, `typecheck` (`tsc --noEmit`), единый `check` = `lint && format:check && typecheck`.
 - `report:save` — публикация истории отчётов.
-
