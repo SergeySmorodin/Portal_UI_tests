@@ -1,7 +1,7 @@
 import { test, expect } from '../../fixtures/test-fixtures';
 import { config } from '../../config/config';
 import { contractFactory } from '../../data/contract-factory';
-import { api } from '../../data/api';
+import { api } from '../../data/api/api';
 
 test.describe('Создание договора', () => {
   test('Заполнение формы, сохранение и проверка в списке', async ({

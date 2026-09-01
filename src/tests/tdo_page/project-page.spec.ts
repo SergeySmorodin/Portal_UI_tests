@@ -2,7 +2,8 @@ import { test, expect } from '../../fixtures/test-fixtures';
 import { config } from '../../config/config';
 import { projectFactory } from '../../data/project-factory';
 import { workFactory } from '../../data/work-factory';
-import { api } from '../../data/api';
+import { api } from '../../data/api/api';
+import { createProjectViaApi } from '../../data/api/project-api';
 
 test.describe('Создание мегапроекта', () => {
   test('Заполнение формы, сохранение и проверка в списке', async ({
@@ -65,13 +66,13 @@ test.describe('Создание мегапроекта', () => {
     });
   });
 
-  test('Создать мегапроект и добавить в него работу', async ({
+  test('Создать мегапроект через API и добавить в него работу', async ({
     page,
-    projectPage,
     projectsListPage,
     workPage,
     worksListPage,
     allWorksListPage,
+    apiRequest,
   }) => {
     const project = projectFactory.active();
     const work = workFactory.standard({
@@ -79,34 +80,8 @@ test.describe('Создание мегапроекта', () => {
       stopDate: project.stopDate,
     });
 
-    await test.step('Открыть страницу создания мегапроекта', async () => {
-      await projectPage.open();
-      await expect(projectPage.locators.heading).toHaveText('Создание проекта');
-    });
-
-    await test.step('Заполнить основные поля', async () => {
-      await projectPage.fillBasicFields(project);
-      await expect(projectPage.locators.codeInput).toHaveValue(project.code);
-    });
-
-    await test.step('Выбрать статус Действующий', async () => {
-      const status = await projectPage.selectStatus('Действующий');
-      expect(status).toBeTruthy();
-    });
-
-    await test.step('Выбрать рандомную группу, тип, подразделение, вид проекта', async () => {
-      expect(await projectPage.selectRandomGroupProject()).toBeTruthy();
-      expect(await projectPage.selectRandomTypeProject()).toBeTruthy();
-      expect(await projectPage.selectRandomDepartment()).toBeTruthy();
-      expect(await projectPage.selectRandomKindProject()).toBeTruthy();
-    });
-
-    await test.step('Сохранить мегапроект', async () => {
-      await projectPage.runAndCheckResponse(api.project, () => projectPage.save());
-      await page.waitForURL((url) => url.pathname.includes('/TDO/Project/edit/'), {
-        timeout: config.timeouts.long,
-      });
-      await expect(projectPage.locators.heading).toHaveText('Редактирование проекта');
+    await test.step('Создать мегапроект через API', async () => {
+      await createProjectViaApi(apiRequest, project);
     });
 
     await test.step('Найти мегапроект в списке и перейти по ссылке Работы', async () => {

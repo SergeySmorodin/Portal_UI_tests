@@ -1,5 +1,5 @@
 import { test, expect } from '../../fixtures/test-fixtures';
-import { api } from '../../data/api';
+import { api } from '../../data/api/api';
 import { certificationFactory } from '../../data/certification-factory';
 import { CertificationData } from '../../types';
 import type {

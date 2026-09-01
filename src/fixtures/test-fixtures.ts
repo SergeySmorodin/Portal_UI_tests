@@ -1,4 +1,4 @@
-import { BrowserContext, Page, test as base, expect } from '@playwright/test';
+import { APIRequestContext, BrowserContext, Page, test as base, expect } from '@playwright/test';
 import { config, type AppConfig } from '../config/config';
 import { authUsers } from '../../global-setup';
 import { createLoginPage } from '../pages/login/login-page';
@@ -44,6 +44,7 @@ interface TestFixtures {
   certificationUploadPage: ReturnType<typeof createCertificationUploadPage>;
   certificationSearchPage: ReturnType<typeof createCertificationSearchPage>;
   authenticatedPage: Page;
+  apiRequest: APIRequestContext;
   createUserPage: CreateUserPage;
 }
 
@@ -140,6 +141,10 @@ export const test = base.extend<TestFixtures>({
 
   authenticatedPage: async ({ page }, use) => {
     await use(page);
+  },
+
+  apiRequest: async ({ authenticatedPage }, use) => {
+    await use(authenticatedPage.context().request);
   },
 
   createUserPage: async ({ browser }, use) => {
