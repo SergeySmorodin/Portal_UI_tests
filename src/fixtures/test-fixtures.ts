@@ -18,6 +18,7 @@ import {
   createCertificationSearchPage,
 } from '../pages/certification/certification-page';
 import { createResourcePlanningPage } from '../pages/services/supervision/resource-planning-page';
+import { createLaborProtectionPage } from '../pages/ot-pb/labor-protection-page';
 
 export interface UserContextKit {
   page: Page;
@@ -45,6 +46,7 @@ interface TestFixtures {
   certificationUploadPage: ReturnType<typeof createCertificationUploadPage>;
   certificationSearchPage: ReturnType<typeof createCertificationSearchPage>;
   resourcePlanningPage: ReturnType<typeof createResourcePlanningPage>;
+  laborProtectionPage: ReturnType<typeof createLaborProtectionPage>;
   authenticatedPage: Page;
   apiRequest: APIRequestContext;
   createUserPage: CreateUserPage;
@@ -144,6 +146,11 @@ export const test = base.extend<TestFixtures>({
   resourcePlanningPage: async ({ authenticatedPage }, use) => {
     const resourcePlanningPage = createResourcePlanningPage(authenticatedPage);
     await use(resourcePlanningPage);
+  },
+
+  laborProtectionPage: async ({ authenticatedPage }, use) => {
+    const laborProtectionPage = createLaborProtectionPage(authenticatedPage);
+    await use(laborProtectionPage);
   },
 
   authenticatedPage: async ({ page }, use) => {
