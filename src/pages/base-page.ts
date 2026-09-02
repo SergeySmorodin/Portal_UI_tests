@@ -64,6 +64,7 @@ export const createBasePage = (page: Page) => {
     ): Promise<string> => {
       await container.waitFor({ state: 'visible', timeout });
       const items = container.locator(itemSelector);
+      await items.first().waitFor({ state: 'visible', timeout });
       const count = await items.count();
       if (count === 0) {
         throw new Error(`selectRandomFromList: no "${itemSelector}" items found in ${container}`);
