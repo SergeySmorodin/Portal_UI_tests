@@ -22,3 +22,4 @@ actions-runner/
 reports/
 *recon
 html-snapshots/
+.playwright-mcp/
