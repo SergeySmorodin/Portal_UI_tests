@@ -4,7 +4,7 @@ import { api } from '../../data/api/api';
 
 test.describe('Авторизация', () => {
   test.describe('Позитивные сценарии', () => {
-    test('Отображение формы логина', async ({ loginPage }) => {
+    test('Отображение формы логина', { tag: '@smoke' }, async ({ loginPage }) => {
       await test.step('Открыть страницу логина', async () => {
         await loginPage.open();
       });
@@ -22,7 +22,7 @@ test.describe('Авторизация', () => {
       });
     });
 
-    test('Успешная авторизация', async ({ loginPage }) => {
+    test('Успешная авторизация', { tag: '@smoke' }, async ({ loginPage }) => {
       await test.step('Открыть страницу логина', async () => {
         await loginPage.open();
       });
@@ -153,3 +153,5 @@ test.describe('Авторизация', () => {
     }
   });
 });
+
+

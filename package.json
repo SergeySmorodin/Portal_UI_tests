@@ -17,6 +17,7 @@
     "test:counterparties": "playwright test src/tests/counterparties_page",
     "test:certification": "playwright test src/tests/certification_page",
     "test:workflows": "playwright test src/tests/workflows",
+    "test:smoke": "playwright test --grep @smoke",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
