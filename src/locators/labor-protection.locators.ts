@@ -34,6 +34,7 @@ export const createLaborProtectionLocators = (page: Page) => ({
   // Результаты
   resultsTable: page.locator('table'),
   resultsHeading: page.getByRole('columnheader', { name: 'ФИО' }),
+  employeeRows: page.locator('table tbody tr'),
 });
 
 export type LaborProtectionLocators = ReturnType<typeof createLaborProtectionLocators>;

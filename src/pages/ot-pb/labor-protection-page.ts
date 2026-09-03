@@ -41,6 +41,11 @@ export const createLaborProtectionPage = (page: Page) => {
       await locators.resultsHeading.waitFor({ state: 'visible', timeout: config.timeouts.long });
       return true;
     },
+
+    getEmployeeRowsCount: async (): Promise<number> => {
+      await locators.employeeRows.first().waitFor({ state: 'visible', timeout: config.timeouts.long });
+      return locators.employeeRows.count();
+    },
   };
 };
 

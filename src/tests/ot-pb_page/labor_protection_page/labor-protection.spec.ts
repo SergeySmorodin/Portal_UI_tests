@@ -37,5 +37,10 @@ test.describe('Охрана труда', () => {
       await expect(laborProtectionPage.isResultsVisible()).resolves.toBe(true);
       await expect(laborProtectionPage.locators.resultsHeading).toBeVisible();
     });
+
+    await test.step('Проверить отображение сотрудников', async () => {
+      const employeeCount = await laborProtectionPage.getEmployeeRowsCount();
+      expect(employeeCount).toBeGreaterThan(0);
+    });
   });
 });
