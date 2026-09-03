@@ -19,6 +19,8 @@ import {
 } from '../pages/certification/certification-page';
 import { createResourcePlanningPage } from '../pages/services/supervision/resource-planning-page';
 import { createLaborProtectionPage } from '../pages/ot-pb/labor-protection-page';
+import { createMedicalCommissionPage } from '../pages/ot-pb/medical-commission-page';
+import { createIndustrialSafetyPage } from '../pages/ot-pb/industrial-safety-page';
 
 export interface UserContextKit {
   page: Page;
@@ -47,6 +49,8 @@ interface TestFixtures {
   certificationSearchPage: ReturnType<typeof createCertificationSearchPage>;
   resourcePlanningPage: ReturnType<typeof createResourcePlanningPage>;
   laborProtectionPage: ReturnType<typeof createLaborProtectionPage>;
+  medicalCommissionPage: ReturnType<typeof createMedicalCommissionPage>;
+  industrialSafetyPage: ReturnType<typeof createIndustrialSafetyPage>;
   authenticatedPage: Page;
   apiRequest: APIRequestContext;
   createUserPage: CreateUserPage;
@@ -151,6 +155,16 @@ export const test = base.extend<TestFixtures>({
   laborProtectionPage: async ({ authenticatedPage }, use) => {
     const laborProtectionPage = createLaborProtectionPage(authenticatedPage);
     await use(laborProtectionPage);
+  },
+
+  medicalCommissionPage: async ({ authenticatedPage }, use) => {
+    const medicalCommissionPage = createMedicalCommissionPage(authenticatedPage);
+    await use(medicalCommissionPage);
+  },
+
+  industrialSafetyPage: async ({ authenticatedPage }, use) => {
+    const industrialSafetyPage = createIndustrialSafetyPage(authenticatedPage);
+    await use(industrialSafetyPage);
   },
 
   authenticatedPage: async ({ page }, use) => {

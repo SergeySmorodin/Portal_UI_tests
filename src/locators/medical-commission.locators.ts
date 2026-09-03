@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
 
-export const createLaborProtectionLocators = (page: Page) => ({
+export const createMedicalCommissionLocators = (page: Page) => ({
   heading: page.locator('h1.title-page'),
 
   // Колонка «Выбор категорий и столбцов»
@@ -26,20 +26,9 @@ export const createLaborProtectionLocators = (page: Page) => ({
     .locator('div.bg-white')
     .filter({ hasText: 'Фильтрация выбора' })
     .locator('button:has(i.fa-solid)'),
-  positionSearchInput: page.getByPlaceholder('Поиск по должности...'),
-  departmentSearchInput: page.getByPlaceholder('Поиск по отделам...'),
-  branchSearchInput: page.getByPlaceholder('Поиск по филиалам...'),
-
-  // Срок действия (фильтр по статусу сертификатов)
-  missingFilterButton: page.getByRole('button', { name: 'отсутствует' }),
-  expiredFilterButton: page.getByRole('button', { name: 'просрочено' }),
-  lessThan30DaysFilterButton: page.getByRole('button', { name: 'до 30 дней' }),
-  moreThan30DaysFilterButton: page.getByRole('button', { name: '> 30 дней' }),
 
   // Кнопки действий
   showButton: page.getByRole('button', { name: 'Показать' }),
-  resetButton: page.getByRole('button', { name: 'Сбросить' }),
-  closeButton: page.getByRole('button', { name: 'Закрыть' }),
 
   // Результаты
   resultsTable: page.locator('table'),
@@ -47,4 +36,4 @@ export const createLaborProtectionLocators = (page: Page) => ({
   employeeRows: page.locator('table tbody tr'),
 });
 
-export type LaborProtectionLocators = ReturnType<typeof createLaborProtectionLocators>;
+export type MedicalCommissionLocators = ReturnType<typeof createMedicalCommissionLocators>;

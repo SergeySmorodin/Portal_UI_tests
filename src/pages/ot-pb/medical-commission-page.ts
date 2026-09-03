@@ -1,15 +1,15 @@
 import { Page } from '@playwright/test';
 import { createBasePage } from '../base-page';
-import { createLaborProtectionLocators } from '../../locators/labor-protection.locators';
+import { createMedicalCommissionLocators } from '../../locators/medical-commission.locators';
 import { createOtPbBase } from './ot-pb-base';
 
-export const createLaborProtectionPage = (page: Page) => {
+export const createMedicalCommissionPage = (page: Page) => {
   const basePage = createBasePage(page);
-  const PAGE_PATH = '/OT_PB/LaborProtection';
+  const PAGE_PATH = '/OT_PB/MedicalCommission';
 
-  const locators = createLaborProtectionLocators(page);
+  const locators = createMedicalCommissionLocators(page);
 
-  const laborProtectionPage = {
+  const medicalCommissionPage = {
     ...basePage,
     locators,
     ...createOtPbBase(page, basePage, locators),
@@ -27,16 +27,12 @@ export const createLaborProtectionPage = (page: Page) => {
 
     selectAllCategories: async (categories: string[]): Promise<void> => {
       for (const category of categories) {
-        await laborProtectionPage.selectCategory(category);
+        await medicalCommissionPage.selectCategory(category);
       }
-    },
-
-    clickReset: async (): Promise<void> => {
-      await locators.resetButton.click();
     },
   };
 
-  return laborProtectionPage;
+  return medicalCommissionPage;
 };
 
-export type LaborProtectionPage = ReturnType<typeof createLaborProtectionPage>;
+export type MedicalCommissionPage = ReturnType<typeof createMedicalCommissionPage>;

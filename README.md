@@ -38,6 +38,10 @@ https://sergeysmorodin.github.io/Portal_UI_tests/
 
 `npm run check`
 
+# Единая проверка с фиксом
+
+`npm run lint:fix && npm run format`
+
 # Запустить тесты
 
 - Все тесты: `npm test`
