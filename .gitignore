@@ -7,3 +7,9 @@ playwright-report/
 .env
 .env.*
 *.log
+playwright/
+.playwright-mcp/
+.vscode/
+html-snapshots/
+scripts/
+src/
