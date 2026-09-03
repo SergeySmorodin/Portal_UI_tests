@@ -75,3 +75,6 @@ export const createWorkViaApi = async (
   const body = (await response.json()) as { pk: string };
   return body.pk;
 };
+
+
+// TODO: добавлять визиты через апи, предварительно создать сотрудников через апи

@@ -18,6 +18,7 @@ import {
   createCertificationSearchPage,
 } from '../pages/certification/certification-page';
 import { createResourcePlanningPage } from '../pages/services/supervision/resource-planning-page';
+import { createDistributionRequestsPage } from '../pages/services/supervision/distribution-requests-page';
 import { createLaborProtectionPage } from '../pages/ot-pb/labor-protection-page';
 import { createMedicalCommissionPage } from '../pages/ot-pb/medical-commission-page';
 import { createIndustrialSafetyPage } from '../pages/ot-pb/industrial-safety-page';
@@ -48,6 +49,7 @@ interface TestFixtures {
   certificationUploadPage: ReturnType<typeof createCertificationUploadPage>;
   certificationSearchPage: ReturnType<typeof createCertificationSearchPage>;
   resourcePlanningPage: ReturnType<typeof createResourcePlanningPage>;
+  distributionRequestsPage: ReturnType<typeof createDistributionRequestsPage>;
   laborProtectionPage: ReturnType<typeof createLaborProtectionPage>;
   medicalCommissionPage: ReturnType<typeof createMedicalCommissionPage>;
   industrialSafetyPage: ReturnType<typeof createIndustrialSafetyPage>;
@@ -150,6 +152,11 @@ export const test = base.extend<TestFixtures>({
   resourcePlanningPage: async ({ authenticatedPage }, use) => {
     const resourcePlanningPage = createResourcePlanningPage(authenticatedPage);
     await use(resourcePlanningPage);
+  },
+
+  distributionRequestsPage: async ({ authenticatedPage }, use) => {
+    const distributionRequestsPage = createDistributionRequestsPage(authenticatedPage);
+    await use(distributionRequestsPage);
   },
 
   laborProtectionPage: async ({ authenticatedPage }, use) => {

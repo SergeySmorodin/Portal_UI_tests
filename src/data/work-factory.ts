@@ -17,4 +17,5 @@ export const createWork = (overrides: Partial<WorkData> = {}): WorkData => ({
 
 export const workFactory = {
   standard: (overrides: Partial<WorkData> = {}) => createWork(overrides),
+  //TODO добавить работы всех видов (супервайзинг, врезки, утечки, комплекс)
 };

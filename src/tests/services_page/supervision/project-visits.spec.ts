@@ -5,7 +5,7 @@ import { projectFactory } from '../../../data/project-factory';
 import { workFactory } from '../../../data/work-factory';
 import { expect, test } from '../../../fixtures/test-fixtures';
 
-test.describe('Распределение на работу (resource-planning)', () => {
+test.describe('Распределение на работу', () => {
   test(
     'Создать работу через API и добавить визиты доступного персонала',
     { tag: '@smoke' },
@@ -74,3 +74,4 @@ test.describe('Распределение на работу (resource-planning)'
     }
   );
 });
+
