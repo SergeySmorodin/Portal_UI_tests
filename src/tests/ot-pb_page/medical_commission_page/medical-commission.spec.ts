@@ -52,10 +52,6 @@ test.describe('Медицинская комиссия', () => {
       ).toBeVisible();
     });
 
-    await test.step('Включить переключатель «Только с данными»', async () => {
-      await medicalCommissionPage.toggleShowData();
-    });
-
     await test.step('Нажать «Показать»', async () => {
       await medicalCommissionPage.clickShow();
     });
