@@ -3,7 +3,7 @@ import { BasePage } from '../base-page';
 import { config } from '../../config/config';
 
 export interface OtPbLocators {
-  showAllEmployeesToggle: Locator;
+  toggleShowData: Locator;
   showButton: Locator;
   surnameSearchInput: Locator;
   surnameOptions: Locator;
@@ -14,9 +14,9 @@ export interface OtPbLocators {
 
 export const createOtPbBase = (page: Page, basePage: BasePage, locators: OtPbLocators) => {
   return {
-    toggleShowAllEmployees: async (): Promise<void> => {
-      await basePage.waitForElement(locators.showAllEmployeesToggle);
-      await locators.showAllEmployeesToggle.click();
+    toggleShowData: async (): Promise<void> => {
+      await basePage.waitForElement(locators.toggleShowData);
+      await locators.toggleShowData.click();
     },
 
     clickShow: async (): Promise<void> => {
@@ -47,7 +47,7 @@ export const createOtPbBase = (page: Page, basePage: BasePage, locators: OtPbLoc
         throw new Error('selectRandomSurname: surname is empty');
       }
       await locators.surnameOptions.nth(randomIndex).click();
-      await locators.surnameCollapseButton.first().click();
+      // await locators.surnameCollapseButton.first().click();
       return surname;
     },
   };

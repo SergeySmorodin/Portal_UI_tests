@@ -11,8 +11,9 @@ export const createIndustrialSafetyLocators = (page: Page) => ({
     .locator('input[type="checkbox"]'),
 
   // Колонка «Фильтрация выбора»
-  showAllEmployeesToggle: page.locator('label:has(input[name="show-all-employees"])'),
+
   filterColumn: page.locator('div.bg-white').filter({ hasText: 'Фильтрация выбора' }),
+  toggleShowData: page.locator('label:has(input[name="hide-empty-records"])'),
 
   // Фильтры
   surnameSearchInput: page.getByPlaceholder('Поиск по фамилии...'),

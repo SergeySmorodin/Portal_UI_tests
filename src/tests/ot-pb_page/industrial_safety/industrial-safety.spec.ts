@@ -11,8 +11,8 @@ test.describe('Промышленная безопасность', () => {
       await industrialSafetyPage.selectAll();
     });
 
-    await test.step('Включить переключатель «Все сотрудники»', async () => {
-      await industrialSafetyPage.toggleShowAllEmployees();
+    await test.step('Включить переключатель «Только с данными»', async () => {
+      await industrialSafetyPage.toggleShowData();
     });
 
     await test.step('Нажать «Показать»', async () => {
@@ -48,10 +48,6 @@ test.describe('Промышленная безопасность', () => {
       await expect(
         industrialSafetyPage.locators.filterColumn.getByText(surname, { exact: true })
       ).toBeVisible();
-    });
-
-    await test.step('Включить переключатель «Все сотрудники»', async () => {
-      await industrialSafetyPage.toggleShowAllEmployees();
     });
 
     await test.step('Нажать «Показать»', async () => {

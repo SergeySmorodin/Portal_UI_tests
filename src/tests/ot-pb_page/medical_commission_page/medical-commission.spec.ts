@@ -13,8 +13,8 @@ test.describe('Медицинская комиссия', () => {
       await medicalCommissionPage.selectAllCategories(categories);
     });
 
-    await test.step('Включить переключатель «Все сотрудники»', async () => {
-      await medicalCommissionPage.toggleShowAllEmployees();
+    await test.step('Включить переключатель «Только с данными»', async () => {
+      await medicalCommissionPage.toggleShowData();
     });
 
     await test.step('Нажать «Показать»', async () => {
@@ -52,8 +52,8 @@ test.describe('Медицинская комиссия', () => {
       ).toBeVisible();
     });
 
-    await test.step('Включить переключатель «Все сотрудники»', async () => {
-      await medicalCommissionPage.toggleShowAllEmployees();
+    await test.step('Включить переключатель «Только с данными»', async () => {
+      await medicalCommissionPage.toggleShowData();
     });
 
     await test.step('Нажать «Показать»', async () => {

@@ -25,8 +25,8 @@ test.describe('Охрана труда', () => {
       await laborProtectionPage.selectAllCategories(categories);
     });
 
-    await test.step('Включить переключатель «Все сотрудники»', async () => {
-      await laborProtectionPage.toggleShowAllEmployees();
+    await test.step('Включить переключатель «Только с данными»', async () => {
+      await laborProtectionPage.toggleShowData();
     });
 
     await test.step('Нажать «Показать»', async () => {
@@ -64,10 +64,6 @@ test.describe('Охрана труда', () => {
       ).toBeVisible();
     });
 
-    await test.step('Включить переключатель «Все сотрудники»', async () => {
-      await laborProtectionPage.toggleShowAllEmployees();
-    });
-
     await test.step('Нажать «Показать»', async () => {
       await laborProtectionPage.clickShow();
     });
@@ -82,3 +78,6 @@ test.describe('Охрана труда', () => {
     });
   });
 });
+
+
+// TODO: проверить перекулючатить Только с данными в отдельном тесте

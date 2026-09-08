@@ -12,7 +12,7 @@ export const createMedicalCommissionLocators = (page: Page) => ({
       .locator('input[type="checkbox"]'),
 
   // Колонка «Фильтрация выбора»
-  showAllEmployeesToggle: page.locator('label:has(input[name="show-all-employees"])'),
+  toggleShowData: page.locator('label:has(input[name="hide-empty-records"])'),
   filterColumn: page.locator('div.bg-white').filter({ hasText: 'Фильтрация выбора' }),
 
   // Фильтры
