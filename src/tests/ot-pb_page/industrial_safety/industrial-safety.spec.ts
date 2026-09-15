@@ -11,10 +11,6 @@ test.describe('Промышленная безопасность', () => {
       await industrialSafetyPage.selectAll();
     });
 
-    await test.step('Включить переключатель «Только с данными»', async () => {
-      await industrialSafetyPage.toggleShowData();
-    });
-
     await test.step('Нажать «Показать»', async () => {
       await industrialSafetyPage.clickShow();
     });
@@ -61,6 +57,37 @@ test.describe('Промышленная безопасность', () => {
       await expect(
         industrialSafetyPage.locators.resultsTable.getByText(surname, { exact: true })
       ).toBeVisible();
+    });
+  });
+
+  test('Фильтр «Только с данными» исключает пустых сотрудников', async ({ industrialSafetyPage }) => {
+    await test.step('Открыть страницу промышленной безопасности', async () => {
+      await industrialSafetyPage.open();
+      await expect(industrialSafetyPage.locators.heading).toHaveText('Промышленная безопасность');
+    });
+
+    await test.step('Выбрать все категории', async () => {
+      await industrialSafetyPage.selectAll();
+    });
+
+    await test.step('Включить переключатель «Только с данными»', async () => {
+      await industrialSafetyPage.toggleShowData();
+    });
+
+    await test.step('Нажать «Показать»', async () => {
+      await industrialSafetyPage.clickShow();
+    });
+
+    await test.step('Проверить отображение результатов', async () => {
+      await expect(industrialSafetyPage.isResultsVisible()).resolves.toBe(true);
+      await expect(industrialSafetyPage.locators.resultsHeading).toBeVisible();
+    });
+
+    await test.step('Проверить, что отображаются только сотрудники с данными', async () => {
+      const employeeCount = await industrialSafetyPage.getEmployeeRowsCount();
+      expect(employeeCount).toBeGreaterThan(0);
+      const emptyCount = await industrialSafetyPage.getEmptyEmployeeRowsCount();
+      expect(emptyCount).toBe(0);
     });
   });
 });

@@ -13,10 +13,6 @@ test.describe('Медицинская комиссия', () => {
       await medicalCommissionPage.selectAllCategories(categories);
     });
 
-    await test.step('Включить переключатель «Только с данными»', async () => {
-      await medicalCommissionPage.toggleShowData();
-    });
-
     await test.step('Нажать «Показать»', async () => {
       await medicalCommissionPage.clickShow();
     });
@@ -63,6 +59,37 @@ test.describe('Медицинская комиссия', () => {
       await expect(
         medicalCommissionPage.locators.resultsTable.getByText(surname, { exact: true })
       ).toBeVisible();
+    });
+  });
+
+  test('Фильтр «Только с данными» исключает пустых сотрудников', async ({ medicalCommissionPage }) => {
+    await test.step('Открыть страницу медицинской комиссии', async () => {
+      await medicalCommissionPage.open();
+      await expect(medicalCommissionPage.locators.heading).toHaveText('Медицинская комиссия');
+    });
+
+    await test.step('Выбрать все категории', async () => {
+      await medicalCommissionPage.selectAllCategories(categories);
+    });
+
+    await test.step('Включить переключатель «Только с данными»', async () => {
+      await medicalCommissionPage.toggleShowData();
+    });
+
+    await test.step('Нажать «Показать»', async () => {
+      await medicalCommissionPage.clickShow();
+    });
+
+    await test.step('Проверить отображение результатов', async () => {
+      await expect(medicalCommissionPage.isResultsVisible()).resolves.toBe(true);
+      await expect(medicalCommissionPage.locators.resultsHeading).toBeVisible();
+    });
+
+    await test.step('Проверить, что отображаются только сотрудники с данными', async () => {
+      const employeeCount = await medicalCommissionPage.getEmployeeRowsCount();
+      expect(employeeCount).toBeGreaterThan(0);
+      const emptyCount = await medicalCommissionPage.getEmptyEmployeeRowsCount();
+      expect(emptyCount).toBe(0);
     });
   });
 });
