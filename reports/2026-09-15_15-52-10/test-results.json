@@ -1,0 +1,2708 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "D:\\WORK\\Projects\\Portal_UI_tests\\node_modules\\@playwright\\test\\cli.js",
+      "test"
+    ],
+    "configFile": "D:\\WORK\\Projects\\Portal_UI_tests\\playwright.config.ts",
+    "rootDir": "D:/WORK/Projects/Portal_UI_tests/src/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": "D:\\WORK\\Projects\\Portal_UI_tests\\global-setup.ts",
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 4
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/WORK/Projects/Portal_UI_tests/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "D:/WORK/Projects/Portal_UI_tests/src/tests",
+        "testIgnore": [
+          "**/login-page.spec.ts",
+          "**/workflows/**"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/WORK/Projects/Portal_UI_tests/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "chromium-login",
+        "name": "chromium-login",
+        "testDir": "D:/WORK/Projects/Portal_UI_tests/src/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/login-page.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results.json"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 4,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "certification_page\\certification-page.spec.ts",
+      "file": "certification_page/certification-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Загрузка сертификационных документов",
+          "file": "certification_page/certification-page.spec.ts",
+          "line": 49,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Загрузка разрешительного документа (Сертификат)",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 7208,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:18:60\n    at uploadCertificate (D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:16:3)\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:55:5",
+                        "location": {
+                          "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                          "column": 60,
+                          "line": 18
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 16 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Открыть страницу загрузки документа'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 17 |\u001b[39m     \u001b[36mawait\u001b[39m certificationUploadPage\u001b[33m.\u001b[39mopen()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 18 |\u001b[39m     \u001b[36mawait\u001b[39m expect(certificationUploadPage\u001b[33m.\u001b[39mlocators\u001b[33m.\u001b[39mheading)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Загрузка документа'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 19 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\n \u001b[90m 21 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Выбрать тип и заполнить основные поля'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                            "column": 60,
+                            "line": 18
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 16 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Открыть страницу загрузки документа'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 17 |\u001b[39m     \u001b[36mawait\u001b[39m certificationUploadPage\u001b[33m.\u001b[39mopen()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 18 |\u001b[39m     \u001b[36mawait\u001b[39m expect(certificationUploadPage\u001b[33m.\u001b[39mlocators\u001b[33m.\u001b[39mheading)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Загрузка документа'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 19 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\n \u001b[90m 21 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Выбрать тип и заполнить основные поля'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:18:60\u001b[22m\n\u001b[2m    at uploadCertificate (D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:16:3)\u001b[22m\n\u001b[2m    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:55:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу загрузки документа",
+                          "duration": 5701,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:18:60\n    at uploadCertificate (D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:16:3)\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:55:5",
+                            "location": {
+                              "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                              "column": 60,
+                              "line": 18
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 16 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Открыть страницу загрузки документа'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 17 |\u001b[39m     \u001b[36mawait\u001b[39m certificationUploadPage\u001b[33m.\u001b[39mopen()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 18 |\u001b[39m     \u001b[36mawait\u001b[39m expect(certificationUploadPage\u001b[33m.\u001b[39mlocators\u001b[33m.\u001b[39mheading)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Загрузка документа'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 19 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\n \u001b[90m 21 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Выбрать тип и заполнить основные поля'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:10.406Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\certification_page-certifi-b2f4b-ьного-документа-Сертификат--chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\certification_page-certifi-b2f4b-ьного-документа-Сертификат--chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\certification_page-certifi-b2f4b-ьного-документа-Сертификат--chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                        "column": 60,
+                        "line": 18
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "f76d5ca576d474f14c02-d1a694dbff1b2787b716",
+              "file": "certification_page/certification-page.spec.ts",
+              "line": 50,
+              "column": 3
+            },
+            {
+              "title": "Загрузка протокола испытаний",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 6991,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:18:60\n    at uploadCertificate (D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:16:3)\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:68:5",
+                        "location": {
+                          "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                          "column": 60,
+                          "line": 18
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 16 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Открыть страницу загрузки документа'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 17 |\u001b[39m     \u001b[36mawait\u001b[39m certificationUploadPage\u001b[33m.\u001b[39mopen()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 18 |\u001b[39m     \u001b[36mawait\u001b[39m expect(certificationUploadPage\u001b[33m.\u001b[39mlocators\u001b[33m.\u001b[39mheading)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Загрузка документа'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 19 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\n \u001b[90m 21 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Выбрать тип и заполнить основные поля'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                            "column": 60,
+                            "line": 18
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 16 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Открыть страницу загрузки документа'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 17 |\u001b[39m     \u001b[36mawait\u001b[39m certificationUploadPage\u001b[33m.\u001b[39mopen()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 18 |\u001b[39m     \u001b[36mawait\u001b[39m expect(certificationUploadPage\u001b[33m.\u001b[39mlocators\u001b[33m.\u001b[39mheading)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Загрузка документа'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 19 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\n \u001b[90m 21 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Выбрать тип и заполнить основные поля'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:18:60\u001b[22m\n\u001b[2m    at uploadCertificate (D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:16:3)\u001b[22m\n\u001b[2m    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:68:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу загрузки документа",
+                          "duration": 5661,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:18:60\n    at uploadCertificate (D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:16:3)\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:68:5",
+                            "location": {
+                              "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                              "column": 60,
+                              "line": 18
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 16 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Открыть страницу загрузки документа'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 17 |\u001b[39m     \u001b[36mawait\u001b[39m certificationUploadPage\u001b[33m.\u001b[39mopen()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 18 |\u001b[39m     \u001b[36mawait\u001b[39m expect(certificationUploadPage\u001b[33m.\u001b[39mlocators\u001b[33m.\u001b[39mheading)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Загрузка документа'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 19 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\n \u001b[90m 21 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Выбрать тип и заполнить основные поля'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:10.406Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\certification_page-certifi-5a3be-агрузка-протокола-испытаний-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\certification_page-certifi-5a3be-агрузка-протокола-испытаний-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\certification_page-certifi-5a3be-агрузка-протокола-испытаний-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                        "column": 60,
+                        "line": 18
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "f76d5ca576d474f14c02-588f4162d8fb3f75fa96",
+              "file": "certification_page/certification-page.spec.ts",
+              "line": 63,
+              "column": 3
+            },
+            {
+              "title": "Загрузка нормативного документа (ТУ/ПМ)",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 7236,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:18:60\n    at uploadCertificate (D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:16:3)\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:81:5",
+                        "location": {
+                          "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                          "column": 60,
+                          "line": 18
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 16 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Открыть страницу загрузки документа'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 17 |\u001b[39m     \u001b[36mawait\u001b[39m certificationUploadPage\u001b[33m.\u001b[39mopen()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 18 |\u001b[39m     \u001b[36mawait\u001b[39m expect(certificationUploadPage\u001b[33m.\u001b[39mlocators\u001b[33m.\u001b[39mheading)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Загрузка документа'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 19 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\n \u001b[90m 21 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Выбрать тип и заполнить основные поля'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                            "column": 60,
+                            "line": 18
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 16 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Открыть страницу загрузки документа'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 17 |\u001b[39m     \u001b[36mawait\u001b[39m certificationUploadPage\u001b[33m.\u001b[39mopen()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 18 |\u001b[39m     \u001b[36mawait\u001b[39m expect(certificationUploadPage\u001b[33m.\u001b[39mlocators\u001b[33m.\u001b[39mheading)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Загрузка документа'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 19 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\n \u001b[90m 21 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Выбрать тип и заполнить основные поля'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:18:60\u001b[22m\n\u001b[2m    at uploadCertificate (D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:16:3)\u001b[22m\n\u001b[2m    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:81:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу загрузки документа",
+                          "duration": 5690,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:18:60\n    at uploadCertificate (D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:16:3)\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:81:5",
+                            "location": {
+                              "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                              "column": 60,
+                              "line": 18
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 16 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Открыть страницу загрузки документа'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 17 |\u001b[39m     \u001b[36mawait\u001b[39m certificationUploadPage\u001b[33m.\u001b[39mopen()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 18 |\u001b[39m     \u001b[36mawait\u001b[39m expect(certificationUploadPage\u001b[33m.\u001b[39mlocators\u001b[33m.\u001b[39mheading)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Загрузка документа'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 19 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\n \u001b[90m 21 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Выбрать тип и заполнить основные поля'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:10.441Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\certification_page-certifi-151bc-рмативного-документа-ТУ-ПМ--chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\certification_page-certifi-151bc-рмативного-документа-ТУ-ПМ--chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\certification_page-certifi-151bc-рмативного-документа-ТУ-ПМ--chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                        "column": 60,
+                        "line": 18
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "f76d5ca576d474f14c02-ce5b139ba6f3dd50a3b6",
+              "file": "certification_page/certification-page.spec.ts",
+              "line": 76,
+              "column": 3
+            },
+            {
+              "title": "Загрузка руководства по эксплуатации",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 7088,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:18:60\n    at uploadCertificate (D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:16:3)\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:94:5",
+                        "location": {
+                          "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                          "column": 60,
+                          "line": 18
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 16 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Открыть страницу загрузки документа'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 17 |\u001b[39m     \u001b[36mawait\u001b[39m certificationUploadPage\u001b[33m.\u001b[39mopen()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 18 |\u001b[39m     \u001b[36mawait\u001b[39m expect(certificationUploadPage\u001b[33m.\u001b[39mlocators\u001b[33m.\u001b[39mheading)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Загрузка документа'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 19 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\n \u001b[90m 21 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Выбрать тип и заполнить основные поля'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                            "column": 60,
+                            "line": 18
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 16 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Открыть страницу загрузки документа'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 17 |\u001b[39m     \u001b[36mawait\u001b[39m certificationUploadPage\u001b[33m.\u001b[39mopen()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 18 |\u001b[39m     \u001b[36mawait\u001b[39m expect(certificationUploadPage\u001b[33m.\u001b[39mlocators\u001b[33m.\u001b[39mheading)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Загрузка документа'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 19 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\n \u001b[90m 21 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Выбрать тип и заполнить основные поля'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:18:60\u001b[22m\n\u001b[2m    at uploadCertificate (D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:16:3)\u001b[22m\n\u001b[2m    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:94:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу загрузки документа",
+                          "duration": 5614,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:18:60\n    at uploadCertificate (D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:16:3)\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:94:5",
+                            "location": {
+                              "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                              "column": 60,
+                              "line": 18
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 16 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Открыть страницу загрузки документа'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 17 |\u001b[39m     \u001b[36mawait\u001b[39m certificationUploadPage\u001b[33m.\u001b[39mopen()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 18 |\u001b[39m     \u001b[36mawait\u001b[39m expect(certificationUploadPage\u001b[33m.\u001b[39mlocators\u001b[33m.\u001b[39mheading)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Загрузка документа'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 19 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\n \u001b[90m 21 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Выбрать тип и заполнить основные поля'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:10.468Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\certification_page-certifi-fd229-руководства-по-эксплуатации-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\certification_page-certifi-fd229-руководства-по-эксплуатации-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\certification_page-certifi-fd229-руководства-по-эксплуатации-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                        "column": 60,
+                        "line": 18
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "f76d5ca576d474f14c02-9490962b514aed26f1fc",
+              "file": "certification_page/certification-page.spec.ts",
+              "line": 89,
+              "column": 3
+            },
+            {
+              "title": "Загрузка паспорта оборудования",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 6938,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:18:60\n    at uploadCertificate (D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:16:3)\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:107:5",
+                        "location": {
+                          "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                          "column": 60,
+                          "line": 18
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 16 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Открыть страницу загрузки документа'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 17 |\u001b[39m     \u001b[36mawait\u001b[39m certificationUploadPage\u001b[33m.\u001b[39mopen()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 18 |\u001b[39m     \u001b[36mawait\u001b[39m expect(certificationUploadPage\u001b[33m.\u001b[39mlocators\u001b[33m.\u001b[39mheading)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Загрузка документа'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 19 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\n \u001b[90m 21 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Выбрать тип и заполнить основные поля'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                            "column": 60,
+                            "line": 18
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 16 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Открыть страницу загрузки документа'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 17 |\u001b[39m     \u001b[36mawait\u001b[39m certificationUploadPage\u001b[33m.\u001b[39mopen()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 18 |\u001b[39m     \u001b[36mawait\u001b[39m expect(certificationUploadPage\u001b[33m.\u001b[39mlocators\u001b[33m.\u001b[39mheading)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Загрузка документа'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 19 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\n \u001b[90m 21 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Выбрать тип и заполнить основные поля'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:18:60\u001b[22m\n\u001b[2m    at uploadCertificate (D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:16:3)\u001b[22m\n\u001b[2m    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:107:5\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу загрузки документа",
+                          "duration": 5649,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  locator('h1')\nExpected: \u001b[32m\"Загрузка документа\"\u001b[39m\nReceived: \u001b[31m\"404 - Страница не найдена!\"\u001b[39m\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    14 × locator resolved to <h1 class=\"title-page\">404 - Страница не найдена!</h1>\u001b[22m\n\u001b[2m       - unexpected value \"404 - Страница не найдена!\"\u001b[22m\n\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:18:60\n    at uploadCertificate (D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:16:3)\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts:107:5",
+                            "location": {
+                              "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                              "column": 60,
+                              "line": 18
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 16 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Открыть страницу загрузки документа'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 17 |\u001b[39m     \u001b[36mawait\u001b[39m certificationUploadPage\u001b[33m.\u001b[39mopen()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 18 |\u001b[39m     \u001b[36mawait\u001b[39m expect(certificationUploadPage\u001b[33m.\u001b[39mlocators\u001b[33m.\u001b[39mheading)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m'Загрузка документа'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 19 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m\n \u001b[90m 21 |\u001b[39m   \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Выбрать тип и заполнить основные поля'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:18.754Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\certification_page-certifi-dc9ba-рузка-паспорта-оборудования-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\certification_page-certifi-dc9ba-рузка-паспорта-оборудования-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\certification_page-certifi-dc9ba-рузка-паспорта-оборудования-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\certification_page\\certification-page.spec.ts",
+                        "column": 60,
+                        "line": 18
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "f76d5ca576d474f14c02-be0823d36760a26dc3f5",
+              "file": "certification_page/certification-page.spec.ts",
+              "line": 102,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "counterparties_page\\company-page.spec.ts",
+      "file": "counterparties_page/company-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Создание компании",
+          "file": "counterparties_page/company-page.spec.ts",
+          "line": 7,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Заполнение формы, сохранение и проверка в списке",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2616,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу создания компании",
+                          "duration": 690
+                        },
+                        {
+                          "title": "Заполнить основные поля",
+                          "duration": 126
+                        },
+                        {
+                          "title": "Сохранить компанию",
+                          "duration": 165
+                        },
+                        {
+                          "title": "Найти компанию в списке через поиск",
+                          "duration": 938
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:18.863Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b71115f6ac3d09ca1873-6a1a01898970f950b8bc",
+              "file": "counterparties_page/company-page.spec.ts",
+              "line": 8,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "counterparties_page\\curator-page.spec.ts",
+      "file": "counterparties_page/curator-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Создание куратора",
+          "file": "counterparties_page/curator-page.spec.ts",
+          "line": 7,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Заполнение формы, сохранение и проверка в списке",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2916,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу создания куратора",
+                          "duration": 714
+                        },
+                        {
+                          "title": "Заполнить основные поля",
+                          "duration": 219
+                        },
+                        {
+                          "title": "Выбрать рандомную компанию",
+                          "duration": 138
+                        },
+                        {
+                          "title": "Сохранить куратора",
+                          "duration": 142
+                        },
+                        {
+                          "title": "Найти куратора в списке через поиск",
+                          "duration": 924
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:18.884Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f2060dabeff204926a3-ae4ff445d926a0eb53ab",
+              "file": "counterparties_page/curator-page.spec.ts",
+              "line": 8,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "main_page\\main-page.spec.ts",
+      "file": "main_page/main-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Главная страница",
+          "file": "main_page/main-page.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Отображение элементов главной страницы",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1895,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть главную страницу",
+                          "duration": 644
+                        },
+                        {
+                          "title": "Проверить ссылку на профиль сотрудника",
+                          "duration": 20
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:18.978Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a66da85306ab5f08ab39-02562e98348f34e54b86",
+              "file": "main_page/main-page.spec.ts",
+              "line": 4,
+              "column": 3
+            },
+            {
+              "title": "Переход в профиль сотрудника с главной страницы",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1173,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть главную страницу",
+                          "duration": 600
+                        },
+                        {
+                          "title": "Кликнуть \"Профиль сотрудника\"",
+                          "duration": 55
+                        },
+                        {
+                          "title": "Проверить переход на страницу профиля",
+                          "duration": 2
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:21.258Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a66da85306ab5f08ab39-86d243669a859672cc0b",
+              "file": "main_page/main-page.spec.ts",
+              "line": 14,
+              "column": 3
+            },
+            {
+              "title": "Схема разделов отображается на главной странице",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1573,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть главную страницу",
+                          "duration": 635
+                        },
+                        {
+                          "title": "Проверить раздел \"Сертификаты\"",
+                          "duration": 8
+                        },
+                        {
+                          "title": "Проверить раздел \"Контрагенты\"",
+                          "duration": 5
+                        },
+                        {
+                          "title": "Проверить раздел \"Договоры\"",
+                          "duration": 4
+                        },
+                        {
+                          "title": "Проверить раздел \"Проекты\"",
+                          "duration": 6
+                        },
+                        {
+                          "title": "Проверить раздел \"Работы\"",
+                          "duration": 6
+                        },
+                        {
+                          "title": "Проверить раздел \"Центр аналитики\"",
+                          "duration": 5
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:21.873Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a66da85306ab5f08ab39-224a10ba1ebdc779a73f",
+              "file": "main_page/main-page.spec.ts",
+              "line": 32,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ot-pb_page\\industrial_safety\\industrial-safety.spec.ts",
+      "file": "ot-pb_page/industrial_safety/industrial-safety.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Промышленная безопасность",
+          "file": "ot-pb_page/industrial_safety/industrial-safety.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Выбор категорий и отображение всех сотрудников",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2189,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу промышленной безопасности",
+                          "duration": 677
+                        },
+                        {
+                          "title": "Выбрать всё",
+                          "duration": 847
+                        },
+                        {
+                          "title": "Включить переключатель «Только с данными»",
+                          "duration": 48
+                        },
+                        {
+                          "title": "Нажать «Показать»",
+                          "duration": 71
+                        },
+                        {
+                          "title": "Проверить отображение таблицы результатов",
+                          "duration": 17
+                        },
+                        {
+                          "title": "Проверить отображение сотрудников",
+                          "duration": 13
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:22.250Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bbecb3b0a60f29c3412e-3a92444e546130c75cdb",
+              "file": "ot-pb_page/industrial_safety/industrial-safety.spec.ts",
+              "line": 4,
+              "column": 3
+            },
+            {
+              "title": "Фильтр по ФИО отображает выбранного сотрудника",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2694,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу промышленной безопасности",
+                          "duration": 629
+                        },
+                        {
+                          "title": "Выбрать всё",
+                          "duration": 1352
+                        },
+                        {
+                          "title": "Выбрать случайную фамилию из выпадающего списка",
+                          "duration": 140
+                        },
+                        {
+                          "title": "Проверить совпадение выбранной ФИО «Кожемякина Александра Юрьевна»",
+                          "duration": 12
+                        },
+                        {
+                          "title": "Нажать «Показать»",
+                          "duration": 52
+                        },
+                        {
+                          "title": "Проверить отображение выбранного сотрудника в таблице",
+                          "duration": 31
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:22.461Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bbecb3b0a60f29c3412e-3c10b53cb7751d27dc22",
+              "file": "ot-pb_page/industrial_safety/industrial-safety.spec.ts",
+              "line": 33,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ot-pb_page\\labor_protection_page\\labor-protection.spec.ts",
+      "file": "ot-pb_page/labor_protection_page/labor-protection.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Охрана труда",
+          "file": "ot-pb_page/labor_protection_page/labor-protection.spec.ts",
+          "line": 17,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Выбор категории и отображение всех сотрудников",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2486,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу охраны труда",
+                          "duration": 1207
+                        },
+                        {
+                          "title": "Выбрать все категории",
+                          "duration": 698
+                        },
+                        {
+                          "title": "Нажать «Показать»",
+                          "duration": 99
+                        },
+                        {
+                          "title": "Проверить отображение таблицы результатов",
+                          "duration": 48
+                        },
+                        {
+                          "title": "Проверить отображение сотрудников",
+                          "duration": 19
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:23.484Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "04ef7efef268179576cb-3cdea97cfd9629596f02",
+              "file": "ot-pb_page/labor_protection_page/labor-protection.spec.ts",
+              "line": 18,
+              "column": 3
+            },
+            {
+              "title": "Фильтр по ФИО отображает выбранного сотрудника",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2668,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу охраны труда",
+                          "duration": 706
+                        },
+                        {
+                          "title": "Выбрать все категории",
+                          "duration": 1199
+                        },
+                        {
+                          "title": "Выбрать случайную фамилию из выпадающего списка",
+                          "duration": 206
+                        },
+                        {
+                          "title": "Проверить совпадение выбранной ФИО «Бердюгин Евгений Олегович»",
+                          "duration": 18
+                        },
+                        {
+                          "title": "Нажать «Показать»",
+                          "duration": 72
+                        },
+                        {
+                          "title": "Проверить отображение выбранного сотрудника в таблице",
+                          "duration": 40
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:24.496Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "04ef7efef268179576cb-8911bf79c99601043a02",
+              "file": "ot-pb_page/labor_protection_page/labor-protection.spec.ts",
+              "line": 43,
+              "column": 3
+            },
+            {
+              "title": "Фильтр «Только с данными» исключает пустых сотрудников",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 3614,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу охраны труда",
+                          "duration": 654
+                        },
+                        {
+                          "title": "Выбрать все категории",
+                          "duration": 1886
+                        },
+                        {
+                          "title": "Включить переключатель «Только с данными»",
+                          "duration": 40
+                        },
+                        {
+                          "title": "Нажать «Показать»",
+                          "duration": 101
+                        },
+                        {
+                          "title": "Проверить отображение результатов",
+                          "duration": 48
+                        },
+                        {
+                          "title": "Проверить, что отображаются только сотрудники с данными",
+                          "duration": 241
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:25.188Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "04ef7efef268179576cb-c4cf1bc88e9bbb881853",
+              "file": "ot-pb_page/labor_protection_page/labor-protection.spec.ts",
+              "line": 77,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ot-pb_page\\medical_commission_page\\medical-commission.spec.ts",
+      "file": "ot-pb_page/medical_commission_page/medical-commission.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Медицинская комиссия",
+          "file": "ot-pb_page/medical_commission_page/medical-commission.spec.ts",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Выбор категории и отображение всех сотрудников",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2888,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу медицинской комиссии",
+                          "duration": 708
+                        },
+                        {
+                          "title": "Выбрать все категории",
+                          "duration": 1420
+                        },
+                        {
+                          "title": "Включить переключатель «Только с данными»",
+                          "duration": 56
+                        },
+                        {
+                          "title": "Нажать «Показать»",
+                          "duration": 122
+                        },
+                        {
+                          "title": "Проверить отображение таблицы результатов",
+                          "duration": 55
+                        },
+                        {
+                          "title": "Проверить отображение сотрудников",
+                          "duration": 20
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:26.019Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "621763cac939ff6c7b98-0ebda7affb6fa7ce55d9",
+              "file": "ot-pb_page/medical_commission_page/medical-commission.spec.ts",
+              "line": 6,
+              "column": 3
+            },
+            {
+              "title": "Фильтр по ФИО отображает выбранного сотрудника",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2681,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу медицинской комиссии",
+                          "duration": 751
+                        },
+                        {
+                          "title": "Выбрать все категории",
+                          "duration": 939
+                        },
+                        {
+                          "title": "Выбрать случайную фамилию из выпадающего списка",
+                          "duration": 233
+                        },
+                        {
+                          "title": "Проверить совпадение выбранной ФИО «Грабская Виктория Валерьевна»",
+                          "duration": 25
+                        },
+                        {
+                          "title": "Нажать «Показать»",
+                          "duration": 62
+                        },
+                        {
+                          "title": "Проверить отображение выбранного сотрудника в таблице",
+                          "duration": 59
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:27.140Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "621763cac939ff6c7b98-1ec03c0bec18d53133f1",
+              "file": "ot-pb_page/medical_commission_page/medical-commission.spec.ts",
+              "line": 35,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "profile_page\\lk-page.spec.ts",
+      "file": "profile_page/lk-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Профиль сотрудника (ЛК)",
+          "file": "profile_page/lk-page.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Отображение вкладок профиля",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1246,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть профиль сотрудника",
+                          "duration": 661
+                        },
+                        {
+                          "title": "Проверить вкладку \"Общая информация\"",
+                          "duration": 9
+                        },
+                        {
+                          "title": "Проверить вкладку \"История проектов\"",
+                          "duration": 11
+                        },
+                        {
+                          "title": "Проверить вкладку \"Аттестация\"",
+                          "duration": 7
+                        },
+                        {
+                          "title": "Проверить вкладку \"Доп. образование\"",
+                          "duration": 6
+                        },
+                        {
+                          "title": "Проверить вкладку \"Настройки\"",
+                          "duration": 10
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:27.226Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5fa79f23a82d317fcb-378e9dc9c8b567f7c571",
+              "file": "profile_page/lk-page.spec.ts",
+              "line": 4,
+              "column": 3
+            },
+            {
+              "title": "Вкладка \"Общая информация\" содержит основные данные сотрудника",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1380,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть профиль сотрудника",
+                          "duration": 635
+                        },
+                        {
+                          "title": "Проверить заголовок с ФИО пользователя",
+                          "duration": 12
+                        },
+                        {
+                          "title": "Проверить отображение основных полей",
+                          "duration": 83
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:28.502Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5fa79f23a82d317fcb-574426d40944625a311f",
+              "file": "profile_page/lk-page.spec.ts",
+              "line": 16,
+              "column": 3
+            },
+            {
+              "title": "Вкладка \"История проектов\" показывает пустое состояние",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1247,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть вкладку \"История проектов\"",
+                          "duration": 729
+                        },
+                        {
+                          "title": "Проверить сообщение об отсутствии проектов",
+                          "duration": 12
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:28.848Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5fa79f23a82d317fcb-549112322d91105d2314",
+              "file": "profile_page/lk-page.spec.ts",
+              "line": 33,
+              "column": 3
+            },
+            {
+              "title": "Переключение между вкладками профиля",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1538,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть профиль сотрудника",
+                          "duration": 674
+                        },
+                        {
+                          "title": "Открыть вкладку \"Аттестация\" и проверить заголовок раздела",
+                          "duration": 65
+                        },
+                        {
+                          "title": "Открыть вкладку \"Доп. образование\" и проверить заголовок раздела",
+                          "duration": 149
+                        },
+                        {
+                          "title": "Вернуться на вкладку \"Общая информация\"",
+                          "duration": 137
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:28.942Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5fa79f23a82d317fcb-eba92f878e74cdecaa07",
+              "file": "profile_page/lk-page.spec.ts",
+              "line": 44,
+              "column": 3
+            },
+            {
+              "title": "Боковое меню содержит основные разделы портала",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1250,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть профиль сотрудника",
+                          "duration": 573
+                        },
+                        {
+                          "title": "Открыть боковое меню",
+                          "duration": 51
+                        },
+                        {
+                          "title": "Проверить пункт меню \"Главная\"",
+                          "duration": 4
+                        },
+                        {
+                          "title": "Проверить пункт меню \"СКиП\"",
+                          "duration": 5
+                        },
+                        {
+                          "title": "Проверить пункт меню \"ТДО\"",
+                          "duration": 5
+                        },
+                        {
+                          "title": "Проверить пункт меню \"Сопровождение проектов\"",
+                          "duration": 6
+                        },
+                        {
+                          "title": "Проверить пункт меню \"Сервисы\"",
+                          "duration": 6
+                        },
+                        {
+                          "title": "Проверить пункт меню \"Охрана труда\"",
+                          "duration": 4
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:29.904Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5fa79f23a82d317fcb-6f6cda80eb7d932cdf0a",
+              "file": "profile_page/lk-page.spec.ts",
+              "line": 67,
+              "column": 3
+            },
+            {
+              "title": "Вкладка \"Настройки\" содержит форму изменения пароля",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1099,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть вкладку \"Настройки\"",
+                          "duration": 627
+                        },
+                        {
+                          "title": "Проверить элементы управления настройками",
+                          "duration": 12
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:30.121Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5fa79f23a82d317fcb-b9f890aaf364c3714de2",
+              "file": "profile_page/lk-page.spec.ts",
+              "line": 83,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "services_page\\supervision\\business-trip-request.spec.ts",
+      "file": "services_page/supervision/business-trip-request.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Создание заявки на командировку",
+          "file": "services_page/supervision/business-trip-request.spec.ts",
+          "line": 14,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Создание заявки на командировку после добавления визитов",
+              "ok": false,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 11135,
+                      "error": {
+                        "message": "TimeoutError: locator.waitFor: Timeout 6000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByPlaceholder('Поиск по названию, ИНН...') to be visible\u001b[22m\n",
+                        "stack": "TimeoutError: locator.waitFor: Timeout 6000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByPlaceholder('Поиск по названию, ИНН...') to be visible\u001b[22m\n\n    at Object.expectVisible (D:\\WORK\\Projects\\Portal_UI_tests\\src\\pages\\base-page.ts:29:21)\n    at Object.open (D:\\WORK\\Projects\\Portal_UI_tests\\src\\pages\\services\\supervision\\distribution-requests-page.ts:53:22)\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\services_page\\supervision\\business-trip-request.spec.ts:66:9\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\services_page\\supervision\\business-trip-request.spec.ts:65:7",
+                        "location": {
+                          "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\pages\\base-page.ts",
+                          "column": 21,
+                          "line": 29
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39m..\\pages\\base-page.ts:29\n\n\u001b[0m \u001b[90m 27 |\u001b[39m\n \u001b[90m 28 |\u001b[39m     expectVisible\u001b[33m:\u001b[39m \u001b[36masync\u001b[39m (locator\u001b[33m:\u001b[39m \u001b[33mLocator\u001b[39m)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[36mvoid\u001b[39m\u001b[33m>\u001b[39m \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m       \u001b[36mawait\u001b[39m locator\u001b[33m.\u001b[39mwaitFor({ state\u001b[33m:\u001b[39m \u001b[32m'visible'\u001b[39m\u001b[33m,\u001b[39m timeout })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m     }\u001b[33m,\u001b[39m\n \u001b[90m 31 |\u001b[39m\n \u001b[90m 32 |\u001b[39m     waitForElement\u001b[33m:\u001b[39m \u001b[36masync\u001b[39m (locator\u001b[33m:\u001b[39m \u001b[33mLocator\u001b[39m\u001b[33m,\u001b[39m t\u001b[33m:\u001b[39m number \u001b[33m=\u001b[39m timeout)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[36mvoid\u001b[39m\u001b[33m>\u001b[39m \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\pages\\base-page.ts",
+                            "column": 21,
+                            "line": 29
+                          },
+                          "message": "TimeoutError: locator.waitFor: Timeout 6000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByPlaceholder('Поиск по названию, ИНН...') to be visible\u001b[22m\n\n\n\u001b[90m   at \u001b[39m..\\pages\\base-page.ts:29\n\n\u001b[0m \u001b[90m 27 |\u001b[39m\n \u001b[90m 28 |\u001b[39m     expectVisible\u001b[33m:\u001b[39m \u001b[36masync\u001b[39m (locator\u001b[33m:\u001b[39m \u001b[33mLocator\u001b[39m)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[36mvoid\u001b[39m\u001b[33m>\u001b[39m \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m       \u001b[36mawait\u001b[39m locator\u001b[33m.\u001b[39mwaitFor({ state\u001b[33m:\u001b[39m \u001b[32m'visible'\u001b[39m\u001b[33m,\u001b[39m timeout })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m     }\u001b[33m,\u001b[39m\n \u001b[90m 31 |\u001b[39m\n \u001b[90m 32 |\u001b[39m     waitForElement\u001b[33m:\u001b[39m \u001b[36masync\u001b[39m (locator\u001b[33m:\u001b[39m \u001b[33mLocator\u001b[39m\u001b[33m,\u001b[39m t\u001b[33m:\u001b[39m number \u001b[33m=\u001b[39m timeout)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[36mvoid\u001b[39m\u001b[33m>\u001b[39m \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at Object.expectVisible (D:\\WORK\\Projects\\Portal_UI_tests\\src\\pages\\base-page.ts:29:21)\u001b[22m\n\u001b[2m    at Object.open (D:\\WORK\\Projects\\Portal_UI_tests\\src\\pages\\services\\supervision\\distribution-requests-page.ts:53:22)\u001b[22m\n\u001b[2m    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\services_page\\supervision\\business-trip-request.spec.ts:66:9\u001b[22m\n\u001b[2m    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\services_page\\supervision\\business-trip-request.spec.ts:65:7\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Создать мегапроект и работу через API",
+                          "duration": 1103
+                        },
+                        {
+                          "title": "Добавить визиты на странице распределения",
+                          "duration": 2869
+                        },
+                        {
+                          "title": "Найти работу на странице «Создание заявки на командировку» и выбрать проект",
+                          "duration": 6250,
+                          "error": {
+                            "message": "TimeoutError: locator.waitFor: Timeout 6000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByPlaceholder('Поиск по названию, ИНН...') to be visible\u001b[22m\n",
+                            "stack": "TimeoutError: locator.waitFor: Timeout 6000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByPlaceholder('Поиск по названию, ИНН...') to be visible\u001b[22m\n\n    at Object.expectVisible (D:\\WORK\\Projects\\Portal_UI_tests\\src\\pages\\base-page.ts:29:21)\n    at Object.open (D:\\WORK\\Projects\\Portal_UI_tests\\src\\pages\\services\\supervision\\distribution-requests-page.ts:53:22)\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\services_page\\supervision\\business-trip-request.spec.ts:66:9\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\services_page\\supervision\\business-trip-request.spec.ts:65:7",
+                            "location": {
+                              "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\pages\\base-page.ts",
+                              "column": 21,
+                              "line": 29
+                            },
+                            "snippet": "\u001b[90m   at \u001b[39m..\\pages\\base-page.ts:29\n\n\u001b[0m \u001b[90m 27 |\u001b[39m\n \u001b[90m 28 |\u001b[39m     expectVisible\u001b[33m:\u001b[39m \u001b[36masync\u001b[39m (locator\u001b[33m:\u001b[39m \u001b[33mLocator\u001b[39m)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[36mvoid\u001b[39m\u001b[33m>\u001b[39m \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m       \u001b[36mawait\u001b[39m locator\u001b[33m.\u001b[39mwaitFor({ state\u001b[33m:\u001b[39m \u001b[32m'visible'\u001b[39m\u001b[33m,\u001b[39m timeout })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m     }\u001b[33m,\u001b[39m\n \u001b[90m 31 |\u001b[39m\n \u001b[90m 32 |\u001b[39m     waitForElement\u001b[33m:\u001b[39m \u001b[36masync\u001b[39m (locator\u001b[33m:\u001b[39m \u001b[33mLocator\u001b[39m\u001b[33m,\u001b[39m t\u001b[33m:\u001b[39m number \u001b[33m=\u001b[39m timeout)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[36mvoid\u001b[39m\u001b[33m>\u001b[39m \u001b[33m=>\u001b[39m {\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:30.166Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\services_page-supervision--2d665-ку-после-добавления-визитов-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\services_page-supervision--2d665-ку-после-добавления-визитов-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\services_page-supervision--2d665-ку-после-добавления-визитов-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\pages\\base-page.ts",
+                        "column": 21,
+                        "line": 29
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "13e804cd1c457db844c4-57f7de5196581b97f1e8",
+              "file": "services_page/supervision/business-trip-request.spec.ts",
+              "line": 15,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "services_page\\supervision\\project-visits.spec.ts",
+      "file": "services_page/supervision/project-visits.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Распределение на работу",
+          "file": "services_page/supervision/project-visits.spec.ts",
+          "line": 8,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Создать работу через API и добавить визиты доступного персонала",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 5094,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Создать мегапроект и работу через API",
+                          "duration": 1171
+                        },
+                        {
+                          "title": "Найти созданную работу на странице распределения",
+                          "duration": 1880
+                        },
+                        {
+                          "title": "Добавить визиты доступного персонала",
+                          "duration": 892
+                        },
+                        {
+                          "title": "Проверить появление работников в Заявленном персонале",
+                          "duration": 221
+                        },
+                        {
+                          "title": "Открыть Управление визитами и сохранить",
+                          "duration": 495
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:30.523Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4f29e1ce68dbd95a1dfa-c57fbc7ca0cdfd832070",
+              "file": "services_page/supervision/project-visits.spec.ts",
+              "line": 9,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "tdo_page\\contract-page.spec.ts",
+      "file": "tdo_page/contract-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Создание договора",
+          "file": "tdo_page/contract-page.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Заполнение формы, сохранение и проверка в списке",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3838,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу создания договора",
+                          "duration": 595
+                        },
+                        {
+                          "title": "Заполнить основные поля",
+                          "duration": 268
+                        },
+                        {
+                          "title": "Выбрать рандомный статус",
+                          "duration": 60
+                        },
+                        {
+                          "title": "Выбрать рандомную компанию",
+                          "duration": 199
+                        },
+                        {
+                          "title": "Добавить рандомного менеджера",
+                          "duration": 166
+                        },
+                        {
+                          "title": "Добавить рандомный вид работ",
+                          "duration": 115
+                        },
+                        {
+                          "title": "Загрузить файл договора",
+                          "duration": 21
+                        },
+                        {
+                          "title": "Сохранить договор",
+                          "duration": 116
+                        },
+                        {
+                          "title": "Проверить редирект после успешного сохранения",
+                          "duration": 129
+                        },
+                        {
+                          "title": "Найти договор в списке через поиск",
+                          "duration": 1696
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:31.203Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4a6b6b572e1b2ed04e16-1fe977a2eccaf28fa548",
+              "file": "tdo_page/contract-page.spec.ts",
+              "line": 7,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "tdo_page\\project-page.spec.ts",
+      "file": "tdo_page/project-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Создание мегапроекта",
+          "file": "tdo_page/project-page.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Заполнение формы, сохранение и проверка в списке",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3409,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу создания мегапроекта",
+                          "duration": 679
+                        },
+                        {
+                          "title": "Заполнить основные поля",
+                          "duration": 276
+                        },
+                        {
+                          "title": "Выбрать статус Действующий",
+                          "duration": 28
+                        },
+                        {
+                          "title": "Выбрать рандомную группу проектов",
+                          "duration": 182
+                        },
+                        {
+                          "title": "Выбрать рандомный тип проекта",
+                          "duration": 41
+                        },
+                        {
+                          "title": "Выбрать рандомное подразделение",
+                          "duration": 81
+                        },
+                        {
+                          "title": "Выбрать рандомный вид проекта",
+                          "duration": 37
+                        },
+                        {
+                          "title": "Сохранить мегапроект",
+                          "duration": 118
+                        },
+                        {
+                          "title": "Найти мегапроект в списке через поиск",
+                          "duration": 1578
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:31.265Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "3fa4684885ac9b3cd5e1-ddcb338f9ec56af064da",
+              "file": "tdo_page/project-page.spec.ts",
+              "line": 7,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "tdo_page\\work-page.spec.ts",
+      "file": "tdo_page/work-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Работы",
+          "file": "tdo_page/work-page.spec.ts",
+          "line": 8,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Создать мегапроект через API и добавить в него работу",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 6588,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Создать мегапроект через API",
+                          "duration": 248
+                        },
+                        {
+                          "title": "Найти мегапроект в списке и перейти по ссылке Работы",
+                          "duration": 1949
+                        },
+                        {
+                          "title": "Создать новую работу через кнопку \"+\" в панели навигации",
+                          "duration": 111
+                        },
+                        {
+                          "title": "Заполнить форму работы",
+                          "duration": 319
+                        },
+                        {
+                          "title": "Выбрать рандомный договор",
+                          "duration": 1002
+                        },
+                        {
+                          "title": "Сохранить работу",
+                          "duration": 249
+                        },
+                        {
+                          "title": "Найти созданную работу в списке всех работ",
+                          "duration": 2216
+                        }
+                      ],
+                      "startTime": "2026-09-15T12:51:34.721Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "baf8e23d684b514faef9-baa7967dfda36745de60",
+              "file": "tdo_page/work-page.spec.ts",
+              "line": 9,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "login_page\\login-page.spec.ts",
+      "file": "login_page/login-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Авторизация",
+          "file": "login_page/login-page.spec.ts",
+          "line": 5,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "Позитивные сценарии",
+              "file": "login_page/login-page.spec.ts",
+              "line": 6,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "Отображение формы логина",
+                  "ok": true,
+                  "tags": [
+                    "smoke"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 9,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 902,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 606
+                            },
+                            {
+                              "title": "Проверить отображение поля \"Имя пользователя\"",
+                              "duration": 9
+                            },
+                            {
+                              "title": "Проверить отображение поля \"Пароль\"",
+                              "duration": 5
+                            },
+                            {
+                              "title": "Проверить отображение кнопки \"Войти\"",
+                              "duration": 11
+                            }
+                          ],
+                          "startTime": "2026-09-15T12:51:36.032Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-d9721f32890874c7baec",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 7,
+                  "column": 5
+                },
+                {
+                  "title": "Успешная авторизация",
+                  "ok": true,
+                  "tags": [
+                    "smoke"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 10,
+                          "parallelIndex": 3,
+                          "status": "passed",
+                          "duration": 2711,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 633
+                            },
+                            {
+                              "title": "Ввести данные администратора и нажать кнопку входа",
+                              "duration": 130
+                            },
+                            {
+                              "title": "Проверить успешную авторизацию",
+                              "duration": 1160
+                            }
+                          ],
+                          "startTime": "2026-09-15T12:51:36.612Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-d2503c4e2eb092d288e9",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 25,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Негативные сценарии",
+              "file": "login_page/login-page.spec.ts",
+              "line": 40,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "Вход с неверным паролем",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 9,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1918,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 570
+                            },
+                            {
+                              "title": "Ввести данные пользователя с неверным паролем",
+                              "duration": 1025
+                            },
+                            {
+                              "title": "Проверить сообщение об ошибке",
+                              "duration": 18
+                            }
+                          ],
+                          "startTime": "2026-09-15T12:51:37.162Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAx0J3QtSDQvdCw0LnQtNC10L3QviDQsNC60YLQuNCy0L3QvtC5INGD0YfQtdGC0L3QvtC5INC30LDQv9C40YHQuCDRgSDRg9C60LDQt9Cw0L3QvdGL0LzQuCDQtNCw0L3QvdGL0LzQuNCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80Lh7ImRldGFpbCI6ItCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80LgifQ=="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-f6348dfe9d17b25c60eb",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 41,
+                  "column": 5
+                },
+                {
+                  "title": "Вход несуществующего пользователя",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 9,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1848,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 663
+                            },
+                            {
+                              "title": "Ввести данные несуществующего пользователя",
+                              "duration": 60
+                            },
+                            {
+                              "title": "Проверить сообщение об ошибке",
+                              "duration": 829
+                            }
+                          ],
+                          "startTime": "2026-09-15T12:51:39.096Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAx0J3QtSDQvdCw0LnQtNC10L3QviDQsNC60YLQuNCy0L3QvtC5INGD0YfQtdGC0L3QvtC5INC30LDQv9C40YHQuCDRgSDRg9C60LDQt9Cw0L3QvdGL0LzQuCDQtNCw0L3QvdGL0LzQuNCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80Lh7ImRldGFpbCI6ItCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80LgifQ=="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-222831e7e6c0a03303c2",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 60,
+                  "column": 5
+                },
+                {
+                  "title": "Вход с пустыми полями",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 10,
+                          "parallelIndex": 3,
+                          "status": "passed",
+                          "duration": 1637,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 1222
+                            },
+                            {
+                              "title": "Нажать кнопку входа без заполнения полей",
+                              "duration": 38
+                            },
+                            {
+                              "title": "Проверить сообщение об ошибке валидации",
+                              "duration": 109
+                            }
+                          ],
+                          "startTime": "2026-09-15T12:51:39.589Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAwUmVxdWVzdCBmYWlsZWQgd2l0aCBzdGF0dXMgY29kZSA0MDB7InVzZXJuYW1lIjpbItCt0YLQviDQv9C+0LvQtSDQvdC1INC80L7QttC10YIg0LHRi9GC0Ywg0L/Rg9GB0YLRi9C8LiJdLCJwYXNzd29yZCI6WyLQrdGC0L4g0L/QvtC70LUg0L3QtSDQvNC+0LbQtdGCINCx0YvRgtGMINC/0YPRgdGC0YvQvC4iXX0="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-98756f3d36c57ee99828",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 77,
+                  "column": 5
+                },
+                {
+                  "title": "Пароль скрыт на форме ввода",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 9,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 923,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 633
+                            },
+                            {
+                              "title": "Проверить, что поле пароля имеет тип password",
+                              "duration": 5
+                            }
+                          ],
+                          "startTime": "2026-09-15T12:51:40.960Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-bef008ec97b95fb48b4d",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 92,
+                  "column": 5
+                },
+                {
+                  "title": "Вход с пустым логином и заполненным паролем",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 10,
+                          "parallelIndex": 3,
+                          "status": "passed",
+                          "duration": 1041,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 601
+                            },
+                            {
+                              "title": "Заполнить только пароль и нажать кнопку входа",
+                              "duration": 68
+                            },
+                            {
+                              "title": "Проверить сообщение об ошибке",
+                              "duration": 94
+                            }
+                          ],
+                          "startTime": "2026-09-15T12:51:41.242Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAwUmVxdWVzdCBmYWlsZWQgd2l0aCBzdGF0dXMgY29kZSA0MDB7InVzZXJuYW1lIjpbItCt0YLQviDQv9C+0LvQtSDQvdC1INC80L7QttC10YIg0LHRi9GC0Ywg0L/Rg9GB0YLRi9C8LiJdfQ=="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-fc81e3396af460746b38",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 102,
+                  "column": 5
+                },
+                {
+                  "title": "Вход с заполненным логином и пустым паролем",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 11,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 1137,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 634
+                            },
+                            {
+                              "title": "Заполнить только логин и нажать кнопку входа",
+                              "duration": 64
+                            },
+                            {
+                              "title": "Проверить сообщение об ошибке",
+                              "duration": 97
+                            }
+                          ],
+                          "startTime": "2026-09-15T12:51:42.290Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAwUmVxdWVzdCBmYWlsZWQgd2l0aCBzdGF0dXMgY29kZSA0MDB7InBhc3N3b3JkIjpbItCt0YLQviDQv9C+0LvQtSDQvdC1INC80L7QttC10YIg0LHRi9GC0Ywg0L/Rg9GB0YLRi9C8LiJdfQ=="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-58effe12425869d8c698",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 117,
+                  "column": 5
+                },
+                {
+                  "title": "Инъекция в поля авторизации: SQL-инъекция",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 12,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 1872,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 647
+                            },
+                            {
+                              "title": "Ввести sql-инъекция в поля логина",
+                              "duration": 73
+                            },
+                            {
+                              "title": "Проверить, что авторизация не выполнена и приложение не сломалось",
+                              "duration": 820
+                            }
+                          ],
+                          "startTime": "2026-09-15T12:51:42.351Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAx0J3QtSDQvdCw0LnQtNC10L3QviDQsNC60YLQuNCy0L3QvtC5INGD0YfQtdGC0L3QvtC5INC30LDQv9C40YHQuCDRgSDRg9C60LDQt9Cw0L3QvdGL0LzQuCDQtNCw0L3QvdGL0LzQuNCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80Lh7ImRldGFpbCI6ItCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80LgifQ=="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-dcb8ef30d064cb0c3f87",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 139,
+                  "column": 7
+                },
+                {
+                  "title": "Инъекция в поля авторизации: XSS-строка",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 9,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 1773,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 579
+                            },
+                            {
+                              "title": "Ввести xss-строка в поля логина",
+                              "duration": 97
+                            },
+                            {
+                              "title": "Проверить, что авторизация не выполнена и приложение не сломалось",
+                              "duration": 837
+                            }
+                          ],
+                          "startTime": "2026-09-15T12:51:41.900Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAx0J3QtSDQvdCw0LnQtNC10L3QviDQsNC60YLQuNCy0L3QvtC5INGD0YfQtdGC0L3QvtC5INC30LDQv9C40YHQuCDRgSDRg9C60LDQt9Cw0L3QvdGL0LzQuCDQtNCw0L3QvdGL0LzQuNCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80Lh7ImRldGFpbCI6ItCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80LgifQ=="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-f0e2c9c958a2e4942182",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 139,
+                  "column": 7
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-15T12:51:07.388Z",
+    "duration": 37353.840000000004,
+    "expected": 32,
+    "skipped": 0,
+    "unexpected": 6,
+    "flaky": 0
+  }
+}
