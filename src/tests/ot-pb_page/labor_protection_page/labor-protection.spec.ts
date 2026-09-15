@@ -25,10 +25,6 @@ test.describe('Охрана труда', () => {
       await laborProtectionPage.selectAllCategories(categories);
     });
 
-    await test.step('Включить переключатель «Только с данными»', async () => {
-      await laborProtectionPage.toggleShowData();
-    });
-
     await test.step('Нажать «Показать»', async () => {
       await laborProtectionPage.clickShow();
     });
@@ -77,7 +73,35 @@ test.describe('Охрана труда', () => {
       ).toBeVisible();
     });
   });
+
+  test('Фильтр «Только с данными» исключает пустых сотрудников', async ({ laborProtectionPage }) => {
+    await test.step('Открыть страницу охраны труда', async () => {
+      await laborProtectionPage.open();
+      await expect(laborProtectionPage.locators.heading).toHaveText('Охрана труда');
+    });
+
+    await test.step('Выбрать все категории', async () => {
+      await laborProtectionPage.selectAllCategories(categories);
+    });
+
+    await test.step('Включить переключатель «Только с данными»', async () => {
+      await laborProtectionPage.toggleShowData();
+    });
+
+    await test.step('Нажать «Показать»', async () => {
+      await laborProtectionPage.clickShow();
+    });
+
+    await test.step('Проверить отображение результатов', async () => {
+      await expect(laborProtectionPage.isResultsVisible()).resolves.toBe(true);
+      await expect(laborProtectionPage.locators.resultsHeading).toBeVisible();
+    });
+
+    await test.step('Проверить, что отображаются только сотрудники с данными', async () => {
+      const employeeCount = await laborProtectionPage.getEmployeeRowsCount();
+      expect(employeeCount).toBeGreaterThan(0);
+      const emptyCount = await laborProtectionPage.getEmptyEmployeeRowsCount();
+      expect(emptyCount).toBe(0);
+    });
+  });
 });
-
-
-// TODO: проверить перекулючатить Только с данными в отдельном тесте

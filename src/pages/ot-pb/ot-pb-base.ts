@@ -35,6 +35,31 @@ export const createOtPbBase = (page: Page, basePage: BasePage, locators: OtPbLoc
       return locators.employeeRows.count();
     },
 
+    getEmptyEmployeeRowsCount: async (): Promise<number> => {
+      await locators.employeeRows
+        .first()
+        .waitFor({ state: 'visible', timeout: config.timeouts.long });
+      const count = await locators.employeeRows.count();
+      let emptyCount = 0;
+      for (let i = 0; i < count; i++) {
+        const row = locators.employeeRows.nth(i);
+        const cells = row.locator('td');
+        const cellCount = await cells.count();
+        let hasData = false;
+        for (let j = 1; j < cellCount; j++) {
+          const text = (await cells.nth(j).textContent())?.trim();
+          if (text) {
+            hasData = true;
+            break;
+          }
+        }
+        if (!hasData) {
+          emptyCount++;
+        }
+      }
+      return emptyCount;
+    },
+
     selectRandomSurname: async (): Promise<string> => {
       await locators.surnameSearchInput.click();
       await locators.surnameOptions
