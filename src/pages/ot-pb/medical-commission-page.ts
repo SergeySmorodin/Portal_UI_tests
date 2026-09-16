@@ -25,7 +25,7 @@ export const createMedicalCommissionPage = (page: Page) => {
       await checkbox.click();
     },
 
-    selectAllCategories: async (categories: string[]): Promise<void> => {
+    selectCategories: async (categories: string[]): Promise<void> => {
       for (const category of categories) {
         await medicalCommissionPage.selectCategory(category);
       }

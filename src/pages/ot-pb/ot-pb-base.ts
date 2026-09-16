@@ -3,17 +3,48 @@ import { BasePage } from '../base-page';
 import { config } from '../../config/config';
 
 export interface OtPbLocators {
+  heading: Locator;
   toggleShowData: Locator;
   showButton: Locator;
   surnameSearchInput: Locator;
   surnameOptions: Locator;
   surnameCollapseButton: Locator;
+  filterColumn: Locator;
+  resultsTable: Locator;
   resultsHeading: Locator;
   employeeRows: Locator;
+  categoryCheckbox?: (label: string) => Locator;
+}
+
+export interface OtPbPageApi {
+  open: () => Promise<void>;
+  selectCategories: (categories: string[]) => Promise<void>;
+  clickShow: () => Promise<void>;
+  toggleShowData: () => Promise<void>;
+  isResultsVisible: () => Promise<boolean>;
+  getEmployeeRowsCount: () => Promise<number>;
+  getEmptyEmployeeRowsCount: () => Promise<number>;
+  selectRandomSurname: () => Promise<string>;
+  locators: OtPbLocators;
 }
 
 export const createOtPbBase = (page: Page, basePage: BasePage, locators: OtPbLocators) => {
+  const selectCategories = async (categories: string[]): Promise<void> => {
+    if (categories.length === 0) {
+      return;
+    }
+    if (locators.categoryCheckbox) {
+      for (const category of categories) {
+        const checkbox = locators.categoryCheckbox(category);
+        await basePage.waitForElement(checkbox);
+        await checkbox.click();
+      }
+    }
+  };
+
   return {
+    selectCategories,
+
     toggleShowData: async (): Promise<void> => {
       await basePage.waitForElement(locators.toggleShowData);
       await locators.toggleShowData.click();

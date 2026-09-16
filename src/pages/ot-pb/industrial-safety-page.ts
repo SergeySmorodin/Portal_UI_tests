@@ -19,7 +19,7 @@ export const createIndustrialSafetyPage = (page: Page) => {
       await basePage.expectVisible(locators.heading);
     },
 
-    selectAll: async (): Promise<void> => {
+    selectCategories: async (): Promise<void> => {
       await basePage.waitForElement(locators.selectAllCheckbox);
       await locators.selectAllCheckbox.click();
     },
