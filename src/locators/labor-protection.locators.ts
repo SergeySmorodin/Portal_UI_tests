@@ -45,6 +45,28 @@ export const createLaborProtectionLocators = (page: Page) => ({
   resultsTable: page.locator('table'),
   resultsHeading: page.getByRole('columnheader', { name: 'ФИО' }),
   employeeRows: page.locator('table tbody tr'),
+  employeeCheckboxes: page.locator('table tbody tr td input[type="checkbox"]'),
+
+  // Создание записи
+  createRecordButton: page.getByRole('button', { name: 'Создать запись' }),
+  createPageHeading: page.getByRole('heading', { name: 'Создание записей' }),
+  addProtocolButton: page.getByRole('button', { name: '+ Добавить протокол' }),
+
+  // Модальное окно «Создание протокола»
+  protocolModal: page.locator('div.fixed.inset-0').filter({ hasText: 'Создание протокола' }),
+  protocolNumberInput: page
+    .locator('div.fixed.inset-0')
+    .filter({ hasText: 'Создание протокола' })
+    .getByPlaceholder('например: ПТ-2025-001'),
+  protocolDateInput: page
+    .locator('div.fixed.inset-0')
+    .filter({ hasText: 'Создание протокола' })
+    .getByPlaceholder('дд-мм-гггг'),
+  protocolFileInput: page.locator('#protocol-file-input'),
+  saveProtocolButton: page
+    .locator('div.fixed.inset-0')
+    .filter({ hasText: 'Создание протокола' })
+    .getByRole('button', { name: 'Сохранить' }),
 });
 
 export type LaborProtectionLocators = ReturnType<typeof createLaborProtectionLocators>;

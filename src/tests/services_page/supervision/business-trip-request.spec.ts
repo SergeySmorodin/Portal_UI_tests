@@ -1,8 +1,8 @@
 import { config } from '../../../config/config';
-import { api } from '../../../data/api/api';
-import { createProjectViaApi, createWorkViaApi } from '../../../data/api/project-api';
-import { projectFactory } from '../../../data/project-factory';
-import { workFactory } from '../../../data/work-factory';
+import { api } from '../../../test-data/api/api';
+import { createProjectViaApi, createWorkViaApi } from '../../../test-data/api/project-api';
+import { projectFactory } from '../../../test-data/factory/project-factory';
+import { workFactory } from '../../../test-data/factory/work-factory';
 import { formatDmy, randomDate } from '../../../utils/date';
 import { expect, test } from '../../../fixtures/test-fixtures';
 

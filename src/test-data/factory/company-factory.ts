@@ -1,5 +1,5 @@
 import { randomBytes } from 'node:crypto';
-import { CompanyData } from '../types';
+import { CompanyData } from '../../types';
 
 const randomToken = (): string => randomBytes(4).toString('hex');
 

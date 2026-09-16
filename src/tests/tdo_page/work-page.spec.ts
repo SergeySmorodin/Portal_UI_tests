@@ -1,9 +1,9 @@
 import { test, expect } from '../../fixtures/test-fixtures';
 import { config } from '../../config/config';
-import { projectFactory } from '../../data/project-factory';
-import { workFactory } from '../../data/work-factory';
-import { api } from '../../data/api/api';
-import { createProjectViaApi } from '../../data/api/project-api';
+import { projectFactory } from '../../test-data/factory/project-factory';
+import { workFactory } from '../../test-data/factory/work-factory';
+import { api } from '../../test-data/api/api';
+import { createProjectViaApi } from '../../test-data/api/project-api';
 
 test.describe('Работы', () => {
   test(

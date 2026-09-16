@@ -1,6 +1,6 @@
 import { test, expect } from '../../fixtures/test-fixtures';
-import { api } from '../../data/api/api';
-import { certificationFactory } from '../../data/certification-factory';
+import { api } from '../../test-data/api/api';
+import { certificationFactory } from '../../test-data/factory/certification-factory';
 import { CertificationData } from '../../types';
 import type {
   CertificationUploadPage,

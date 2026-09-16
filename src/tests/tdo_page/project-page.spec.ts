@@ -1,6 +1,6 @@
 import { config } from '../../config/config';
-import { api } from '../../data/api/api';
-import { projectFactory } from '../../data/project-factory';
+import { api } from '../../test-data/api/api';
+import { projectFactory } from '../../test-data/factory/project-factory';
 import { expect, test } from '../../fixtures/test-fixtures';
 
 test.describe('Создание мегапроекта', () => {

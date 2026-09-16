@@ -30,7 +30,7 @@ export interface UserContextKit {
 
 type CreateUserPage = (userId: string) => Promise<UserContextKit>;
 
-interface TestFixtures {
+export interface TestFixtures {
   testConfig: typeof config;
   loginPage: ReturnType<typeof createLoginPage>;
   mainPage: ReturnType<typeof createMainPage>;

@@ -1,7 +1,4 @@
-import { test, expect } from '../../fixtures/test-fixtures';
-import type { IndustrialSafetyPage } from '../../pages/ot-pb/industrial-safety-page';
-import type { LaborProtectionPage } from '../../pages/ot-pb/labor-protection-page';
-import type { MedicalCommissionPage } from '../../pages/ot-pb/medical-commission-page';
+import { test, expect, type TestFixtures } from '../../fixtures/test-fixtures';
 import type { OtPbPageApi } from '../../pages/ot-pb/ot-pb-base';
 
 interface OtPbTestConfig {
@@ -11,20 +8,21 @@ interface OtPbTestConfig {
   categories: string[];
 }
 
-interface OtPbFix {
-  industrialSafetyPage: IndustrialSafetyPage;
-  laborProtectionPage: LaborProtectionPage;
-  medicalCommissionPage: MedicalCommissionPage;
-}
+type OtPbFix = Pick<
+  TestFixtures,
+  'industrialSafetyPage' | 'laborProtectionPage' | 'medicalCommissionPage'
+>;
 
-const getPage: Record<string, (f: OtPbFix) => OtPbPageApi> = {
+type OtPbPageKey = 'industrialSafety' | 'laborProtection' | 'medicalCommission';
+
+const getPage: Record<OtPbPageKey, (f: OtPbFix) => OtPbPageApi> = {
   industrialSafety: (f) => f.industrialSafetyPage,
   laborProtection: (f) => f.laborProtectionPage,
   medicalCommission: (f) => f.medicalCommissionPage,
 };
 
 export function runOtPbTests(
-  pageKey: keyof typeof getPage,
+  pageKey: OtPbPageKey,
   cfg: OtPbTestConfig
 ): void {
   test.describe(cfg.name, () => {
@@ -133,6 +131,72 @@ export function runOtPbTests(
         expect(employeeCount).toBeGreaterThan(0);
         const emptyCount = await page.getEmptyEmployeeRowsCount();
         expect(emptyCount).toBe(0);
+      });
+    });
+  });
+}
+
+interface ProtocolTestConfig {
+  openStep: string;
+  protocolDate: string;
+  filePath: string;
+}
+
+export function runLaborProtectionProtocolTests(cfg: ProtocolTestConfig): void {
+  test.describe('Охрана труда — добавление протокола', () => {
+    test('Добавление нового протокола охраны труда выбранному сотруднику', async ({
+      laborProtectionPage,
+    }) => {
+      const protocolNumber = `ТЕСТ-ПТ-${Date.now()}`;
+
+      await test.step(cfg.openStep, async () => {
+        await laborProtectionPage.open();
+        await expect(laborProtectionPage.locators.heading).toHaveText('Охрана труда');
+      });
+
+      await test.step('Выбрать категорию «Охрана труда»', async () => {
+        await laborProtectionPage.selectCategories(['Охрана труда']);
+      });
+
+      await test.step('Нажать «Показать»', async () => {
+        await laborProtectionPage.clickShow();
+        await expect(laborProtectionPage.isResultsVisible()).resolves.toBe(true);
+      });
+
+      const employee = await test.step('Выбрать случайного сотрудника из таблицы', async () => {
+        const employee = await laborProtectionPage.selectRandomEmployee();
+        expect(employee).not.toBe('');
+        return employee;
+      });
+
+      await test.step('Создать запись', async () => {
+        await laborProtectionPage.clickCreateRecord();
+        await expect(laborProtectionPage.locators.createPageHeading).toBeVisible();
+        await expect(
+          laborProtectionPage.locators.employeeRows.getByText(employee, { exact: false })
+        ).toBeVisible();
+      });
+
+      await test.step('Добавить новый протокол', async () => {
+        await laborProtectionPage.addProtocol();
+      });
+
+      await test.step('Заполнить форму протокола и прикрепить скан-копию', async () => {
+        await laborProtectionPage.fillProtocolForm(
+          protocolNumber,
+          cfg.protocolDate,
+          cfg.filePath
+        );
+      });
+
+      await test.step('Сохранить протокол', async () => {
+        await laborProtectionPage.saveProtocol();
+      });
+
+      await test.step('Проверить сохранение протокола', async () => {
+        await expect(
+          laborProtectionPage.locators.saveProtocolButton
+        ).not.toBeVisible();
       });
     });
   });

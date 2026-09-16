@@ -1,6 +1,6 @@
 import { randomBytes } from 'node:crypto';
-import { CuratorData } from '../types';
-import { formatDmy, randomDate } from '../utils/date';
+import { CuratorData } from '../../types';
+import { formatDmy, randomDate } from '../../utils/date';
 
 const randomToken = (): string => randomBytes(4).toString('hex');
 

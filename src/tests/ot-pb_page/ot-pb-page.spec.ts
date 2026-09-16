@@ -1,5 +1,6 @@
 import { test } from '../../fixtures/test-fixtures';
-import { runOtPbTests } from './ot-pb-helpers';
+import { runOtPbTests, runLaborProtectionProtocolTests } from './ot-pb-helpers';
+import { formatDmy } from '../../utils/date';
 
 test.describe('Отчеты ПБ страницы', () => {
   runOtPbTests('industrialSafety', {
@@ -26,6 +27,12 @@ test.describe('Отчеты ПБ страницы', () => {
       'Ограниченное Замкнутое Пространство',
       'Стропальщик',
     ],
+  });
+
+  runLaborProtectionProtocolTests({
+    openStep: 'Открыть страницу охраны труда',
+    protocolDate: formatDmy(new Date()),
+    filePath: 'src/test-data/test-protocol.pdf',
   });
 
   runOtPbTests('medicalCommission', {
