@@ -130,14 +130,30 @@ export const createLaborProtectionPage = (page: Page) => {
       const href = await link.getAttribute('href');
       expect(href).not.toBeNull();
       expect(href).toContain('/media/sf_protocols/');
-      const popupPromise = page.waitForEvent('popup', { timeout: config.timeouts.short }).catch(() => null);
+
+      const popupPromise = page
+        .waitForEvent('popup', { timeout: config.timeouts.short })
+        .catch(() => null);
+      const mediaResponsePromise = new Promise<import('@playwright/test').Response>((resolve) => {
+        const handler = (resp: import('@playwright/test').Response) => {
+          if (resp.url().includes('/media/sf_protocols/') && resp.request().method() === 'GET') {
+            page.context().off('response', handler);
+            resolve(resp);
+          }
+        };
+        page.context().on('response', handler);
+      });
       await link.click();
+
       const popup = await popupPromise;
+      const mediaResponse = await mediaResponsePromise;
+      expect(mediaResponse.status()).toBe(200);
+      expect(mediaResponse.url()).toMatch(/\.pdf$/);
+      expect(mediaResponse.headers()['content-type']).toContain('pdf');
+
       if (popup) {
         await popup.waitForURL('**/media/**', { timeout: config.timeouts.long });
         await popup.close();
-      } else {
-        await page.waitForURL('**/media/**', { timeout: config.timeouts.long });
       }
     },
   };
