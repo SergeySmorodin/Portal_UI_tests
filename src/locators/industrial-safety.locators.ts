@@ -22,10 +22,24 @@ export const createIndustrialSafetyLocators = (page: Page) => ({
     .filter({ hasText: 'Фильтрация выбора' })
     .locator('div.px-3.py-2.cursor-pointer')
     .filter({ hasText: /\S/ }),
+  filterOptions: page
+    .locator('div.bg-white')
+    .filter({ hasText: 'Фильтрация выбора' })
+    .locator('div.px-3.py-2.cursor-pointer')
+    .filter({ hasText: /\S/ }),
   surnameCollapseButton: page
     .locator('div.bg-white')
     .filter({ hasText: 'Фильтрация выбора' })
     .locator('button:has(i.fa-solid)'),
+  positionSearchInput: page.getByPlaceholder('Поиск по должности...'),
+  departmentSearchInput: page.getByPlaceholder('Поиск по отделам...'),
+  branchSearchInput: page.getByPlaceholder('Поиск по филиалам...'),
+
+  // Срок действия (фильтр по статусу сертификатов)
+  missingFilterButton: page.getByRole('button', { name: 'отсутствует' }),
+  expiredFilterButton: page.getByRole('button', { name: 'просрочено' }),
+  lessThan30DaysFilterButton: page.getByRole('button', { name: 'до 30 дней' }),
+  moreThan30DaysFilterButton: page.getByRole('button', { name: '> 30 дней' }),
 
   // Кнопки действий
   showButton: page.getByRole('button', { name: 'Показать' }),

@@ -9,6 +9,14 @@ export interface OtPbLocators {
   surnameSearchInput: Locator;
   surnameOptions: Locator;
   surnameCollapseButton: Locator;
+  positionSearchInput: Locator;
+  departmentSearchInput: Locator;
+  branchSearchInput: Locator;
+  filterOptions: Locator;
+  missingFilterButton: Locator;
+  expiredFilterButton: Locator;
+  lessThan30DaysFilterButton: Locator;
+  moreThan30DaysFilterButton: Locator;
   filterColumn: Locator;
   resultsTable: Locator;
   resultsHeading: Locator;
@@ -25,6 +33,13 @@ export interface OtPbPageApi {
   getEmployeeRowsCount: () => Promise<number>;
   getEmptyEmployeeRowsCount: () => Promise<number>;
   selectRandomSurname: () => Promise<string>;
+  selectRandomPosition: () => Promise<string>;
+  selectRandomDepartment: () => Promise<string>;
+  selectRandomBranch: () => Promise<string>;
+  selectFilterOption: (searchInput: Locator, optionText: string) => Promise<void>;
+  isFilterOptionHighlighted: (optionText: string) => Promise<boolean>;
+  getResultColumnValues: (columnIndex: number) => Promise<string[]>;
+  isButtonActive: (button: Locator) => Promise<boolean>;
   locators: OtPbLocators;
 }
 
@@ -70,27 +85,19 @@ export const createOtPbBase = (page: Page, basePage: BasePage, locators: OtPbLoc
       await locators.employeeRows
         .first()
         .waitFor({ state: 'visible', timeout: config.timeouts.long });
-      const count = await locators.employeeRows.count();
-      let emptyCount = 0;
-      for (let i = 0; i < count; i++) {
-        const row = locators.employeeRows.nth(i);
-        const cells = row.locator('td');
-        const cellCount = await cells.count();
-        let hasData = false;
-        for (let j = 1; j < cellCount; j++) {
-          const text = (await cells.nth(j).textContent())?.trim();
-          if (text) {
-            hasData = true;
-            break;
-          }
-        }
-        if (!hasData) {
-          emptyCount++;
-        }
-      }
-      return emptyCount;
-    },
 
+      return locators.employeeRows.evaluateAll(
+        (rows) =>
+          rows.filter((row) => {
+            const cells = row.querySelectorAll('td');
+            for (let j = 1; j < cells.length; j++) {
+              if (cells[j].textContent?.trim()) return false;
+            }
+            return true;
+          }).length,
+      );
+    },
+    
     selectRandomSurname: async (): Promise<string> => {
       await locators.surnameSearchInput.click();
       await locators.surnameOptions
@@ -106,7 +113,58 @@ export const createOtPbBase = (page: Page, basePage: BasePage, locators: OtPbLoc
       // await locators.surnameCollapseButton.first().click();
       return surname;
     },
+
+    selectRandomPosition: async (): Promise<string> => {
+      return selectRandomOption(locators.positionSearchInput, locators.filterOptions, 'Position');
+    },
+
+    selectRandomDepartment: async (): Promise<string> => {
+      return selectRandomOption(locators.departmentSearchInput, locators.filterOptions, 'Department');
+    },
+
+    selectRandomBranch: async (): Promise<string> => {
+      return selectRandomOption(locators.branchSearchInput, locators.filterOptions, 'Branch');
+    },
+
+    selectFilterOption: async (searchInput: Locator, optionText: string): Promise<void> => {
+      await searchInput.click();
+      const option = locators.filterOptions.getByText(optionText, { exact: true }).first();
+      await option.waitFor({ state: 'visible', timeout: config.timeouts.long });
+      await option.click();
+    },
+
+    isFilterOptionHighlighted: async (optionText: string): Promise<boolean> => {
+      const option = locators.filterOptions.getByText(optionText, { exact: true }).first();
+      const className = await option.getAttribute('class');
+      return Boolean(className && className.includes('bg-intra-orange'));
+    },
+
+    isButtonActive: async (button: Locator): Promise<boolean> => {
+      const className = await button.getAttribute('class');
+      return Boolean(className && className.includes('ring-intra-orange'));
+    },
+
+    getResultColumnValues: async (columnIndex: number): Promise<string[]> => {
+      await locators.resultsHeading.waitFor({ state: 'visible', timeout: config.timeouts.long });
+      return locators.employeeRows.evaluateAll((rows, index) =>
+        rows.map((row) => row.querySelectorAll('td')[index]?.textContent?.trim() || ''),
+        columnIndex,
+      );
+    },
   };
+};
+
+const selectRandomOption = async (input: Locator, filterOptions: Locator, name: string): Promise<string> => {
+  await input.click();
+  await filterOptions.first().waitFor({ state: 'visible', timeout: config.timeouts.long });
+  const count = await filterOptions.count();
+  const randomIndex = Math.floor(Math.random() * count);
+  const optionText = (await filterOptions.nth(randomIndex).textContent())?.trim() || '';
+  if (!optionText) {
+    throw new Error(`selectRandom${name}: option text is empty`);
+  }
+  await filterOptions.nth(randomIndex).click();
+  return optionText;
 };
 
 export type OtPbBase = ReturnType<typeof createOtPbBase>;

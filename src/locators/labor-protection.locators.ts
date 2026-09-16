@@ -22,6 +22,11 @@ export const createLaborProtectionLocators = (page: Page) => ({
     .filter({ hasText: 'Фильтрация выбора' })
     .locator('div.px-3.py-2.cursor-pointer')
     .filter({ hasText: /\S/ }),
+  filterOptions: page
+    .locator('div.bg-white')
+    .filter({ hasText: 'Фильтрация выбора' })
+    .locator('div.px-3.py-2.cursor-pointer')
+    .filter({ hasText: /\S/ }),
   surnameCollapseButton: page
     .locator('div.bg-white')
     .filter({ hasText: 'Фильтрация выбора' })
