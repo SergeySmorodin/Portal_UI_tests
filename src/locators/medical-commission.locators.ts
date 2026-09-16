@@ -51,10 +51,7 @@ export const createMedicalCommissionLocators = (page: Page) => ({
   employeeRows: page.locator('table tbody tr'),
   employeeCheckboxes: page.locator('table tbody tr td input[type="checkbox"]'),
   recordRow: (employee: string, issueDate: string) =>
-    page
-      .locator('table tbody tr')
-      .filter({ hasText: employee })
-      .filter({ hasText: issueDate }),
+    page.locator('table tbody tr').filter({ hasText: employee }).filter({ hasText: issueDate }),
 
   // Создание записи
   createPageHeading: page.getByRole('heading', { name: 'Создание записей' }),

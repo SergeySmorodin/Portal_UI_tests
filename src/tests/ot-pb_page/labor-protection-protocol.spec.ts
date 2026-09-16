@@ -97,9 +97,9 @@ test.describe('Охрана труда — добавление протокол
     });
 
     await test.step('Проверить соответствие номера протокола', async () => {
-      await expect(
-        laborProtectionPage.locators.protocolLink(employee, protocolNumber)
-      ).toHaveText(protocolNumber);
+      await expect(laborProtectionPage.locators.protocolLink(employee, protocolNumber)).toHaveText(
+        protocolNumber
+      );
     });
 
     await test.step('Перейти по ссылке протокола', async () => {

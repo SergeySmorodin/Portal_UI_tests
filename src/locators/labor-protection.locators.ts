@@ -73,10 +73,7 @@ export const createLaborProtectionLocators = (page: Page) => ({
   createTableRow: (employee: string) =>
     page.locator('table tbody tr').filter({ hasText: employee }),
   employeeProtocolSelect: (employee: string) =>
-    page
-      .locator('table tbody tr')
-      .filter({ hasText: employee })
-      .getByRole('combobox'),
+    page.locator('table tbody tr').filter({ hasText: employee }).getByRole('combobox'),
   employeeCertificateInput: (employee: string) =>
     page
       .locator('table tbody tr')

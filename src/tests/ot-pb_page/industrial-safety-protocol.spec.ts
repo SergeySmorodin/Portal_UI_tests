@@ -32,9 +32,7 @@ test.describe('Охрана труда — добавление записи п�
     await test.step('Создать запись', async () => {
       await industrialSafetyPage.clickCreateRecord();
       await expect(industrialSafetyPage.locators.createPageHeading).toBeVisible();
-      await expect(
-        industrialSafetyPage.locators.createTableRow(employee)
-      ).toBeVisible();
+      await expect(industrialSafetyPage.locators.createTableRow(employee)).toBeVisible();
     });
 
     await test.step('Заполнить протокол, даты и область', async () => {
@@ -73,8 +71,7 @@ test.describe('Охрана труда — добавление записи п�
     });
 
     await test.step('Проверить соответствие номера протокола', async () => {
-      const row = industrialSafetyPage.locators
-        .recordRow(employee, protocolNumber);
+      const row = industrialSafetyPage.locators.recordRow(employee, protocolNumber);
       await expect(row).toContainText(protocolNumber);
     });
   });

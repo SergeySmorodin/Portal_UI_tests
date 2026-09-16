@@ -21,17 +21,18 @@ const getPage: Record<OtPbPageKey, (f: OtPbFix) => OtPbPageApi> = {
   medicalCommission: (f) => f.medicalCommissionPage,
 };
 
-export function runOtPbTests(
-  pageKey: OtPbPageKey,
-  cfg: OtPbTestConfig
-): void {
+export function runOtPbTests(pageKey: OtPbPageKey, cfg: OtPbTestConfig): void {
   test.describe(cfg.name, () => {
     test('Выбор категорий и отображение всех сотрудников', async ({
       industrialSafetyPage,
       laborProtectionPage,
       medicalCommissionPage,
     }) => {
-      const page = getPage[pageKey]({ industrialSafetyPage, laborProtectionPage, medicalCommissionPage });
+      const page = getPage[pageKey]({
+        industrialSafetyPage,
+        laborProtectionPage,
+        medicalCommissionPage,
+      });
 
       await test.step(cfg.openStep, async () => {
         await page.open();
@@ -62,7 +63,11 @@ export function runOtPbTests(
       laborProtectionPage,
       medicalCommissionPage,
     }) => {
-      const page = getPage[pageKey]({ industrialSafetyPage, laborProtectionPage, medicalCommissionPage });
+      const page = getPage[pageKey]({
+        industrialSafetyPage,
+        laborProtectionPage,
+        medicalCommissionPage,
+      });
 
       await test.step(cfg.openStep, async () => {
         await page.open();
@@ -73,14 +78,13 @@ export function runOtPbTests(
         await page.selectCategories(cfg.categories);
       });
 
-      const surname = await test.step('Выбрать случайную фамилию из выпадающего списка', async () => {
-        return page.selectRandomSurname();
-      });
+      const surname =
+        await test.step('Выбрать случайную фамилию из выпадающего списка', async () => {
+          return page.selectRandomSurname();
+        });
 
       await test.step(`Проверить совпадение выбранной ФИО «${surname}»`, async () => {
-        await expect(
-          page.locators.filterColumn.getByText(surname, { exact: true })
-        ).toBeVisible();
+        await expect(page.locators.filterColumn.getByText(surname, { exact: true })).toBeVisible();
       });
 
       await test.step('Нажать «Показать»', async () => {
@@ -91,9 +95,7 @@ export function runOtPbTests(
         await expect(page.isResultsVisible()).resolves.toBe(true);
         await expect(page.locators.resultsHeading).toBeVisible();
         expect(await page.getEmployeeRowsCount()).toBeGreaterThan(0);
-        await expect(
-          page.locators.resultsTable.getByText(surname, { exact: true })
-        ).toBeVisible();
+        await expect(page.locators.resultsTable.getByText(surname, { exact: true })).toBeVisible();
       });
     });
 
@@ -102,7 +104,11 @@ export function runOtPbTests(
       laborProtectionPage,
       medicalCommissionPage,
     }) => {
-      const page = getPage[pageKey]({ industrialSafetyPage, laborProtectionPage, medicalCommissionPage });
+      const page = getPage[pageKey]({
+        industrialSafetyPage,
+        laborProtectionPage,
+        medicalCommissionPage,
+      });
 
       await test.step(cfg.openStep, async () => {
         await page.open();
@@ -139,7 +145,11 @@ export function runOtPbTests(
       laborProtectionPage,
       medicalCommissionPage,
     }) => {
-      const page = getPage[pageKey]({ industrialSafetyPage, laborProtectionPage, medicalCommissionPage });
+      const page = getPage[pageKey]({
+        industrialSafetyPage,
+        laborProtectionPage,
+        medicalCommissionPage,
+      });
 
       await test.step(cfg.openStep, async () => {
         await page.open();
@@ -155,14 +165,16 @@ export function runOtPbTests(
         await expect(page.isResultsVisible()).resolves.toBe(true);
       });
 
-      const position = await test.step('Выбрать случайную должность из отображаемых сотрудников', async () => {
-        const positions = await page.getResultColumnValues(2);
-        const uniquePositions = [...new Set(positions.filter((value) => value !== ''))];
-        expect(uniquePositions.length).toBeGreaterThan(0);
-        const chosenPosition = uniquePositions[Math.floor(Math.random() * uniquePositions.length)];
-        await page.selectFilterOption(page.locators.positionSearchInput, chosenPosition);
-        return chosenPosition;
-      });
+      const position =
+        await test.step('Выбрать случайную должность из отображаемых сотрудников', async () => {
+          const positions = await page.getResultColumnValues(2);
+          const uniquePositions = [...new Set(positions.filter((value) => value !== ''))];
+          expect(uniquePositions.length).toBeGreaterThan(0);
+          const chosenPosition =
+            uniquePositions[Math.floor(Math.random() * uniquePositions.length)];
+          await page.selectFilterOption(page.locators.positionSearchInput, chosenPosition);
+          return chosenPosition;
+        });
 
       await test.step(`Проверить подсветку выбранной должности «${position}»`, async () => {
         await expect(page.isFilterOptionHighlighted(position)).resolves.toBe(true);
@@ -179,7 +191,8 @@ export function runOtPbTests(
           .poll(async () => {
             const displayedPositions = await page.getResultColumnValues(2);
             return (
-              displayedPositions.length > 0 && displayedPositions.every((value) => value === position)
+              displayedPositions.length > 0 &&
+              displayedPositions.every((value) => value === position)
             );
           })
           .toBe(true);
@@ -191,7 +204,11 @@ export function runOtPbTests(
       laborProtectionPage,
       medicalCommissionPage,
     }) => {
-      const page = getPage[pageKey]({ industrialSafetyPage, laborProtectionPage, medicalCommissionPage });
+      const page = getPage[pageKey]({
+        industrialSafetyPage,
+        laborProtectionPage,
+        medicalCommissionPage,
+      });
 
       await test.step(cfg.openStep, async () => {
         await page.open();
@@ -207,9 +224,10 @@ export function runOtPbTests(
         await expect(page.isResultsVisible()).resolves.toBe(true);
       });
 
-      const department = await test.step('Выбрать случайный отдел из выпадающего списка', async () => {
-        return page.selectRandomDepartment();
-      });
+      const department =
+        await test.step('Выбрать случайный отдел из выпадающего списка', async () => {
+          return page.selectRandomDepartment();
+        });
 
       await test.step(`Проверить подсветку выбранного отдела «${department}»`, async () => {
         await expect(page.isFilterOptionHighlighted(department)).resolves.toBe(true);
@@ -230,7 +248,11 @@ export function runOtPbTests(
       laborProtectionPage,
       medicalCommissionPage,
     }) => {
-      const page = getPage[pageKey]({ industrialSafetyPage, laborProtectionPage, medicalCommissionPage });
+      const page = getPage[pageKey]({
+        industrialSafetyPage,
+        laborProtectionPage,
+        medicalCommissionPage,
+      });
 
       await test.step(cfg.openStep, async () => {
         await page.open();
@@ -269,7 +291,11 @@ export function runOtPbTests(
       laborProtectionPage,
       medicalCommissionPage,
     }) => {
-      const page = getPage[pageKey]({ industrialSafetyPage, laborProtectionPage, medicalCommissionPage });
+      const page = getPage[pageKey]({
+        industrialSafetyPage,
+        laborProtectionPage,
+        medicalCommissionPage,
+      });
 
       await test.step(cfg.openStep, async () => {
         await page.open();

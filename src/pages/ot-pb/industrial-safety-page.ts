@@ -55,7 +55,7 @@ export const createIndustrialSafetyPage = (page: Page) => {
       protocolNumber: string,
       startDate: string,
       endDate: string,
-      area: string,
+      area: string
     ): Promise<void> => {
       await basePage.fill(locators.employeeProtocolInput(employee), protocolNumber);
       await basePage.fill(locators.employeeStartDateInput(employee), startDate);
@@ -70,10 +70,7 @@ export const createIndustrialSafetyPage = (page: Page) => {
       });
     },
 
-    verifyRecordInResults: async (
-      employee: string,
-      protocolNumber: string,
-    ): Promise<void> => {
+    verifyRecordInResults: async (employee: string, protocolNumber: string): Promise<void> => {
       const row = locators.recordRow(employee, protocolNumber);
       await row.waitFor({ state: 'visible', timeout: config.timeouts.long });
     },

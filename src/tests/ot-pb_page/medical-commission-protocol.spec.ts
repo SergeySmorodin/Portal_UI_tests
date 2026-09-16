@@ -35,9 +35,7 @@ test.describe('Охрана труда — добавление записи м�
     await test.step('Создать запись', async () => {
       await medicalCommissionPage.clickCreateRecord();
       await expect(medicalCommissionPage.locators.createPageHeading).toBeVisible();
-      await expect(
-        medicalCommissionPage.locators.createTableRow(employee)
-      ).toBeVisible();
+      await expect(medicalCommissionPage.locators.createTableRow(employee)).toBeVisible();
     });
 
     await test.step('Заполнить даты выдачи заключения и следующей медкомиссии', async () => {

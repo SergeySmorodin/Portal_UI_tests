@@ -62,10 +62,7 @@ export const createIndustrialSafetyLocators = (page: Page) => ({
   createTableRow: (employee: string) =>
     page.locator('table tbody tr').filter({ hasText: employee }),
   employeeProtocolInput: (employee: string) =>
-    page
-      .locator('table tbody tr')
-      .filter({ hasText: employee })
-      .getByPlaceholder('№ протокола'),
+    page.locator('table tbody tr').filter({ hasText: employee }).getByPlaceholder('№ протокола'),
   employeeStartDateInput: (employee: string) =>
     page
       .locator('table tbody tr')

@@ -57,7 +57,11 @@ export const createMedicalCommissionPage = (page: Page) => {
       await basePage.expectVisible(locators.createPageHeading);
     },
 
-    fillEmployeeDates: async (employee: string, startDate: string, endDate: string): Promise<void> => {
+    fillEmployeeDates: async (
+      employee: string,
+      startDate: string,
+      endDate: string
+    ): Promise<void> => {
       await basePage.fill(locators.employeeStartDateInput(employee), startDate);
       await basePage.fill(locators.employeeEndDateInput(employee), endDate);
     },

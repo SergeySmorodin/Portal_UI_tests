@@ -94,10 +94,10 @@ export const createOtPbBase = (page: Page, basePage: BasePage, locators: OtPbLoc
               if (cells[j].textContent?.trim()) return false;
             }
             return true;
-          }).length,
+          }).length
       );
     },
-    
+
     selectRandomSurname: async (): Promise<string> => {
       await locators.surnameSearchInput.click();
       await locators.surnameOptions
@@ -119,7 +119,11 @@ export const createOtPbBase = (page: Page, basePage: BasePage, locators: OtPbLoc
     },
 
     selectRandomDepartment: async (): Promise<string> => {
-      return selectRandomOption(locators.departmentSearchInput, locators.filterOptions, 'Department');
+      return selectRandomOption(
+        locators.departmentSearchInput,
+        locators.filterOptions,
+        'Department'
+      );
     },
 
     selectRandomBranch: async (): Promise<string> => {
@@ -146,15 +150,20 @@ export const createOtPbBase = (page: Page, basePage: BasePage, locators: OtPbLoc
 
     getResultColumnValues: async (columnIndex: number): Promise<string[]> => {
       await locators.resultsHeading.waitFor({ state: 'visible', timeout: config.timeouts.long });
-      return locators.employeeRows.evaluateAll((rows, index) =>
-        rows.map((row) => row.querySelectorAll('td')[index]?.textContent?.trim() || ''),
-        columnIndex,
+      return locators.employeeRows.evaluateAll(
+        (rows, index) =>
+          rows.map((row) => row.querySelectorAll('td')[index]?.textContent?.trim() || ''),
+        columnIndex
       );
     },
   };
 };
 
-const selectRandomOption = async (input: Locator, filterOptions: Locator, name: string): Promise<string> => {
+const selectRandomOption = async (
+  input: Locator,
+  filterOptions: Locator,
+  name: string
+): Promise<string> => {
   await input.click();
   await filterOptions.first().waitFor({ state: 'visible', timeout: config.timeouts.long });
   const count = await filterOptions.count();
