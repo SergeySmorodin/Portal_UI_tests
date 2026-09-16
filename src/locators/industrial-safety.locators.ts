@@ -29,11 +29,42 @@ export const createIndustrialSafetyLocators = (page: Page) => ({
 
   // Кнопки действий
   showButton: page.getByRole('button', { name: 'Показать' }),
+  createRecordButton: page.getByRole('button', { name: 'Создать запись' }),
 
   // Результаты
   resultsTable: page.locator('table'),
   resultsHeading: page.getByRole('columnheader', { name: 'ФИО' }),
   employeeRows: page.locator('table tbody tr'),
+  employeeCheckboxes: page.locator('table tbody tr td input[type="checkbox"]'),
+  recordRow: (employee: string, protocolNumber: string) =>
+    page
+      .locator('table tbody tr')
+      .filter({ hasText: employee })
+      .filter({ hasText: protocolNumber }),
+
+  // Создание записи
+  createPageHeading: page.getByRole('heading', { name: 'Создание записей' }),
+  createPageSaveButton: page.locator('main').getByRole('button', { name: 'Сохранить' }),
+  createTableRow: (employee: string) =>
+    page.locator('table tbody tr').filter({ hasText: employee }),
+  employeeProtocolInput: (employee: string) =>
+    page
+      .locator('table tbody tr')
+      .filter({ hasText: employee })
+      .getByPlaceholder('№ протокола'),
+  employeeStartDateInput: (employee: string) =>
+    page
+      .locator('table tbody tr')
+      .filter({ hasText: employee })
+      .getByPlaceholder('дд-мм-гггг')
+      .nth(0),
+  employeeEndDateInput: (employee: string) =>
+    page
+      .locator('table tbody tr')
+      .filter({ hasText: employee })
+      .getByPlaceholder('дд-мм-гггг')
+      .nth(1),
+  areaSelect: page.locator('select', { hasText: '+ Добавить' }),
 });
 
 export type IndustrialSafetyLocators = ReturnType<typeof createIndustrialSafetyLocators>;
