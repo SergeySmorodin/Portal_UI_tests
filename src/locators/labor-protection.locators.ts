@@ -46,11 +46,49 @@ export const createLaborProtectionLocators = (page: Page) => ({
   resultsHeading: page.getByRole('columnheader', { name: 'ФИО' }),
   employeeRows: page.locator('table tbody tr'),
   employeeCheckboxes: page.locator('table tbody tr td input[type="checkbox"]'),
+  protocolRow: (employee: string, protocolNumber: string) =>
+    page
+      .locator('table tbody tr')
+      .filter({ hasText: employee })
+      .filter({ hasText: protocolNumber }),
+  protocolLink: (employee: string, protocolNumber: string) =>
+    page
+      .locator('table tbody tr')
+      .filter({ hasText: employee })
+      .filter({ hasText: protocolNumber })
+      .getByRole('link', { name: protocolNumber }),
 
   // Создание записи
   createRecordButton: page.getByRole('button', { name: 'Создать запись' }),
   createPageHeading: page.getByRole('heading', { name: 'Создание записей' }),
   addProtocolButton: page.getByRole('button', { name: '+ Добавить протокол' }),
+  createPageSaveButton: page.locator('main').getByRole('button', { name: 'Сохранить' }),
+
+  // Таблица «Создание записей» (строки выбранных сотрудников)
+  createTableRow: (employee: string) =>
+    page.locator('table tbody tr').filter({ hasText: employee }),
+  employeeProtocolSelect: (employee: string) =>
+    page
+      .locator('table tbody tr')
+      .filter({ hasText: employee })
+      .getByRole('combobox'),
+  employeeCertificateInput: (employee: string) =>
+    page
+      .locator('table tbody tr')
+      .filter({ hasText: employee })
+      .getByPlaceholder('№ удостоверения'),
+  employeeStartDateInput: (employee: string) =>
+    page
+      .locator('table tbody tr')
+      .filter({ hasText: employee })
+      .getByPlaceholder('дд-мм-гггг')
+      .nth(0),
+  employeeEndDateInput: (employee: string) =>
+    page
+      .locator('table tbody tr')
+      .filter({ hasText: employee })
+      .getByPlaceholder('дд-мм-гггг')
+      .nth(1),
 
   // Модальное окно «Создание протокола»
   protocolModal: page.locator('div.fixed.inset-0').filter({ hasText: 'Создание протокола' }),

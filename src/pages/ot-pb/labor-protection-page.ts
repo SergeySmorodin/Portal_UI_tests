@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 import { createBasePage } from '../base-page';
 import { createLaborProtectionLocators } from '../../locators/labor-protection.locators';
 import { createOtPbBase } from './ot-pb-base';
@@ -24,7 +24,9 @@ export const createLaborProtectionPage = (page: Page) => {
     selectCategory: async (label: string): Promise<void> => {
       const checkbox = locators.categoryCheckbox(label);
       await basePage.waitForElement(checkbox);
-      await checkbox.click();
+      if (!(await checkbox.isChecked())) {
+        await checkbox.click();
+      }
     },
 
     selectCategories: async (categories: string[]): Promise<void> => {
@@ -81,6 +83,62 @@ export const createLaborProtectionPage = (page: Page) => {
       await basePage.runAndCheckResponse('/api/safety/sf_protocol/', async () => {
         await locators.saveProtocolButton.click();
       });
+    },
+
+    refreshCreatePage: async (): Promise<void> => {
+      await basePage.openRelative('/OT_PB/LaborProtection/create');
+      await basePage.expectVisible(locators.createPageHeading);
+    },
+
+    selectEmployeeProtocol: async (employee: string, protocolNumber: string): Promise<void> => {
+      const select = locators.employeeProtocolSelect(employee);
+      await basePage.waitForElement(select);
+      const option = select.locator('option').filter({ hasText: protocolNumber });
+      await option.waitFor({ state: 'attached', timeout: config.timeouts.long });
+      const value = await option.getAttribute('value');
+      if (!value) {
+        throw new Error(`selectEmployeeProtocol: option for "${protocolNumber}" has no value`);
+      }
+      await select.selectOption(value);
+    },
+
+    fillEmployeeCertificate: async (employee: string, number: string): Promise<void> => {
+      await basePage.fill(locators.employeeCertificateInput(employee), number);
+    },
+
+    fillEmployeeDates: async (employee: string, start: string, end: string): Promise<void> => {
+      await basePage.fill(locators.employeeStartDateInput(employee), start);
+      await basePage.fill(locators.employeeEndDateInput(employee), end);
+    },
+
+    saveCreatePage: async (): Promise<void> => {
+      await basePage.waitForElement(locators.createPageSaveButton);
+      await basePage.runAndCheckResponse('/api/safety/ot/', async () => {
+        await locators.createPageSaveButton.click();
+      });
+    },
+
+    verifyProtocolInResults: async (employee: string, protocolNumber: string): Promise<void> => {
+      const link = locators.protocolLink(employee, protocolNumber);
+      await link.waitFor({ state: 'visible', timeout: config.timeouts.long });
+      await expect(link).toHaveText(protocolNumber);
+    },
+
+    clickProtocolLink: async (employee: string, protocolNumber: string): Promise<void> => {
+      const link = locators.protocolLink(employee, protocolNumber);
+      await link.waitFor({ state: 'visible', timeout: config.timeouts.long });
+      const href = await link.getAttribute('href');
+      expect(href).not.toBeNull();
+      expect(href).toContain('/media/sf_protocols/');
+      const popupPromise = page.waitForEvent('popup', { timeout: config.timeouts.short }).catch(() => null);
+      await link.click();
+      const popup = await popupPromise;
+      if (popup) {
+        await popup.waitForURL('**/media/**', { timeout: config.timeouts.long });
+        await popup.close();
+      } else {
+        await page.waitForURL('**/media/**', { timeout: config.timeouts.long });
+      }
     },
   };
 
