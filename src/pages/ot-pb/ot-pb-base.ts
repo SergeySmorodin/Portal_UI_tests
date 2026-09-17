@@ -12,6 +12,10 @@ export interface OtPbLocators {
   positionSearchInput: Locator;
   departmentSearchInput: Locator;
   branchSearchInput: Locator;
+  protocolSearchInput: Locator;
+  certificateSearchInput: Locator;
+  periodStartInput: Locator;
+  periodStopInput: Locator;
   filterOptions: Locator;
   missingFilterButton: Locator;
   expiredFilterButton: Locator;
@@ -36,6 +40,9 @@ export interface OtPbPageApi {
   selectRandomPosition: () => Promise<string>;
   selectRandomDepartment: () => Promise<string>;
   selectRandomBranch: () => Promise<string>;
+  fillProtocolSearch: (value: string) => Promise<void>;
+  fillCertificateSearch: (value: string) => Promise<void>;
+  setPeriod: (start: string, stop: string) => Promise<void>;
   selectFilterOption: (searchInput: Locator, optionText: string) => Promise<void>;
   isFilterOptionHighlighted: (optionText: string) => Promise<boolean>;
   getResultColumnValues: (columnIndex: number) => Promise<string[]>;
@@ -128,6 +135,28 @@ export const createOtPbBase = (page: Page, basePage: BasePage, locators: OtPbLoc
 
     selectRandomBranch: async (): Promise<string> => {
       return selectRandomOption(locators.branchSearchInput, locators.filterOptions, 'Branch');
+    },
+
+    fillProtocolSearch: async (value: string): Promise<void> => {
+      await basePage.waitForElement(locators.protocolSearchInput);
+      await locators.protocolSearchInput.click();
+      await locators.protocolSearchInput.fill(value);
+    },
+
+    fillCertificateSearch: async (value: string): Promise<void> => {
+      await basePage.waitForElement(locators.certificateSearchInput);
+      await locators.certificateSearchInput.click();
+      await locators.certificateSearchInput.fill(value);
+    },
+
+    setPeriod: async (start: string, stop: string): Promise<void> => {
+      await basePage.waitForElement(locators.periodStartInput);
+      await locators.periodStartInput.click();
+      await locators.periodStartInput.fill(start);
+      await locators.periodStartInput.press('Enter');
+      await locators.periodStopInput.click();
+      await locators.periodStopInput.fill(stop);
+      await locators.periodStopInput.press('Enter');
     },
 
     selectFilterOption: async (searchInput: Locator, optionText: string): Promise<void> => {

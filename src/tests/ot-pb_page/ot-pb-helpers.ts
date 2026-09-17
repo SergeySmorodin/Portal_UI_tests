@@ -21,6 +21,30 @@ const getPage: Record<OtPbPageKey, (f: OtPbFix) => OtPbPageApi> = {
   medicalCommission: (f) => f.medicalCommissionPage,
 };
 
+interface OtPbPageMeta {
+  startColumn: number;
+  stopColumn: number;
+  protocolColumn?: number;
+  certificateColumn?: number;
+}
+
+const pageMeta: Record<OtPbPageKey, OtPbPageMeta> = {
+  industrialSafety: { startColumn: 4, stopColumn: 5, protocolColumn: 3 },
+  laborProtection: { startColumn: 5, stopColumn: 6, certificateColumn: 4 },
+  medicalCommission: { startColumn: 4, stopColumn: 5, certificateColumn: 3 },
+};
+
+const isRuDate = (value: string): boolean => /^\d{2}\.\d{2}\.\d{4}$/.test(value);
+
+const ruDateToNumber = (value: string): number => {
+  const [day, month, year] = value.split('.').map(Number);
+  return year * 10000 + month * 100 + day;
+};
+
+const toFilterDate = (value: string): string => value.replace(/\./g, '-');
+
+const pickRandom = <T>(items: T[]): T => items[Math.floor(Math.random() * items.length)];
+
 export function runOtPbTests(pageKey: OtPbPageKey, cfg: OtPbTestConfig): void {
   test.describe(cfg.name, () => {
     test('Выбор категорий и отображение всех сотрудников', async ({
@@ -336,6 +360,210 @@ export function runOtPbTests(pageKey: OtPbPageKey, cfg: OtPbTestConfig): void {
           await expect(page.isButtonActive(filter.button)).resolves.toBe(false);
         });
       }
+    });
+
+    test('Фильтрация по периоду', async ({
+      industrialSafetyPage,
+      laborProtectionPage,
+      medicalCommissionPage,
+    }) => {
+      const page = getPage[pageKey]({
+        industrialSafetyPage,
+        laborProtectionPage,
+        medicalCommissionPage,
+      });
+      const meta = pageMeta[pageKey];
+
+      await test.step(cfg.openStep, async () => {
+        await page.open();
+        await expect(page.locators.heading).toHaveText(cfg.headingText);
+      });
+
+      await test.step('Выбрать все категории', async () => {
+        await page.selectCategories(cfg.categories);
+      });
+
+      await test.step('Нажать «Показать»', async () => {
+        await page.clickShow();
+        await expect(page.isResultsVisible()).resolves.toBe(true);
+      });
+
+      const period =
+        await test.step('Выбрать период по отображаемой записи', async () => {
+          const starts = await page.getResultColumnValues(meta.startColumn);
+          const stops = await page.getResultColumnValues(meta.stopColumn);
+          const candidates = starts
+            .map((start, index) => ({ start, stop: stops[index] }))
+            .filter((row) => isRuDate(row.start) && isRuDate(row.stop));
+          expect(candidates.length).toBeGreaterThan(0);
+          const chosen = pickRandom(candidates);
+          await page.setPeriod(toFilterDate(chosen.start), toFilterDate(chosen.stop));
+          return chosen;
+        });
+
+      await test.step('Нажать «Показать» после фильтрации по периоду', async () => {
+        await page.clickShow();
+      });
+
+      await test.step(
+        `Проверить, что отображаются записи с периодом ${period.start} — ${period.stop}`,
+        async () => {
+          await expect(page.isResultsVisible()).resolves.toBe(true);
+          await expect(page.locators.resultsHeading).toBeVisible();
+          await expect
+            .poll(async () => {
+              const starts = await page.getResultColumnValues(meta.startColumn);
+              const stops = await page.getResultColumnValues(meta.stopColumn);
+              const dated = starts
+                .map((start, index) => ({ start, stop: stops[index] }))
+                .filter((row) => isRuDate(row.start) && isRuDate(row.stop));
+
+              if (dated.length === 0) {
+                return false;
+              }
+
+              const from = ruDateToNumber(period.start);
+              const to = ruDateToNumber(period.stop);
+              const allInRange = dated.every(
+                (row) => ruDateToNumber(row.start) >= from && ruDateToNumber(row.stop) <= to
+              );
+              const chosenVisible = dated.some(
+                (row) => row.start === period.start && row.stop === period.stop
+              );
+              return allInRange && chosenVisible;
+            })
+            .toBe(true);
+        }
+      );
+    });
+
+    test('Фильтрация по протоколу', async ({
+      industrialSafetyPage,
+      laborProtectionPage,
+      medicalCommissionPage,
+    }) => {
+      const protocolColumn = pageMeta[pageKey].protocolColumn;
+      test.skip(
+        protocolColumn === undefined,
+        'Фильтр по протоколу поддерживается только на странице «Промышленная безопасность»'
+      );
+      if (protocolColumn === undefined) {
+        return;
+      }
+
+      const page = getPage[pageKey]({
+        industrialSafetyPage,
+        laborProtectionPage,
+        medicalCommissionPage,
+      });
+
+      await test.step(cfg.openStep, async () => {
+        await page.open();
+        await expect(page.locators.heading).toHaveText(cfg.headingText);
+      });
+
+      await test.step('Выбрать все категории', async () => {
+        await page.selectCategories(cfg.categories);
+      });
+
+      await test.step('Нажать «Показать»', async () => {
+        await page.clickShow();
+        await expect(page.isResultsVisible()).resolves.toBe(true);
+      });
+
+      const protocol =
+        await test.step('Выбрать протокол из отображаемых записей', async () => {
+          const values = await page.getResultColumnValues(protocolColumn);
+          const unique = [...new Set(values.filter((value) => value !== ''))];
+          expect(unique.length).toBeGreaterThan(0);
+          const chosen = pickRandom(unique);
+          await page.fillProtocolSearch(chosen);
+          return chosen;
+        });
+
+      await test.step('Нажать «Показать» после фильтрации по протоколу', async () => {
+        await page.clickShow();
+      });
+
+      await test.step(`Проверить, что отображаются записи с протоколом «${protocol}»`, async () => {
+        await expect(page.isResultsVisible()).resolves.toBe(true);
+        await expect(page.locators.resultsHeading).toBeVisible();
+        await expect
+          .poll(async () => {
+            const values = await page.getResultColumnValues(protocolColumn);
+            return (
+              values.length > 0 &&
+              values.every((value) => value.toLowerCase().includes(protocol.toLowerCase()))
+            );
+          })
+          .toBe(true);
+      });
+    });
+
+    test('Фильтрация по удостоверению', async ({
+      industrialSafetyPage,
+      laborProtectionPage,
+      medicalCommissionPage,
+    }) => {
+      const certificateColumn = pageMeta[pageKey].certificateColumn;
+      test.skip(
+        certificateColumn === undefined,
+        'Фильтр по удостоверению поддерживается только на страницах «Охрана труда» и «Медицинская комиссия»'
+      );
+      if (certificateColumn === undefined) {
+        return;
+      }
+
+      const page = getPage[pageKey]({
+        industrialSafetyPage,
+        laborProtectionPage,
+        medicalCommissionPage,
+      });
+
+      await test.step(cfg.openStep, async () => {
+        await page.open();
+        await expect(page.locators.heading).toHaveText(cfg.headingText);
+      });
+
+      await test.step('Выбрать все категории', async () => {
+        await page.selectCategories(cfg.categories);
+      });
+
+      await test.step('Нажать «Показать»', async () => {
+        await page.clickShow();
+        await expect(page.isResultsVisible()).resolves.toBe(true);
+      });
+
+      const certificate =
+        await test.step('Выбрать удостоверение из отображаемых записей', async () => {
+          const values = await page.getResultColumnValues(certificateColumn);
+          const unique = [...new Set(values.filter((value) => value !== ''))];
+          expect(unique.length).toBeGreaterThan(0);
+          const chosen = pickRandom(unique);
+          await page.fillCertificateSearch(chosen);
+          return chosen;
+        });
+
+      await test.step('Нажать «Показать» после фильтрации по удостоверению', async () => {
+        await page.clickShow();
+      });
+
+      await test.step(
+        `Проверить, что отображаются записи с удостоверением «${certificate}»`,
+        async () => {
+          await expect(page.isResultsVisible()).resolves.toBe(true);
+          await expect(page.locators.resultsHeading).toBeVisible();
+          await expect
+            .poll(async () => {
+              const values = await page.getResultColumnValues(certificateColumn);
+              return (
+                values.length > 0 &&
+                values.every((value) => value.toLowerCase().includes(certificate.toLowerCase()))
+              );
+            })
+            .toBe(true);
+        }
+      );
     });
   });
 }

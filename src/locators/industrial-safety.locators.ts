@@ -34,6 +34,18 @@ export const createIndustrialSafetyLocators = (page: Page) => ({
   positionSearchInput: page.getByPlaceholder('Поиск по должности...'),
   departmentSearchInput: page.getByPlaceholder('Поиск по отделам...'),
   branchSearchInput: page.getByPlaceholder('Поиск по филиалам...'),
+  protocolSearchInput: page.getByPlaceholder('найти протокол...'),
+  certificateSearchInput: page.getByPlaceholder('найти удостоверение...'),
+  periodStartInput: page
+    .locator('div.bg-white')
+    .filter({ hasText: 'Фильтрация выбора' })
+    .getByPlaceholder('дд-мм-гггг')
+    .nth(0),
+  periodStopInput: page
+    .locator('div.bg-white')
+    .filter({ hasText: 'Фильтрация выбора' })
+    .getByPlaceholder('дд-мм-гггг')
+    .nth(1),
 
   // Срок действия (фильтр по статусу сертификатов)
   missingFilterButton: page.getByRole('button', { name: 'отсутствует' }),
