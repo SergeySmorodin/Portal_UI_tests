@@ -1,5 +1,5 @@
 import { test } from '../../fixtures/test-fixtures';
-import { runOtPbTests } from './ot-pb-helpers';
+import { runOtPbTests } from './ot-pb-filters';
 
 test.describe('Теститрование разделов фильтрации Охраны труда, Мед осмотров и Промышленной безопасности', () => {
   runOtPbTests('industrialSafety', {

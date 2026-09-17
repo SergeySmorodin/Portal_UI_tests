@@ -1,5 +1,10 @@
 import { test, expect, type TestFixtures } from '../../fixtures/test-fixtures';
+import { api } from '../../test-data/api/api';
 import type { OtPbPageApi } from '../../pages/ot-pb/ot-pb-base';
+
+// Общие тесты фильтрации для страниц «Охрана труда», «Медицинская комиссия»
+// и «Промышленная безопасность». Каждый тест запускается для всех трёх страниц
+// через runOtPbTests(pageKey, cfg) — см. ot-pb-page.spec.ts.
 
 interface OtPbTestConfig {
   name: string;
@@ -28,6 +33,13 @@ interface OtPbPageMeta {
   certificateColumn?: number;
 }
 
+// Индексы колонок в tbody таблицы результатов: 0 — checkbox, 1 — ФИО, 2 — Должность.
+// ВАЖНО: индексы даны для tbody, в thead есть дополнительная колонка категорий,
+// поэтому номера заголовков смещены относительно колонок тела таблицы.
+//
+// Протокол есть только у «Промышленной безопасности», удостоверение — только
+// у «Охраны труда» и «Медицинской комиссии», поэтому поля протокола/удостоверения
+// опциональны: если колонки на странице нет, соответствующий тест пропускается.
 const pageMeta: Record<OtPbPageKey, OtPbPageMeta> = {
   industrialSafety: { startColumn: 4, stopColumn: 5, protocolColumn: 3 },
   laborProtection: { startColumn: 5, stopColumn: 6, certificateColumn: 4 },
@@ -47,12 +59,19 @@ const pickRandom = <T>(items: T[]): T => items[Math.floor(Math.random() * items.
 
 type OtPbDataKey = 'user_OT' | 'user_PB' | 'user_MC';
 
+// Ключ массива записей в ответе API /api/users/safety_all/ для каждой страницы:
+// «Промышленная безопасность» — user_PB, «Охрана труда» — user_OT,
+// «Медицинская комиссия» — user_MC.
 const dataKeyByPage: Record<OtPbPageKey, OtPbDataKey> = {
   industrialSafety: 'user_PB',
   laborProtection: 'user_OT',
   medicalCommission: 'user_MC',
 };
 
+// Выпадающий список отделов/филиалов показывает ВСЕ варианты компании, но записи
+// есть только у части из них (например, из ~134 отделов записи есть лишь у ~15).
+// Поэтому отдел/филиал нельзя выбирать случайно из списка — берём их из данных API,
+// у которых есть хотя бы одна запись нужного типа (ключ dataKey).
 const fetchValuesWithRecords = async (
   apiRequest: TestFixtures['apiRequest'],
   field: 'department' | 'filial',
@@ -63,7 +82,7 @@ const fetchValuesWithRecords = async (
 
   while (page > 0) {
     const response = await apiRequest.get(
-      `/api/users/safety_all/?page=${page}&page_size=500`
+      `${api.safety_all}?page=${page}&page_size=500`
     );
     const data = await response.json();
     const users = (data.results ?? []) as Array<{
@@ -165,6 +184,9 @@ export function runOtPbTests(pageKey: OtPbPageKey, cfg: OtPbTestConfig): void {
         await expect(page.isResultsVisible()).resolves.toBe(true);
         await expect(page.locators.resultsHeading).toBeVisible();
         expect(await page.getEmployeeRowsCount()).toBeGreaterThan(0);
+        // У одного сотрудника может быть несколько записей (несколько строк
+        // с одинаковой ФИО), поэтому берём первую совпавшую строку, чтобы
+        // избежать ошибки strict mode.
         await expect(
           page.locators.resultsTable.getByText(surname, { exact: true }).first()
         ).toBeVisible();
@@ -454,18 +476,20 @@ export function runOtPbTests(pageKey: OtPbPageKey, cfg: OtPbTestConfig): void {
         await expect(page.isResultsVisible()).resolves.toBe(true);
       });
 
-      const period =
-        await test.step('Выбрать период по отображаемой записи', async () => {
-          const starts = await page.getResultColumnValues(meta.startColumn);
-          const stops = await page.getResultColumnValues(meta.stopColumn);
-          const candidates = starts
-            .map((start, index) => ({ start, stop: stops[index] }))
-            .filter((row) => isRuDate(row.start) && isRuDate(row.stop));
-          expect(candidates.length).toBeGreaterThan(0);
-          const chosen = pickRandom(candidates);
-          await page.setPeriod(toFilterDate(chosen.start), toFilterDate(chosen.stop));
-          return chosen;
-        });
+const period =
+          await test.step('Выбрать период по отображаемой записи', async () => {
+            const starts = await page.getResultColumnValues(meta.startColumn);
+            const stops = await page.getResultColumnValues(meta.stopColumn);
+            const candidates = starts
+              .map((start, index) => ({ start, stop: stops[index] }))
+              .filter((row) => isRuDate(row.start) && isRuDate(row.stop));
+            expect(candidates.length).toBeGreaterThan(0);
+            const chosen = pickRandom(candidates);
+            // setPeriod подставляет даты в react-datepicker: только fill() не
+            // фиксирует значение — требуется click + fill + Enter для каждого поля.
+            await page.setPeriod(toFilterDate(chosen.start), toFilterDate(chosen.stop));
+            return chosen;
+          });
 
       await test.step('Нажать «Показать» после фильтрации по периоду', async () => {
         await page.clickShow();
@@ -509,9 +533,14 @@ export function runOtPbTests(pageKey: OtPbPageKey, cfg: OtPbTestConfig): void {
       medicalCommissionPage,
     }) => {
       const protocolColumn = pageMeta[pageKey].protocolColumn;
+      // Поиск по протоколу реализован фронтендом только на странице
+      // «Промышленная безопасность»: там поле to_protocol фильтруемых данных —
+      // строка. На «Охране труда» это объект (фильтр падает), а на «Медицинской
+      // комиссии» ключа to_protocol нет вовсе. Поэтому на этих страницах тест
+      // пропускается, пока фичу не починят.
       test.skip(
         protocolColumn === undefined,
-        'Фильтр по протоколу поддерживается только на странице «Промышленная безопасность»'
+        'Фильтр по протоколу поддерживается только на странице «Промышленная безопасность»' // fixme
       );
       if (protocolColumn === undefined) {
         return;
@@ -572,9 +601,12 @@ export function runOtPbTests(pageKey: OtPbPageKey, cfg: OtPbTestConfig): void {
       medicalCommissionPage,
     }) => {
       const certificateColumn = pageMeta[pageKey].certificateColumn;
+      // Поиск по удостоверению (идентификатор) реализован фронтендом только
+      // на «Охране труда» и «Медицинской комиссии». У записей «Промышленной
+      // безопасности» поля identification нет, поэтому там тест пропускается.
       test.skip(
         certificateColumn === undefined,
-        'Фильтр по удостоверению поддерживается только на страницах «Охрана труда» и «Медицинская комиссия»'
+        'Фильтр по удостоверению поддерживается только на страницах «Охрана труда» и «Медицинская комиссия»' // fixme
       );
       if (certificateColumn === undefined) {
         return;

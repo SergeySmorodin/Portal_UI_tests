@@ -93,6 +93,11 @@ test.describe('Охрана труда — добавление протокол
     });
 
     await test.step('Найти запись сотрудника с добавленным протоколом', async () => {
+      await laborProtectionPage.selectFilterOption(
+        laborProtectionPage.locators.surnameSearchInput,
+        employee
+      );
+      await laborProtectionPage.clickShow();
       await laborProtectionPage.verifyProtocolInResults(employee, protocolNumber);
     });
 

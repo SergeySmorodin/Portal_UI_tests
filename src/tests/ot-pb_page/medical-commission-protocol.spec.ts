@@ -64,11 +64,16 @@ test.describe('Охрана труда — добавление записи м�
     });
 
     await test.step('Найти запись сотрудника с добавленным заключением', async () => {
+      await medicalCommissionPage.selectFilterOption(
+        medicalCommissionPage.locators.surnameSearchInput,
+        employee
+      );
+      await medicalCommissionPage.clickShow();
       await medicalCommissionPage.verifyRecordInResults(employee, issueDateDisplay);
     });
 
     await test.step('Проверить даты заключения в таблице результатов', async () => {
-      const row = medicalCommissionPage.locators.recordRow(employee, issueDateDisplay);
+      const row = medicalCommissionPage.locators.recordRow(employee, issueDateDisplay).first();
       await expect(row).toContainText(nextDateDisplay);
     });
   });

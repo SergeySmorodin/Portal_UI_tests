@@ -17,6 +17,7 @@ export const api = {
     manual: '/api/certifications/manuals/',
     passport: '/api/certifications/passports/',
   },
+  safety_all: '/api/users/safety_all/',
 } as const;
 
 export type ApiPath = (typeof api)[keyof typeof api];

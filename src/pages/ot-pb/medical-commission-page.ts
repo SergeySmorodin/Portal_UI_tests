@@ -74,7 +74,7 @@ export const createMedicalCommissionPage = (page: Page) => {
     },
 
     verifyRecordInResults: async (employee: string, issueDateDisplay: string): Promise<void> => {
-      const row = locators.recordRow(employee, issueDateDisplay);
+      const row = locators.recordRow(employee, issueDateDisplay).first();
       await row.waitFor({ state: 'visible', timeout: config.timeouts.long });
     },
   };

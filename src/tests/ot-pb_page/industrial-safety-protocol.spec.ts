@@ -67,6 +67,8 @@ test.describe('Охрана труда — добавление записи п�
     });
 
     await test.step('Найти запись сотрудника с добавленным протоколом', async () => {
+      await industrialSafetyPage.fillProtocolSearch(protocolNumber);
+      await industrialSafetyPage.clickShow();
       await industrialSafetyPage.verifyRecordInResults(employee, protocolNumber);
     });
 
