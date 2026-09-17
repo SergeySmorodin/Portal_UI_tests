@@ -7,7 +7,7 @@ export const createDistributionRequestsLocators = (page: Page) => {
 
   return {
     // Страница выбора проекта (создание заявки на командировку)
-    searchInput: page.getByPlaceholder('Поиск по названию, ИНН...'),
+    searchInput: page.getByPlaceholder('Название проекта...'),
     workButton: (name: string) => page.getByRole('button', { name }).first(),
 
     // Вкладки на странице работы
