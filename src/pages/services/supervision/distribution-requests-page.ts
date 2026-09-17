@@ -107,6 +107,37 @@ export const createDistributionRequestsPage = (page: Page) => {
       await locators.massEditSelect('Транспорт:').selectOption({ label: fields.transport });
     },
 
+    openDemobilization: async (): Promise<void> => {
+      await locators.demobilizationButton.waitFor({ state: 'visible', timeout: config.timeouts.long });
+      await locators.demobilizationButton.click();
+      await locators.nextButton.waitFor({ state: 'visible', timeout: config.timeouts.long });
+      await locators.backButton.waitFor({ state: 'visible', timeout: config.timeouts.long });
+    },
+
+    backToCompositionStep: async (): Promise<void> => {
+      await locators.backButton.click();
+      await locators.requestHeaderSelect('Денежные:').waitFor({
+        state: 'visible',
+        timeout: config.timeouts.long,
+      });
+    },
+
+    fillDemobilizationCommon: async (fields: RequestCommonFields): Promise<void> => {
+      await locators.requestHeaderSelect('Проживание:').selectOption({ label: fields.living });
+      await locators.requestHeaderSelect('Такси:').selectOption({ label: fields.taxi });
+      await locators.requestHeaderInput('Денежные:').fill(fields.money);
+      await locators.requestHeaderSelect('Пропуск:').selectOption({ label: fields.pass });
+    },
+
+    fillVisitMoney: async (value: string): Promise<void> => {
+      const inputs = locators.visitMoneyInputs;
+      const count = await inputs.count();
+      expect(count).toBeGreaterThan(0);
+      for (let i = 0; i < count; i++) {
+        await inputs.nth(i).fill(value);
+      }
+    },
+
     submitForApproval: async (): Promise<void> => {
       await locators.submitForApprovalButton.waitFor({
         state: 'visible',
