@@ -1,7 +1,7 @@
 import { Page } from '@playwright/test';
 import { createBasePage } from '../../base-page';
 import { createResourcePlanningLocators } from '../../../locators/resource-planning.locators';
-import { config } from '../../../config/config';
+import { config } from '../../../config';
 
 export const createResourcePlanningPage = (page: Page) => {
   const basePage = createBasePage(page);

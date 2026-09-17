@@ -5,7 +5,7 @@ import {
   createProjectsListLocators,
 } from '../../locators/project-page.locators';
 import { ProjectData } from '../../types';
-import { config } from '../../config/config';
+import { config } from '../../config';
 
 export const createProjectPage = (page: Page) => {
   const basePage = createBasePage(page);

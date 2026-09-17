@@ -1,5 +1,5 @@
 import { APIRequestContext, BrowserContext, Page, test as base, expect } from '@playwright/test';
-import { config, type AppConfig } from '../config/config';
+import { config, type AppConfig } from '../config';
 import { authUsers } from '../../global-setup';
 import { createLoginPage } from '../pages/login/login-page';
 import { createMainPage } from '../pages/main/main-page';

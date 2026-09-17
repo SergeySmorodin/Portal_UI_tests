@@ -1,7 +1,7 @@
 import { Page } from '@playwright/test';
 import { createBasePage } from '../../base-page';
 import { createDistributionRequestsLocators } from '../../../locators/distribution-requests.locators';
-import { config } from '../../../config/config';
+import { config } from '../../../config';
 
 export interface RequestCommonFields {
   start: string;
@@ -15,6 +15,18 @@ export interface RequestCommonFields {
 export interface MassEditFields {
   date: string;
   transport: string;
+}
+
+export interface CommonFields {
+  living: string;
+  taxi: string;
+  money: string;
+  pass: string;
+}
+
+export interface RequestCommonFields extends CommonFields {
+  start: string;
+  stop: string;
 }
 
 export const createDistributionRequestsPage = (page: Page) => {
@@ -108,7 +120,10 @@ export const createDistributionRequestsPage = (page: Page) => {
     },
 
     openDemobilization: async (): Promise<void> => {
-      await locators.demobilizationButton.waitFor({ state: 'visible', timeout: config.timeouts.long });
+      await locators.demobilizationButton.waitFor({
+        state: 'visible',
+        timeout: config.timeouts.long,
+      });
       await locators.demobilizationButton.click();
       await locators.nextButton.waitFor({ state: 'visible', timeout: config.timeouts.long });
       await locators.backButton.waitFor({ state: 'visible', timeout: config.timeouts.long });

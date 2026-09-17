@@ -1,5 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test';
-import { config } from '../config/config';
+import { config } from '../config';
 
 export const createBasePage = (page: Page) => {
   const timeout = config.timeouts.normal;

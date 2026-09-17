@@ -1,6 +1,6 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from '../base-page';
-import { config } from '../../config/config';
+import { config } from '../../config';
 
 export interface OtPbLocators {
   heading: Locator;

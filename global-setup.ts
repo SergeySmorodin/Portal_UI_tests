@@ -4,7 +4,7 @@ import { Browser, FullConfig, chromium } from '@playwright/test';
 import path from 'path';
 import fs from 'fs';
 import { createLoginPage } from './src/pages/login/login-page';
-import { config } from './src/config/config';
+import { config } from './src/config';
 
 export interface AuthUser {
   id: string;

@@ -2,7 +2,7 @@ import { Page } from '@playwright/test';
 import { createBasePage } from '../base-page';
 import { createMedicalCommissionLocators } from '../../locators/medical-commission.locators';
 import { createOtPbBase } from './ot-pb-base';
-import { config } from '../../config/config';
+import { config } from '../../config';
 
 export const createMedicalCommissionPage = (page: Page) => {
   const basePage = createBasePage(page);

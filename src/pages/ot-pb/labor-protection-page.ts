@@ -2,7 +2,7 @@ import { Page, expect } from '@playwright/test';
 import { createBasePage } from '../base-page';
 import { createLaborProtectionLocators } from '../../locators/labor-protection.locators';
 import { createOtPbBase } from './ot-pb-base';
-import { config } from '../../config/config';
+import { config } from '../../config';
 import path from 'path';
 
 export const createLaborProtectionPage = (page: Page) => {

@@ -1,7 +1,7 @@
 import { Page } from '@playwright/test';
 import { createBasePage } from '../base-page';
 import { createMainPageLocators, MAIN_PAGE_SECTIONS } from '../../locators/main-page.locators';
-import { config } from '../../config/config';
+import { config } from '../../config';
 
 export const createMainPage = (page: Page) => {
   const basePage = createBasePage(page);

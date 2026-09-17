@@ -1,6 +1,6 @@
 import { randomBytes } from 'node:crypto';
 import { UserCredentials } from '../../types';
-import { config } from '../../config/config';
+import { config } from '../../config';
 
 const randomToken = (): string => randomBytes(4).toString('hex');
 

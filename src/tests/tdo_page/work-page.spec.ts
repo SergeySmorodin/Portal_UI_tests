@@ -1,5 +1,5 @@
 import { test, expect } from '../../fixtures/test-fixtures';
-import { config } from '../../config/config';
+import { config } from '../../config';
 import { projectFactory } from '../../test-data/factory/project-factory';
 import { workFactory } from '../../test-data/factory/work-factory';
 import { api } from '../../test-data/api/api';

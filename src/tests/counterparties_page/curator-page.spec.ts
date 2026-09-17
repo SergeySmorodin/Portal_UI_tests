@@ -1,5 +1,5 @@
 import { test, expect } from '../../fixtures/test-fixtures';
-import { config } from '../../config/config';
+import { config } from '../../config';
 import { curatorFactory } from '../../test-data/factory/curator-factory';
 import { api } from '../../test-data/api/api';
 import { CuratorData } from '../../types';

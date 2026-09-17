@@ -6,7 +6,7 @@ import {
   createAllWorksListLocators,
 } from '../../locators/work-page.locators';
 import { WorkData } from '../../types';
-import { config } from '../../config/config';
+import { config } from '../../config';
 
 export const createWorkPage = (page: Page) => {
   const basePage = createBasePage(page);

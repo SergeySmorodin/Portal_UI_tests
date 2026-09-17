@@ -1,4 +1,4 @@
-import { config } from '../../../config/config';
+import { config } from '../../../config';
 import { api } from '../../../test-data/api/api';
 import { createProjectViaApi, createWorkViaApi } from '../../../test-data/api/project-api';
 import { projectFactory } from '../../../test-data/factory/project-factory';
