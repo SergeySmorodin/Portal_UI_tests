@@ -45,6 +45,52 @@ const toFilterDate = (value: string): string => value.replace(/\./g, '-');
 
 const pickRandom = <T>(items: T[]): T => items[Math.floor(Math.random() * items.length)];
 
+type OtPbDataKey = 'user_OT' | 'user_PB' | 'user_MC';
+
+const dataKeyByPage: Record<OtPbPageKey, OtPbDataKey> = {
+  industrialSafety: 'user_PB',
+  laborProtection: 'user_OT',
+  medicalCommission: 'user_MC',
+};
+
+const fetchValuesWithRecords = async (
+  apiRequest: TestFixtures['apiRequest'],
+  field: 'department' | 'filial',
+  dataKey: OtPbDataKey
+): Promise<string[]> => {
+  const values = new Set<string>();
+  let page = 1;
+
+  while (page > 0) {
+    const response = await apiRequest.get(
+      `/api/users/safety_all/?page=${page}&page_size=500`
+    );
+    const data = await response.json();
+    const users = (data.results ?? []) as Array<{
+      position_user?: Array<{
+        position?: Record<string, unknown>;
+        user_OT?: unknown[];
+        user_PB?: unknown[];
+        user_MC?: unknown[];
+      }>;
+    }>;
+
+    for (const user of users) {
+      for (const position of user.position_user ?? []) {
+        const records = (position[dataKey] ?? []) as unknown[];
+        const value = String(position.position?.[field] ?? '');
+        if (value && records.length > 0) {
+          values.add(value);
+        }
+      }
+    }
+
+    page = data.next ? page + 1 : 0;
+  }
+
+  return [...values];
+};
+
 export function runOtPbTests(pageKey: OtPbPageKey, cfg: OtPbTestConfig): void {
   test.describe(cfg.name, () => {
     test('Выбор категорий и отображение всех сотрудников', async ({
@@ -119,7 +165,9 @@ export function runOtPbTests(pageKey: OtPbPageKey, cfg: OtPbTestConfig): void {
         await expect(page.isResultsVisible()).resolves.toBe(true);
         await expect(page.locators.resultsHeading).toBeVisible();
         expect(await page.getEmployeeRowsCount()).toBeGreaterThan(0);
-        await expect(page.locators.resultsTable.getByText(surname, { exact: true })).toBeVisible();
+        await expect(
+          page.locators.resultsTable.getByText(surname, { exact: true }).first()
+        ).toBeVisible();
       });
     });
 
@@ -227,6 +275,7 @@ export function runOtPbTests(pageKey: OtPbPageKey, cfg: OtPbTestConfig): void {
       industrialSafetyPage,
       laborProtectionPage,
       medicalCommissionPage,
+      apiRequest,
     }) => {
       const page = getPage[pageKey]({
         industrialSafetyPage,
@@ -249,8 +298,16 @@ export function runOtPbTests(pageKey: OtPbPageKey, cfg: OtPbTestConfig): void {
       });
 
       const department =
-        await test.step('Выбрать случайный отдел из выпадающего списка', async () => {
-          return page.selectRandomDepartment();
+        await test.step('Выбрать отдел, у которого есть записи', async () => {
+          const departments = await fetchValuesWithRecords(
+            apiRequest,
+            'department',
+            dataKeyByPage[pageKey]
+          );
+          expect(departments.length).toBeGreaterThan(0);
+          const chosen = pickRandom(departments);
+          await page.selectFilterOption(page.locators.departmentSearchInput, chosen);
+          return chosen;
         });
 
       await test.step(`Проверить подсветку выбранного отдела «${department}»`, async () => {
@@ -271,6 +328,7 @@ export function runOtPbTests(pageKey: OtPbPageKey, cfg: OtPbTestConfig): void {
       industrialSafetyPage,
       laborProtectionPage,
       medicalCommissionPage,
+      apiRequest,
     }) => {
       const page = getPage[pageKey]({
         industrialSafetyPage,
@@ -292,8 +350,16 @@ export function runOtPbTests(pageKey: OtPbPageKey, cfg: OtPbTestConfig): void {
         await expect(page.isResultsVisible()).resolves.toBe(true);
       });
 
-      const branch = await test.step('Выбрать случайный филиал из выпадающего списка', async () => {
-        return page.selectRandomBranch();
+      const branch = await test.step('Выбрать филиал, у которого есть записи', async () => {
+        const branches = await fetchValuesWithRecords(
+          apiRequest,
+          'filial',
+          dataKeyByPage[pageKey]
+        );
+        expect(branches.length).toBeGreaterThan(0);
+        const chosen = pickRandom(branches);
+        await page.selectFilterOption(page.locators.branchSearchInput, chosen);
+        return chosen;
       });
 
       await test.step(`Проверить подсветку выбранного филиала «${branch}»`, async () => {
