@@ -19,6 +19,8 @@ import {
 } from '../pages/certification/certification-page';
 import { createResourcePlanningPage } from '../pages/services/supervision/resource-planning-page';
 import { createDistributionRequestsPage } from '../pages/services/supervision/distribution-requests-page';
+import { createWorkingToolsPage } from '../pages/services/supervision/working-tools-page';
+import { createReportCardPage } from '../pages/services/supervision/report-card-page';
 import { createLaborProtectionPage } from '../pages/ot-pb/labor-protection-page';
 import { createMedicalCommissionPage } from '../pages/ot-pb/medical-commission-page';
 import { createIndustrialSafetyPage } from '../pages/ot-pb/industrial-safety-page';
@@ -71,6 +73,8 @@ export interface TestFixtures {
   certificationSearchPage: ReturnType<typeof createCertificationSearchPage>;
   resourcePlanningPage: ReturnType<typeof createResourcePlanningPage>;
   distributionRequestsPage: ReturnType<typeof createDistributionRequestsPage>;
+  workingToolsPage: ReturnType<typeof createWorkingToolsPage>;
+  reportCardPage: ReturnType<typeof createReportCardPage>;
   laborProtectionPage: ReturnType<typeof createLaborProtectionPage>;
   medicalCommissionPage: ReturnType<typeof createMedicalCommissionPage>;
   industrialSafetyPage: ReturnType<typeof createIndustrialSafetyPage>;
@@ -79,6 +83,7 @@ export interface TestFixtures {
   createUserPage: CreateUserPage;
   createdProject: CreatedProject;
   createdWork: CreatedWork;
+  createdWorkExecution: CreatedWork;
 }
 
 export const test = base.extend<TestFixtures>({
@@ -182,6 +187,16 @@ export const test = base.extend<TestFixtures>({
     await use(distributionRequestsPage);
   },
 
+  workingToolsPage: async ({ authenticatedPage }, use) => {
+    const workingToolsPage = createWorkingToolsPage(authenticatedPage);
+    await use(workingToolsPage);
+  },
+
+  reportCardPage: async ({ authenticatedPage }, use) => {
+    const reportCardPage = createReportCardPage(authenticatedPage);
+    await use(reportCardPage);
+  },
+
   laborProtectionPage: async ({ authenticatedPage }, use) => {
     const laborProtectionPage = createLaborProtectionPage(authenticatedPage);
     await use(laborProtectionPage);
@@ -221,6 +236,21 @@ export const test = base.extend<TestFixtures>({
     const workPk = await createWorkViaApi(apiRequest, work, {
       megaProjectPk: projectPk,
       contractPk,
+    });
+    await use({ ...createdProject, work, workPk });
+  },
+
+  createdWorkExecution: async ({ apiRequest, createdProject }, use) => {
+    const { project, projectPk } = createdProject;
+    const work = workFactory.standard({
+      startDate: project.startDate,
+      stopDate: project.stopDate,
+    });
+    const contractPk = await getFirstContractPk(apiRequest);
+    const workPk = await createWorkViaApi(apiRequest, work, {
+      megaProjectPk: projectPk,
+      contractPk,
+      status: 'Выполнение работы',
     });
     await use({ ...createdProject, work, workPk });
   },
