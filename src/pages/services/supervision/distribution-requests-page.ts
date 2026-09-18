@@ -78,6 +78,16 @@ export const createDistributionRequestsPage = (page: Page) => {
       return match ? Number(match[1]) : 0;
     },
 
+    markVisitsAsLocalTrip: async (): Promise<void> => {
+      const boxes = locators.visitLocalTripCheckboxes;
+      const count = await boxes.count();
+      for (let i = 0; i < count; i++) {
+        if (!(await boxes.nth(i).isChecked())) {
+          await boxes.nth(i).check();
+        }
+      }
+    },
+
     createRequest: async (): Promise<void> => {
       await locators.createRequestButton.waitFor({
         state: 'visible',

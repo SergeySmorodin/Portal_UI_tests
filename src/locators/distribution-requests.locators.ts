@@ -17,7 +17,7 @@ export const createDistributionRequestsLocators = (page: Page) => {
 
     // Модал «Управление заявками» — шаг 1 (заявки)
     modal,
-    
+
     requestHeaderDate: (label: string) =>
       modal.locator('label', { hasText: label }).locator('xpath=following-sibling::div[1]//input'),
     requestHeaderSelect: (label: string) =>
@@ -58,6 +58,11 @@ export const createDistributionRequestsLocators = (page: Page) => {
     // Поиск полей, значение которых содержит сообщение о несогласованной заявке
     visitMoneyInputs: modal.locator(
       'input[value*="не согласована"], input[value*="Последняя поданная заявка"]'
+    ),
+
+    // Отметка визитов как «Местная командировка» (без билетов и суточных) на шаге «Заявки»
+    visitLocalTripCheckboxes: modal.locator(
+      'input[type="checkbox"][title*="Местная командировка"]'
     ),
 
     // Карточка визита в шаге 2 и её билеты

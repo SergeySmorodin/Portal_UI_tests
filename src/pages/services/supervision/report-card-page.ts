@@ -41,6 +41,41 @@ export const createReportCardPage = (page: Page) => {
         .first()
         .waitFor({ state: 'visible', timeout: config.timeouts.normal });
     },
+
+    createPeriods: async (): Promise<void> => {
+      await locators.createButton.click();
+      await locators.createConfirmButton.click();
+    },
+
+    openRateRows: async (): Promise<void> => {
+      await locators.rateRowsButton.click();
+    },
+
+    getRateInputValue: async (name: string): Promise<string> => {
+      return await locators.workerRateInput(name).inputValue();
+    },
+
+    fillRate: async (name: string, value: string): Promise<void> => {
+      await locators.workerRateInput(name).fill(value);
+    },
+
+    fillWorkHours: async (name: string, dayIndexes: number[], value: string): Promise<void> => {
+      for (const dayIndex of dayIndexes) {
+        await locators.workerDayInput(name, dayIndex).fill(value);
+      }
+    },
+
+    getHours: async (name: string): Promise<string> => {
+      return (await locators.workerHoursCell(name).textContent())?.trim() || '';
+    },
+
+    getSum: async (name: string): Promise<string> => {
+      return (await locators.workerSumCell(name).textContent())?.trim() || '';
+    },
+
+    save: async (): Promise<void> => {
+      await locators.saveButton.click();
+    },
   };
 };
 
