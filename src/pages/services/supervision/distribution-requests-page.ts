@@ -3,20 +3,6 @@ import { createBasePage } from '../../base-page';
 import { createDistributionRequestsLocators } from '../../../locators/distribution-requests.locators';
 import { config } from '../../../config';
 
-export interface RequestCommonFields {
-  start: string;
-  stop: string;
-  living: string;
-  taxi: string;
-  money: string;
-  pass: string;
-}
-
-export interface MassEditFields {
-  date: string;
-  transport: string;
-}
-
 export interface CommonFields {
   living: string;
   taxi: string;
@@ -27,6 +13,11 @@ export interface CommonFields {
 export interface RequestCommonFields extends CommonFields {
   start: string;
   stop: string;
+}
+
+export interface MassEditFields {
+  date: string;
+  transport: string;
 }
 
 export const createDistributionRequestsPage = (page: Page) => {
@@ -146,10 +137,18 @@ export const createDistributionRequestsPage = (page: Page) => {
 
     fillVisitMoney: async (value: string): Promise<void> => {
       const inputs = locators.visitMoneyInputs;
-      const count = await inputs.count();
-      expect(count).toBeGreaterThan(0);
-      for (let i = 0; i < count; i++) {
-        await inputs.nth(i).fill(value);
+      await inputs.first().waitFor({ state: 'visible', timeout: config.timeouts.long });
+
+      // Отбираем инпуты, у которых value содержит маркер несогласованной заявки
+      const handles = await inputs.evaluateAll((els) =>
+        els
+          .map((el, index) => ({ index, value: (el as HTMLInputElement).value }))
+          .filter(({ value }) => /не согласована|Последняя поданная заявка/.test(value))
+          .map(({ index }) => index)
+      );
+
+      for (const index of handles) {
+        await inputs.nth(index).fill(value);
       }
     },
 

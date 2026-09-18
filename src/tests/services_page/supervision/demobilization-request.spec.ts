@@ -1,16 +1,7 @@
 import { config } from '../../../config';
-import { api } from '../../../test-data/api/api';
-import { createProjectViaApi, createWorkViaApi } from '../../../test-data/api/project-api';
-import { projectFactory } from '../../../test-data/factory/project-factory';
-import { workFactory } from '../../../test-data/factory/work-factory';
-import { formatDmy, randomDate } from '../../../utils/date';
+import { formatDmy, parseDmy, pickOrderedRange, randomDate } from '../../../utils/date';
 import { expect, test } from '../../../fixtures/test-fixtures';
 import type { CommonFields } from '../../../pages/services/supervision/distribution-requests-page';
-
-const parseDmy = (value: string): Date => {
-  const [day, month, year] = value.split('-').map(Number);
-  return new Date(year, month - 1, day);
-};
 
 const VISIT_COUNT = 2;
 
@@ -38,42 +29,15 @@ test.describe('Демобилизация после командировки', 
   test(
     'Подать заявку на демобилизацию после командировки',
     { tag: '@smoke' },
-    async ({ page, apiRequest, resourcePlanningPage, distributionRequestsPage }) => {
-      const project = projectFactory.active();
-      const work = workFactory.standard({
-        startDate: project.startDate,
-        stopDate: project.stopDate,
-      });
+    async ({ page, resourcePlanningPage, distributionRequestsPage, createdWork }) => {
+      const { work, workPk } = createdWork;
 
-      const visitStart = parseDmy(project.startDate);
-      const visitStop = parseDmy(project.stopDate);
+      const visitStart = parseDmy(work.startDate);
+      const visitStop = parseDmy(work.stopDate);
 
       // Гарантируем, что start < stop, чтобы не получить одинаковые даты
       const { start: requestStart, stop: requestStop } = pickOrderedRange(visitStart, visitStop);
       const ticketDate = randomDate(requestStart, requestStop);
-
-      const workPk = await test.step('Создать мегапроект и работу через API', async () => {
-        const createdProject = await createProjectViaApi(apiRequest, project);
-
-        const contractsResponse = await apiRequest.get(api.contract);
-        const contractsBody = await contractsResponse.json();
-        const contracts = (
-          Array.isArray(contractsBody) ? contractsBody : contractsBody.results
-        ) as Array<{ pk: string }>;
-
-        const contract = contracts?.find((c) => Boolean(c?.pk));
-        if (!contract) {
-          throw new Error('Нет доступных договоров для создания работы');
-        }
-
-        const createdWorkPk = await createWorkViaApi(apiRequest, work, {
-          megaProjectPk: createdProject.pk,
-          contractPk: contract.pk,
-        });
-        expect(createdWorkPk).toBeTruthy();
-
-        return createdWorkPk;
-      });
 
       await test.step('Добавить визиты на странице планирования ресурсов', async () => {
         await resourcePlanningPage.open();
@@ -129,6 +93,7 @@ test.describe('Демобилизация после командировки', 
       });
 
       await test.step('Отправить на согласование', async () => {
+        // fixme падает на этом шаге
         await distributionRequestsPage.submitForApproval();
 
         await expect
@@ -168,18 +133,3 @@ test.describe('Демобилизация после командировки', 
     }
   );
 });
-
-/**
- * Возвращает две разные даты в диапазоне [from, to], где start < stop.
- * Если диапазон слишком узкий (одна дата) — сдвигает stop на следующий день.
- */
-function pickOrderedRange(from: Date, to: Date): { start: Date; stop: Date } {
-  const start = randomDate(from, to);
-  let stop = randomDate(start, to);
-
-  if (stop.getTime() <= start.getTime()) {
-    stop = new Date(start.getTime() + 24 * 60 * 60 * 1000);
-  }
-
-  return { start, stop };
-}

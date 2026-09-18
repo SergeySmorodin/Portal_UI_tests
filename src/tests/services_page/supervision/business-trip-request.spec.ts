@@ -1,54 +1,20 @@
 import { config } from '../../../config';
-import { api } from '../../../test-data/api/api';
-import { createProjectViaApi, createWorkViaApi } from '../../../test-data/api/project-api';
-import { projectFactory } from '../../../test-data/factory/project-factory';
-import { workFactory } from '../../../test-data/factory/work-factory';
-import { formatDmy, randomDate } from '../../../utils/date';
+import { formatDmy, parseDmy, randomDate } from '../../../utils/date';
 import { expect, test } from '../../../fixtures/test-fixtures';
-
-const parseDmy = (value: string): Date => {
-  const [day, month, year] = value.split('-').map(Number);
-  return new Date(year, month - 1, day);
-};
 
 test.describe('Создание заявки на командировку', () => {
   test(
     'Создание заявки на командировку после добавления визитов',
     { tag: '@smoke' },
-    async ({ page, apiRequest, resourcePlanningPage, distributionRequestsPage }) => {
-      const project = projectFactory.active();
-      const work = workFactory.standard({
-        startDate: project.startDate,
-        stopDate: project.stopDate,
-      });
+    async ({ page, resourcePlanningPage, distributionRequestsPage, createdWork }) => {
+      const { work, workPk } = createdWork;
       const VISIT_COUNT = 2;
 
-      const visitStart = parseDmy(project.startDate);
-      const visitStop = parseDmy(project.stopDate);
+      const visitStart = parseDmy(work.startDate);
+      const visitStop = parseDmy(work.stopDate);
       const requestStart = randomDate(visitStart, visitStop);
       const requestStop = randomDate(requestStart, visitStop);
       const ticketDate = randomDate(requestStart, requestStop);
-
-      let workPk: string;
-
-      await test.step('Создать мегапроект и работу через API', async () => {
-        const createdProject = await createProjectViaApi(apiRequest, project);
-
-        const contractsResponse = await apiRequest.get(api.contract);
-        const contractsBody = await contractsResponse.json();
-        const contracts = (
-          Array.isArray(contractsBody) ? contractsBody : contractsBody.results
-        ) as Array<{ pk: string }>;
-        if (!contracts || contracts.length === 0) {
-          throw new Error('Нет доступных договоров для создания работы');
-        }
-
-        workPk = await createWorkViaApi(apiRequest, work, {
-          megaProjectPk: createdProject.pk,
-          contractPk: contracts[0].pk,
-        });
-        expect(workPk).toBeTruthy();
-      });
 
       await test.step('Добавить визиты на странице распределения', async () => {
         await resourcePlanningPage.open();

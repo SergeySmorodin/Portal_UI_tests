@@ -1,6 +1,6 @@
 import { APIRequestContext } from '@playwright/test';
 import { ProjectData, WorkData } from '../../types';
-import { api } from './api';
+import { api } from './api-handles';
 
 export interface WorkCreateOptions {
   megaProjectPk: string;
@@ -8,6 +8,22 @@ export interface WorkCreateOptions {
   status?: string;
   equipment?: string;
 }
+
+/**
+ * Возвращает pk первого доступного договора (для привязки работы) или выбрасывает ошибку.
+ */
+export const getFirstContractPk = async (request: APIRequestContext): Promise<string> => {
+  const response = await request.get(api.contract);
+  const body = (await response.json()) as
+    Array<{ pk: string }> | { results: Array<{ pk: string }> };
+  const contracts = Array.isArray(body) ? body : body.results;
+
+  const contract = contracts?.find((c) => Boolean(c?.pk));
+  if (!contract) {
+    throw new Error('Нет доступных договоров для создания работы');
+  }
+  return contract.pk;
+};
 
 /**
  * Создаёт мегапроект через API /api/megaproject/ (вместо прохождения формы в UI).

@@ -1,7 +1,7 @@
 import { test, expect } from '../../fixtures/test-fixtures';
 import { config } from '../../config';
 import { companyFactory } from '../../test-data/factory/company-factory';
-import { api } from '../../test-data/api/api';
+import { api } from '../../test-data/api/api-handles';
 import { CompanyData } from '../../types';
 
 test.describe('Создание компании', () => {

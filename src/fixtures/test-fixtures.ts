@@ -22,10 +22,31 @@ import { createDistributionRequestsPage } from '../pages/services/supervision/di
 import { createLaborProtectionPage } from '../pages/ot-pb/labor-protection-page';
 import { createMedicalCommissionPage } from '../pages/ot-pb/medical-commission-page';
 import { createIndustrialSafetyPage } from '../pages/ot-pb/industrial-safety-page';
+import { projectFactory } from '../test-data/factory/project-factory';
+import { workFactory } from '../test-data/factory/work-factory';
+import {
+  createProjectViaApi,
+  createWorkViaApi,
+  getFirstContractPk,
+} from '../test-data/api/project-api';
+import type { ProjectData, WorkData } from '../types';
 
 export interface UserContextKit {
   page: Page;
   context: BrowserContext;
+}
+
+export interface CreatedProject {
+  /** Данные созданного мегапроекта (для обращения в тесте). */
+  project: ProjectData;
+  projectPk: string;
+  projectCode: string;
+}
+
+export interface CreatedWork extends CreatedProject {
+  /** Данные созданной через API работы (даты привязаны к мегапроекту). */
+  work: WorkData;
+  workPk: string;
 }
 
 type CreateUserPage = (userId: string) => Promise<UserContextKit>;
@@ -56,6 +77,8 @@ export interface TestFixtures {
   authenticatedPage: Page;
   apiRequest: APIRequestContext;
   createUserPage: CreateUserPage;
+  createdProject: CreatedProject;
+  createdWork: CreatedWork;
 }
 
 export const test = base.extend<TestFixtures>({
@@ -180,6 +203,26 @@ export const test = base.extend<TestFixtures>({
 
   apiRequest: async ({ authenticatedPage }, use) => {
     await use(authenticatedPage.context().request);
+  },
+
+  createdProject: async ({ apiRequest }, use) => {
+    const project = projectFactory.active();
+    const { pk, code } = await createProjectViaApi(apiRequest, project);
+    await use({ project, projectPk: pk, projectCode: code });
+  },
+
+  createdWork: async ({ apiRequest, createdProject }, use) => {
+    const { project, projectPk } = createdProject;
+    const work = workFactory.standard({
+      startDate: project.startDate,
+      stopDate: project.stopDate,
+    });
+    const contractPk = await getFirstContractPk(apiRequest);
+    const workPk = await createWorkViaApi(apiRequest, work, {
+      megaProjectPk: projectPk,
+      contractPk,
+    });
+    await use({ ...createdProject, work, workPk });
   },
 
   createUserPage: async ({ browser }, use) => {

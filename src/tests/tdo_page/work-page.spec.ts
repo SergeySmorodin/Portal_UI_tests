@@ -1,23 +1,24 @@
 import { test, expect } from '../../fixtures/test-fixtures';
 import { config } from '../../config';
-import { projectFactory } from '../../test-data/factory/project-factory';
 import { workFactory } from '../../test-data/factory/work-factory';
-import { api } from '../../test-data/api/api';
-import { createProjectViaApi } from '../../test-data/api/project-api';
+import { api } from '../../test-data/api/api-handles';
 
 test.describe('Работы', () => {
   test(
     'Создать мегапроект через API и добавить в него работу',
     { tag: '@smoke' },
-    async ({ page, projectsListPage, workPage, worksListPage, allWorksListPage, apiRequest }) => {
-      const project = projectFactory.active();
+    async ({
+      page,
+      projectsListPage,
+      workPage,
+      worksListPage,
+      allWorksListPage,
+      createdProject,
+    }) => {
+      const { project } = createdProject;
       const work = workFactory.standard({
         startDate: project.startDate,
         stopDate: project.stopDate,
-      });
-
-      await test.step('Создать мегапроект через API', async () => {
-        await createProjectViaApi(apiRequest, project);
       });
 
       await test.step('Найти мегапроект в списке и перейти по ссылке Работы', async () => {

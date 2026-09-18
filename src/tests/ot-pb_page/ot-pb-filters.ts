@@ -1,5 +1,5 @@
 import { test, expect, type TestFixtures } from '../../fixtures/test-fixtures';
-import { api } from '../../test-data/api/api';
+import { api } from '../../test-data/api/api-handles';
 import type { OtPbPageApi } from '../../pages/ot-pb/ot-pb-base';
 
 // Общие тесты фильтрации для страниц «Охрана труда», «Медицинская комиссия»
@@ -81,9 +81,7 @@ const fetchValuesWithRecords = async (
   let page = 1;
 
   while (page > 0) {
-    const response = await apiRequest.get(
-      `${api.safety_all}?page=${page}&page_size=500`
-    );
+    const response = await apiRequest.get(`${api.safety_all}?page=${page}&page_size=500`);
     const data = await response.json();
     const users = (data.results ?? []) as Array<{
       position_user?: Array<{
@@ -319,18 +317,17 @@ export function runOtPbTests(pageKey: OtPbPageKey, cfg: OtPbTestConfig): void {
         await expect(page.isResultsVisible()).resolves.toBe(true);
       });
 
-      const department =
-        await test.step('Выбрать отдел, у которого есть записи', async () => {
-          const departments = await fetchValuesWithRecords(
-            apiRequest,
-            'department',
-            dataKeyByPage[pageKey]
-          );
-          expect(departments.length).toBeGreaterThan(0);
-          const chosen = pickRandom(departments);
-          await page.selectFilterOption(page.locators.departmentSearchInput, chosen);
-          return chosen;
-        });
+      const department = await test.step('Выбрать отдел, у которого есть записи', async () => {
+        const departments = await fetchValuesWithRecords(
+          apiRequest,
+          'department',
+          dataKeyByPage[pageKey]
+        );
+        expect(departments.length).toBeGreaterThan(0);
+        const chosen = pickRandom(departments);
+        await page.selectFilterOption(page.locators.departmentSearchInput, chosen);
+        return chosen;
+      });
 
       await test.step(`Проверить подсветку выбранного отдела «${department}»`, async () => {
         await expect(page.isFilterOptionHighlighted(department)).resolves.toBe(true);
@@ -373,11 +370,7 @@ export function runOtPbTests(pageKey: OtPbPageKey, cfg: OtPbTestConfig): void {
       });
 
       const branch = await test.step('Выбрать филиал, у которого есть записи', async () => {
-        const branches = await fetchValuesWithRecords(
-          apiRequest,
-          'filial',
-          dataKeyByPage[pageKey]
-        );
+        const branches = await fetchValuesWithRecords(apiRequest, 'filial', dataKeyByPage[pageKey]);
         expect(branches.length).toBeGreaterThan(0);
         const chosen = pickRandom(branches);
         await page.selectFilterOption(page.locators.branchSearchInput, chosen);
@@ -476,55 +469,51 @@ export function runOtPbTests(pageKey: OtPbPageKey, cfg: OtPbTestConfig): void {
         await expect(page.isResultsVisible()).resolves.toBe(true);
       });
 
-const period =
-          await test.step('Выбрать период по отображаемой записи', async () => {
-            const starts = await page.getResultColumnValues(meta.startColumn);
-            const stops = await page.getResultColumnValues(meta.stopColumn);
-            const candidates = starts
-              .map((start, index) => ({ start, stop: stops[index] }))
-              .filter((row) => isRuDate(row.start) && isRuDate(row.stop));
-            expect(candidates.length).toBeGreaterThan(0);
-            const chosen = pickRandom(candidates);
-            // setPeriod подставляет даты в react-datepicker: только fill() не
-            // фиксирует значение — требуется click + fill + Enter для каждого поля.
-            await page.setPeriod(toFilterDate(chosen.start), toFilterDate(chosen.stop));
-            return chosen;
-          });
+      const period = await test.step('Выбрать период по отображаемой записи', async () => {
+        const starts = await page.getResultColumnValues(meta.startColumn);
+        const stops = await page.getResultColumnValues(meta.stopColumn);
+        const candidates = starts
+          .map((start, index) => ({ start, stop: stops[index] }))
+          .filter((row) => isRuDate(row.start) && isRuDate(row.stop));
+        expect(candidates.length).toBeGreaterThan(0);
+        const chosen = pickRandom(candidates);
+        // setPeriod подставляет даты в react-datepicker: только fill() не
+        // фиксирует значение — требуется click + fill + Enter для каждого поля.
+        await page.setPeriod(toFilterDate(chosen.start), toFilterDate(chosen.stop));
+        return chosen;
+      });
 
       await test.step('Нажать «Показать» после фильтрации по периоду', async () => {
         await page.clickShow();
       });
 
-      await test.step(
-        `Проверить, что отображаются записи с периодом ${period.start} — ${period.stop}`,
-        async () => {
-          await expect(page.isResultsVisible()).resolves.toBe(true);
-          await expect(page.locators.resultsHeading).toBeVisible();
-          await expect
-            .poll(async () => {
-              const starts = await page.getResultColumnValues(meta.startColumn);
-              const stops = await page.getResultColumnValues(meta.stopColumn);
-              const dated = starts
-                .map((start, index) => ({ start, stop: stops[index] }))
-                .filter((row) => isRuDate(row.start) && isRuDate(row.stop));
+      await test.step(`Проверить, что отображаются записи с периодом ${period.start} — ${period.stop}`, async () => {
+        await expect(page.isResultsVisible()).resolves.toBe(true);
+        await expect(page.locators.resultsHeading).toBeVisible();
+        await expect
+          .poll(async () => {
+            const starts = await page.getResultColumnValues(meta.startColumn);
+            const stops = await page.getResultColumnValues(meta.stopColumn);
+            const dated = starts
+              .map((start, index) => ({ start, stop: stops[index] }))
+              .filter((row) => isRuDate(row.start) && isRuDate(row.stop));
 
-              if (dated.length === 0) {
-                return false;
-              }
+            if (dated.length === 0) {
+              return false;
+            }
 
-              const from = ruDateToNumber(period.start);
-              const to = ruDateToNumber(period.stop);
-              const allInRange = dated.every(
-                (row) => ruDateToNumber(row.start) >= from && ruDateToNumber(row.stop) <= to
-              );
-              const chosenVisible = dated.some(
-                (row) => row.start === period.start && row.stop === period.stop
-              );
-              return allInRange && chosenVisible;
-            })
-            .toBe(true);
-        }
-      );
+            const from = ruDateToNumber(period.start);
+            const to = ruDateToNumber(period.stop);
+            const allInRange = dated.every(
+              (row) => ruDateToNumber(row.start) >= from && ruDateToNumber(row.stop) <= to
+            );
+            const chosenVisible = dated.some(
+              (row) => row.start === period.start && row.stop === period.stop
+            );
+            return allInRange && chosenVisible;
+          })
+          .toBe(true);
+      });
     });
 
     test('Фильтрация по протоколу', async ({
@@ -566,15 +555,14 @@ const period =
         await expect(page.isResultsVisible()).resolves.toBe(true);
       });
 
-      const protocol =
-        await test.step('Выбрать протокол из отображаемых записей', async () => {
-          const values = await page.getResultColumnValues(protocolColumn);
-          const unique = [...new Set(values.filter((value) => value !== ''))];
-          expect(unique.length).toBeGreaterThan(0);
-          const chosen = pickRandom(unique);
-          await page.fillProtocolSearch(chosen);
-          return chosen;
-        });
+      const protocol = await test.step('Выбрать протокол из отображаемых записей', async () => {
+        const values = await page.getResultColumnValues(protocolColumn);
+        const unique = [...new Set(values.filter((value) => value !== ''))];
+        expect(unique.length).toBeGreaterThan(0);
+        const chosen = pickRandom(unique);
+        await page.fillProtocolSearch(chosen);
+        return chosen;
+      });
 
       await test.step('Нажать «Показать» после фильтрации по протоколу', async () => {
         await page.clickShow();
@@ -646,22 +634,19 @@ const period =
         await page.clickShow();
       });
 
-      await test.step(
-        `Проверить, что отображаются записи с удостоверением «${certificate}»`,
-        async () => {
-          await expect(page.isResultsVisible()).resolves.toBe(true);
-          await expect(page.locators.resultsHeading).toBeVisible();
-          await expect
-            .poll(async () => {
-              const values = await page.getResultColumnValues(certificateColumn);
-              return (
-                values.length > 0 &&
-                values.every((value) => value.toLowerCase().includes(certificate.toLowerCase()))
-              );
-            })
-            .toBe(true);
-        }
-      );
+      await test.step(`Проверить, что отображаются записи с удостоверением «${certificate}»`, async () => {
+        await expect(page.isResultsVisible()).resolves.toBe(true);
+        await expect(page.locators.resultsHeading).toBeVisible();
+        await expect
+          .poll(async () => {
+            const values = await page.getResultColumnValues(certificateColumn);
+            return (
+              values.length > 0 &&
+              values.every((value) => value.toLowerCase().includes(certificate.toLowerCase()))
+            );
+          })
+          .toBe(true);
+      });
     });
   });
 }

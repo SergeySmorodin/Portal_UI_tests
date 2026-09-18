@@ -1,7 +1,7 @@
 import { test, expect } from '../../fixtures/test-fixtures';
 import { config } from '../../config';
 import { curatorFactory } from '../../test-data/factory/curator-factory';
-import { api } from '../../test-data/api/api';
+import { api } from '../../test-data/api/api-handles';
 import { CuratorData } from '../../types';
 
 test.describe('Создание куратора', () => {

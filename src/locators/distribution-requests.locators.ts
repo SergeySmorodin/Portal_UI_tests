@@ -41,17 +41,23 @@ export const createDistributionRequestsLocators = (page: Page) => {
         .locator('label', { hasText: new RegExp(`^${label}$`) })
         .first()
         .locator('xpath=following-sibling::select[1]'),
+
     // Поиск города в выпадающем списке
     citySearchInput: page.getByPlaceholder('Поиск города...').first(),
     cityOption: (name: string) => page.locator('div.p-4.cursor-pointer', { hasText: name }).first(),
+
     // Кнопка «Демобилизация» на странице визитов/заявок работы (активна после подачи заявки на командировку)
     demobilizationButton: page.getByRole('button', { name: 'Демобилизация' }),
+
     // Кнопка «Назад» в шаге 2 модала (возврат к шагу 1 — составу командировки)
     backButton: modal.getByRole('button', { name: 'Назад' }),
+
     // Числовые поля «Денежные» в составе командировки (переопределяют не согласованную заявку)
     // Поиск полей, значение которых содержит сообщение о несогласованной заявке
-    visitMoneyInputs: (page: Page) =>
-      modal.locator('input').filter({ hasValue: /не согласована|Последняя поданная заявка/ }) as any,
+    visitMoneyInputs: modal.locator(
+      'input[value*="не согласована"], input[value*="Последняя поданная заявка"]'
+    ),
+
     // Карточка визита в шаге 2 и её билеты
     visitCard: (index: number) => modal.locator('div.bg-white.rounded-lg.p-4').nth(index),
     visitCardAddTicket: (index: number) =>
@@ -59,6 +65,7 @@ export const createDistributionRequestsLocators = (page: Page) => {
         .locator('div.bg-white.rounded-lg.p-4')
         .nth(index)
         .getByRole('button', { name: '+ Добавить билет' }),
+        
     submitForApprovalButton: page.getByRole('button', { name: 'Отправить на согласование' }),
   };
 };

@@ -1,40 +1,14 @@
 import { config } from '../../../config';
-import { api } from '../../../test-data/api/api';
-import { createProjectViaApi, createWorkViaApi } from '../../../test-data/api/project-api';
-import { projectFactory } from '../../../test-data/factory/project-factory';
-import { workFactory } from '../../../test-data/factory/work-factory';
+import { api } from '../../../test-data/api/api-handles';
 import { expect, test } from '../../../fixtures/test-fixtures';
 
 test.describe('Распределение на работу', () => {
   test(
     'Создать работу через API и добавить визиты доступного персонала',
     { tag: '@smoke' },
-    async ({ page, apiRequest, resourcePlanningPage }) => {
-      const project = projectFactory.active();
-      const work = workFactory.standard({
-        startDate: project.startDate,
-        stopDate: project.stopDate,
-      });
+    async ({ page, resourcePlanningPage, createdWork }) => {
+      const { work } = createdWork;
       const VISIT_COUNT = 3;
-
-      await test.step('Создать мегапроект и работу через API', async () => {
-        const createdProject = await createProjectViaApi(apiRequest, project);
-
-        const contractsResponse = await apiRequest.get(api.contract);
-        const contractsBody = await contractsResponse.json();
-        const contracts = (
-          Array.isArray(contractsBody) ? contractsBody : contractsBody.results
-        ) as Array<{ pk: string }>;
-        if (!contracts || contracts.length === 0) {
-          throw new Error('Нет доступных договоров для создания работы');
-        }
-
-        const workPk = await createWorkViaApi(apiRequest, work, {
-          megaProjectPk: createdProject.pk,
-          contractPk: contracts[0].pk,
-        });
-        expect(workPk).toBeTruthy();
-      });
 
       await test.step('Найти созданную работу на странице распределения', async () => {
         await resourcePlanningPage.open();

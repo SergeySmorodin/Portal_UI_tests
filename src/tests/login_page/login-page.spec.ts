@@ -1,6 +1,6 @@
 import { test, expect } from '../../fixtures/test-fixtures';
 import { createUser, userFactory } from '../../test-data/factory/user-factory';
-import { api } from '../../test-data/api/api';
+import { api } from '../../test-data/api/api-handles';
 
 test.describe('Авторизация', () => {
   test.describe('Позитивные сценарии', () => {
