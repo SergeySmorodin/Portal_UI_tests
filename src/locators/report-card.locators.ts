@@ -28,10 +28,8 @@ export const createReportCardLocators = (page: Page) => ({
       .nth(6 + dayIndex)
       .locator('input')
       .first(),
-  workerHoursCell: (name: string) =>
-    page.locator('table tbody tr').filter({ hasText: name }).locator('td').nth(98).first(),
-  workerSumCell: (name: string) =>
-    page.locator('table tbody tr').filter({ hasText: name }).locator('td').nth(99).first(),
+  workerDayCells: (name: string) =>
+    page.locator('table tbody tr').filter({ hasText: name }).locator('td'),
 
   // Состояние табелей
   stateText: page.locator('text=Состояние табелей'),

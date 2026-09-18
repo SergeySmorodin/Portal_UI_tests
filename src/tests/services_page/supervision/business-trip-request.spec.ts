@@ -1,12 +1,13 @@
 import { config } from '../../../config';
 import { formatDmy, parseDmy, randomDate } from '../../../utils/date';
+import { areVisitsApproved } from '../../../test-data/api/project-api';
 import { expect, test } from '../../../fixtures/test-fixtures';
 
 test.describe('Создание заявки на командировку', () => {
   test(
     'Создание заявки на командировку после добавления визитов',
     { tag: '@smoke' },
-    async ({ page, resourcePlanningPage, distributionRequestsPage, createdWork }) => {
+    async ({ page, apiRequest, resourcePlanningPage, distributionRequestsPage, createdWork }) => {
       const { work, workPk } = createdWork;
       const VISIT_COUNT = 2;
 
@@ -17,15 +18,12 @@ test.describe('Создание заявки на командировку', () 
       const ticketDate = randomDate(requestStart, requestStop);
 
       await test.step('Добавить визиты на странице распределения', async () => {
-        await resourcePlanningPage.open();
-        await resourcePlanningPage.searchWork(work.name);
-        await resourcePlanningPage.openWork(work.name);
+        await resourcePlanningPage.openWorkByPk(workPk);
 
         const addedWorkers = await resourcePlanningPage.addAvailableWorkers(VISIT_COUNT);
         expect(addedWorkers).toHaveLength(VISIT_COUNT);
 
-        await resourcePlanningPage.openVisitsManagement();
-        await resourcePlanningPage.saveVisits();
+        await resourcePlanningPage.saveVisitsPersisted(apiRequest, workPk, VISIT_COUNT);
       });
 
       await test.step('Найти работу на странице «Создание заявки на командировку» и выбрать проект', async () => {
@@ -35,8 +33,11 @@ test.describe('Создание заявки на командировку', () 
       });
 
       await test.step('Проверить наличие визитов', async () => {
-        const visitsCount = await distributionRequestsPage.getVisitsCount();
-        expect(visitsCount).toBeGreaterThan(0);
+        await expect
+          .poll(() => distributionRequestsPage.getVisitsCount(), {
+            timeout: config.timeouts.normal,
+          })
+          .toBeGreaterThan(0);
       });
 
       await test.step('Нажать «Создать заявку»', async () => {
@@ -72,12 +73,12 @@ test.describe('Создание заявки на командировку', () 
       await test.step('Отправить на согласование', async () => {
         await distributionRequestsPage.submitForApproval();
 
-        await test.step('Проверить счетчик созданных заявок', async () => {
+        await test.step('Проверить, что визиты перешли в статус «На согласовании»', async () => {
           await expect
-            .poll(() => distributionRequestsPage.getRequestsCount(), {
+            .poll(() => areVisitsApproved(apiRequest, workPk), {
               timeout: config.timeouts.long,
             })
-            .toBeGreaterThan(0);
+            .toBe(true);
         });
       });
     }

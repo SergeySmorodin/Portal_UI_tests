@@ -20,6 +20,12 @@ export const formatYmd = (date: Date): string =>
 
 export const today = (): Date => new Date();
 
+export const addDays = (date: Date, days: number): Date => {
+  const d = new Date(date);
+  d.setDate(d.getDate() + days);
+  return d;
+};
+
 export const addMonths = (date: Date, months: number): Date => {
   const d = new Date(date);
   d.setMonth(d.getMonth() + months);

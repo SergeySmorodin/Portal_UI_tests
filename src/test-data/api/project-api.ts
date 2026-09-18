@@ -124,6 +124,26 @@ const getReportCard = async (
   return (await response.json()) as ReportCardData;
 };
 
+export interface WorkCompositionInfo {
+  personCount: number;
+  visitCount: number;
+}
+
+/**
+ * Возвращает количество заявленного персонала и визитов работы по данным табеля.
+ */
+export const getWorkCompositionInfo = async (
+  request: APIRequestContext,
+  workPk: string
+): Promise<WorkCompositionInfo> => {
+  const reportCard = await getReportCard(request, workPk);
+  const persons = reportCard.personal_project ?? [];
+  return {
+    personCount: persons.length,
+    visitCount: persons.reduce((total, person) => total + (person.visits ?? []).length, 0),
+  };
+};
+
 /**
  * Проверяет, что все визиты работы переведены в статус «На согласовании»
  * (т.е. заявка на командировку успешно подана).

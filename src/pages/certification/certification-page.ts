@@ -62,6 +62,14 @@ export const createCertificationUploadPage = (page: Page) => {
 
 export type CertificationUploadPage = ReturnType<typeof createCertificationUploadPage>;
 
+const CERTIFICATION_SEARCH_PATHS: Record<string, string> = {
+  certificate: '/certification/certificates',
+  protocol: '/certification/protocols',
+  tech_spec: '/certification/tech-specs',
+  manual: '/certification/manuals',
+  passport: '/certification/passports',
+};
+
 export const createCertificationSearchPage = (page: Page) => {
   const basePage = createBasePage(page);
 
@@ -72,7 +80,9 @@ export const createCertificationSearchPage = (page: Page) => {
     locators,
 
     open: async (resourceType: string): Promise<void> => {
-      await basePage.openRelative(`/certification/search?type=${resourceType}`);
+      await basePage.openRelative(
+        CERTIFICATION_SEARCH_PATHS[resourceType] ?? `/certification/${resourceType}`
+      );
       await basePage.expectVisible(locators.heading);
     },
 

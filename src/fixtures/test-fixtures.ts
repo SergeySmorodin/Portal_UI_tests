@@ -26,6 +26,7 @@ import { createMedicalCommissionPage } from '../pages/ot-pb/medical-commission-p
 import { createIndustrialSafetyPage } from '../pages/ot-pb/industrial-safety-page';
 import { projectFactory } from '../test-data/factory/project-factory';
 import { workFactory } from '../test-data/factory/work-factory';
+import { addDays, formatDmy, today } from '../utils/date';
 import {
   createProjectViaApi,
   createWorkViaApi,
@@ -229,7 +230,7 @@ export const test = base.extend<TestFixtures>({
   createdWork: async ({ apiRequest, createdProject }, use) => {
     const { project, projectPk } = createdProject;
     const work = workFactory.standard({
-      startDate: project.startDate,
+      startDate: formatDmy(addDays(today(), 1)),
       stopDate: project.stopDate,
     });
     const contractPk = await getFirstContractPk(apiRequest);
@@ -243,7 +244,7 @@ export const test = base.extend<TestFixtures>({
   createdWorkExecution: async ({ apiRequest, createdProject }, use) => {
     const { project, projectPk } = createdProject;
     const work = workFactory.standard({
-      startDate: project.startDate,
+      startDate: formatDmy(addDays(today(), 1)),
       stopDate: project.stopDate,
     });
     const contractPk = await getFirstContractPk(apiRequest);

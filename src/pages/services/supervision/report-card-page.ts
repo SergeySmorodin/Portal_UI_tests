@@ -7,6 +7,12 @@ export const createReportCardPage = (page: Page) => {
   const basePage = createBasePage(page);
   const locators = createReportCardLocators(page);
 
+  const lastCellValue = async (name: string, offsetFromEnd: number): Promise<string> => {
+    const cells = locators.workerDayCells(name);
+    const count = await cells.count();
+    return (await cells.nth(count - offsetFromEnd).textContent())?.trim() || '';
+  };
+
   return {
     ...basePage,
     locators,
@@ -66,11 +72,11 @@ export const createReportCardPage = (page: Page) => {
     },
 
     getHours: async (name: string): Promise<string> => {
-      return (await locators.workerHoursCell(name).textContent())?.trim() || '';
+      return await lastCellValue(name, 2);
     },
 
     getSum: async (name: string): Promise<string> => {
-      return (await locators.workerSumCell(name).textContent())?.trim() || '';
+      return await lastCellValue(name, 1);
     },
 
     save: async (): Promise<void> => {

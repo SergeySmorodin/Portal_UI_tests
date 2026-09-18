@@ -25,8 +25,7 @@ test.describe('Табель работ', () => {
         expect(addedWorkers).toHaveLength(VISIT_COUNT);
         expect(addedWorkers.every(Boolean)).toBeTruthy();
 
-        await resourcePlanningPage.openVisitsManagement();
-        await resourcePlanningPage.saveVisits();
+        await resourcePlanningPage.saveVisitsPersisted(apiRequest, workPk, VISIT_COUNT);
       });
 
       await test.step('Отправить заявку на командировку на согласование', async () => {
