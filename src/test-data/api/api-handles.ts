@@ -10,6 +10,8 @@ export const api = {
   resourcePlanning: {
     workOptions: '/api/project/opt1/',
   },
+  reportCard: '/api/project_report_card/',
+  projectOpt2: '/api/project/opt2/',
   certification: {
     certificate: '/api/certifications/certificates/',
     protocol: '/api/certifications/protocols/',

@@ -169,6 +169,44 @@ export const createDistributionRequestsPage = (page: Page) => {
       });
       await locators.submitForApprovalButton.click();
     },
+
+    // Полный прогон подачи заявки на командировку (местные командировки без билетов)
+    // — единая точка для основного вызова и повторной попытки при сбое.
+    submitRequestForLocalTrip: async (workName: string): Promise<void> => {
+      await basePage.openRelative(PAGE_PATH);
+      await basePage.expectVisible(locators.searchInput);
+      await locators.searchInput.fill(workName);
+      await page.waitForLoadState('networkidle').catch(() => {});
+      await locators.workButton(workName).waitFor({
+        state: 'visible',
+        timeout: config.timeouts.long,
+      });
+      await locators.workButton(workName).click();
+      await page.waitForURL((url) => url.pathname.includes('/distribution-requests/create/'), {
+        timeout: config.timeouts.long,
+      });
+
+      await locators.createRequestButton.waitFor({
+        state: 'visible',
+        timeout: config.timeouts.long,
+      });
+      await locators.createRequestButton.click();
+
+      const boxes = locators.visitLocalTripCheckboxes;
+      const count = await boxes.count();
+      for (let i = 0; i < count; i++) {
+        if (!(await boxes.nth(i).isChecked())) {
+          await boxes.nth(i).check();
+        }
+      }
+
+      await locators.nextButton.click();
+      await locators.submitForApprovalButton.waitFor({
+        state: 'visible',
+        timeout: config.timeouts.long,
+      });
+      await locators.submitForApprovalButton.click();
+    },
   };
 };
 

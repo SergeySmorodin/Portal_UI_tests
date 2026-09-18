@@ -35,6 +35,14 @@ export const createResourcePlanningPage = (page: Page) => {
       });
     },
 
+    openWorkByPk: async (pk: string): Promise<void> => {
+      await basePage.openRelative(`${PAGE_PATH}/${pk}`);
+      await locators.claimedSection.waitFor({
+        state: 'visible',
+        timeout: config.timeouts.long,
+      });
+    },
+
     addAvailableWorkers: async (count: number): Promise<string[]> => {
       await locators.availableAddButton(0).waitFor({
         state: 'visible',

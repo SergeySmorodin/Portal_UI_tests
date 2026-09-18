@@ -1,6 +1,7 @@
 import { APIRequestContext } from '@playwright/test';
 import { ProjectData, WorkData } from '../../types';
 import { api } from './api-handles';
+import { formatYmd, parseDmy } from '../../utils/date';
 
 export interface WorkCreateOptions {
   megaProjectPk: string;
@@ -92,4 +93,92 @@ export const createWorkViaApi = async (
   return body.pk;
 };
 
-// TODO: добавлять визиты через апи, предварительно создать сотрудников через апи
+interface RcVisit {
+  pk: string;
+  start: string;
+  stop: string;
+  actual: string;
+}
+
+interface RcPerson {
+  pk: string;
+  visits?: RcVisit[];
+}
+
+interface ReportCardData {
+  pk: string;
+  project_supervision?: { equipment?: string };
+  personal_project?: RcPerson[];
+}
+
+const getReportCard = async (
+  request: APIRequestContext,
+  workPk: string
+): Promise<ReportCardData> => {
+  const response = await request.get(`${api.reportCard}${workPk}/?exclude=url_project`);
+  if (!response.ok()) {
+    throw new Error(
+      `Получение табеля работы через API не удалось (${response.status()}): ${await response.text()}`
+    );
+  }
+  return (await response.json()) as ReportCardData;
+};
+
+/**
+ * Проверяет, что все визиты работы переведены в статус «На согласовании»
+ * (т.е. заявка на командировку успешно подана).
+ */
+export const areVisitsApproved = async (
+  request: APIRequestContext,
+  workPk: string
+): Promise<boolean> => {
+  const reportCard = await getReportCard(request, workPk);
+  const persons = reportCard.personal_project ?? [];
+  if (persons.length === 0 || persons.some((p) => (p.visits ?? []).length === 0)) {
+    return false;
+  }
+  return persons.every((p) => (p.visits ?? []).every((v) => v.actual === 'На согласовании'));
+};
+
+/**
+ * Подаёт заявку на командировку (перевод визитов в «На согласовании») через API,
+ * повторяя payload, который шлёт модал «Отправить на согласование» в /api/project/opt2/.
+ */
+export const approveVisitsViaApi = async (
+  request: APIRequestContext,
+  workPk: string
+): Promise<void> => {
+  const reportCard = await getReportCard(request, workPk);
+  const personalProject = (reportCard.personal_project ?? []).map((person) => ({
+    pk: person.pk,
+    visits: (person.visits ?? []).map((visit) => ({
+      pk: visit.pk,
+      ticket: [],
+      corp_taxi: '',
+      apartments: '',
+      additional_costs: '',
+      unforeseen_purpose: '',
+      pass_plant: '',
+      daily: { [formatYmd(parseDmy(visit.start))]: { '1': '0' } },
+      actual: 'Фактическое',
+      start: visit.start,
+      stop: visit.stop,
+    })),
+  }));
+
+  const response = await request.patch(`${api.projectOpt2}${workPk}/`, {
+    data: {
+      pk: workPk,
+      project_supervision: {
+        equipment: reportCard.project_supervision?.equipment || 'Супервайзинг',
+      },
+      personal_project: personalProject,
+    },
+  });
+
+  if (!response.ok()) {
+    throw new Error(
+      `Подача заявки на командировку через API не удалась (${response.status()}): ${await response.text()}`
+    );
+  }
+};

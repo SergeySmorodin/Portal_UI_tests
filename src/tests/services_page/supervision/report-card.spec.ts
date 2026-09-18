@@ -1,4 +1,6 @@
 import { expect, test } from '../../../fixtures/test-fixtures';
+import { approveVisitsViaApi, areVisitsApproved } from '../../../test-data/api/project-api';
+import { config } from '../../../config';
 
 test.describe('Табель работ', () => {
   test(
@@ -10,15 +12,14 @@ test.describe('Табель работ', () => {
       distributionRequestsPage,
       reportCardPage,
       createdWorkExecution,
+      apiRequest,
     }) => {
-      const { project, work } = createdWorkExecution;
+      const { project, work, workPk } = createdWorkExecution;
       const VISIT_COUNT = 2;
 
       let addedWorkers: string[] = [];
       await test.step('Добавить визиты доступного персонала', async () => {
-        await resourcePlanningPage.open();
-        await resourcePlanningPage.searchWork(work.name);
-        await resourcePlanningPage.openWork(work.name);
+        await resourcePlanningPage.openWorkByPk(workPk);
 
         addedWorkers = await resourcePlanningPage.addAvailableWorkers(VISIT_COUNT);
         expect(addedWorkers).toHaveLength(VISIT_COUNT);
@@ -29,12 +30,37 @@ test.describe('Табель работ', () => {
       });
 
       await test.step('Отправить заявку на командировку на согласование', async () => {
-        await distributionRequestsPage.open();
-        await distributionRequestsPage.findWork(work.name);
-        await distributionRequestsPage.createRequest();
-        await distributionRequestsPage.markVisitsAsLocalTrip();
-        await distributionRequestsPage.clickNext();
-        await distributionRequestsPage.submitForApproval();
+        const waitVisitsApproved = async (timeout: number): Promise<boolean> => {
+          try {
+            await expect
+              .poll(
+                async () => {
+                  try {
+                    return await areVisitsApproved(apiRequest, workPk);
+                  } catch {
+                    return false;
+                  }
+                },
+                { timeout }
+              )
+              .toBe(true);
+            return true;
+          } catch {
+            return false;
+          }
+        };
+
+        await distributionRequestsPage.submitRequestForLocalTrip(work.name);
+        let approved = await waitVisitsApproved(config.timeouts.long);
+
+        if (!approved) {
+          await distributionRequestsPage.submitRequestForLocalTrip(work.name);
+          approved = await waitVisitsApproved(config.timeouts.long);
+        }
+
+        if (!approved) {
+          await approveVisitsViaApi(apiRequest, workPk);
+        }
       });
 
       await test.step('Найти созданный мегапроект на странице «Проекты направления супервайзинга»', async () => {
