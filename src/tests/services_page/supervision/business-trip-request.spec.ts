@@ -72,11 +72,13 @@ test.describe('Создание заявки на командировку', () 
       await test.step('Отправить на согласование', async () => {
         await distributionRequestsPage.submitForApproval();
 
-        await expect
-          .poll(() => distributionRequestsPage.getRequestsCount(), {
-            timeout: config.timeouts.long,
-          })
-          .toBeGreaterThan(0);
+        await test.step('Проверить счетчик созданных заявок', async () => {
+          await expect
+            .poll(() => distributionRequestsPage.getRequestsCount(), {
+              timeout: config.timeouts.long,
+            })
+            .toBeGreaterThan(0);
+        });
       });
     }
   );

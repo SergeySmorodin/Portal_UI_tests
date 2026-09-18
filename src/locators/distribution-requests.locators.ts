@@ -17,12 +17,14 @@ export const createDistributionRequestsLocators = (page: Page) => {
 
     // Модал «Управление заявками» — шаг 1 (заявки)
     modal,
+    
     requestHeaderDate: (label: string) =>
       modal.locator('label', { hasText: label }).locator('xpath=following-sibling::div[1]//input'),
     requestHeaderSelect: (label: string) =>
       modal.locator('label', { hasText: label }).locator('xpath=following-sibling::select[1]'),
     requestHeaderInput: (label: string) =>
       modal.locator('label', { hasText: label }).locator('xpath=following-sibling::input[1]'),
+
     nextButton: page.getByRole('button', { name: 'Далее' }),
 
     // Модал «Управление заявками» — шаг 2: массовое редактирование билетов (шапка)
@@ -65,7 +67,7 @@ export const createDistributionRequestsLocators = (page: Page) => {
         .locator('div.bg-white.rounded-lg.p-4')
         .nth(index)
         .getByRole('button', { name: '+ Добавить билет' }),
-        
+
     submitForApprovalButton: page.getByRole('button', { name: 'Отправить на согласование' }),
   };
 };

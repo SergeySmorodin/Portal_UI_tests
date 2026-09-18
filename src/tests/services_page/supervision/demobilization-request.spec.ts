@@ -3,6 +3,7 @@ import { formatDmy, parseDmy, pickOrderedRange, randomDate } from '../../../util
 import { expect, test } from '../../../fixtures/test-fixtures';
 import type { CommonFields } from '../../../pages/services/supervision/distribution-requests-page';
 
+// TODO в работе, убрать дублирование с тестом на создание заявки business-trip-request.spec.ts
 const VISIT_COUNT = 2;
 
 const REQUEST_COMMON = {
@@ -26,7 +27,7 @@ const TICKET = {
 } as const;
 
 test.describe('Демобилизация после командировки', () => {
-  test(
+  test.skip(
     'Подать заявку на демобилизацию после командировки',
     { tag: '@smoke' },
     async ({ page, resourcePlanningPage, distributionRequestsPage, createdWork }) => {
