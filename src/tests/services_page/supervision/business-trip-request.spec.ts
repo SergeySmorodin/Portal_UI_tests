@@ -72,14 +72,36 @@ test.describe('Создание заявки на командировку', () 
 
       await test.step('Отправить на согласование', async () => {
         await distributionRequestsPage.submitForApproval();
+      });
 
-        await test.step('Проверить, что визиты перешли в статус «На согласовании»', async () => {
-          await expect
-            .poll(() => areVisitsApproved(apiRequest, workPk), {
-              timeout: config.timeouts.long,
-            })
-            .toBe(true);
-        });
+      await test.step('Проверить, что визиты перешли в статус «На согласовании»', async () => {
+        await expect
+          .poll(() => areVisitsApproved(apiRequest, workPk), {
+            timeout: config.timeouts.long,
+          })
+          .toBe(true);
+      });
+
+      // FIXME баг сайта: после подачи заявки счётчик «Заявки(N)» не обновляется,
+      // а на вкладке «Заявки» отображается «Нет поданных заявок»
+      await test.step('Проверить счетчик созданных заявок', async () => {
+        await expect
+          .poll(() => distributionRequestsPage.getRequestsCount(), {
+            timeout: config.timeouts.long,
+          })
+          .toBeGreaterThan(0);
+      });
+
+      await test.step('Проверить отображение заявок на вкладке «Заявки»', async () => {
+        await distributionRequestsPage.openRequestsTab();
+
+        await expect(distributionRequestsPage.locators.requestsEmptyState).toBeHidden();
+
+        await expect
+          .poll(() => distributionRequestsPage.getRequestsRowsCount(), {
+            timeout: config.timeouts.long,
+          })
+          .toBeGreaterThan(0);
       });
     }
   );

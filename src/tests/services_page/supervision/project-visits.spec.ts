@@ -7,8 +7,14 @@ test.describe('Распределение на работу', () => {
     'Создать работу через API и добавить визиты доступного персонала',
     { tag: '@smoke' },
     async ({ page, resourcePlanningPage, createdWork }) => {
-      const { workPk } = createdWork;
+      const { work, workPk } = createdWork;
       const VISIT_COUNT = 3;
+
+      await test.step('Проверить, что созданная работа отображается в поиске на странице распределения', async () => {
+        await resourcePlanningPage.open();
+        await resourcePlanningPage.searchWork(work.name);
+        await resourcePlanningPage.assertWorkVisible(work.name);
+      });
 
       await test.step('Найти созданную работу на странице распределения', async () => {
         await resourcePlanningPage.openWorkByPk(workPk);

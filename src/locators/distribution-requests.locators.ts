@@ -15,6 +15,12 @@ export const createDistributionRequestsLocators = (page: Page) => {
     requestsTab: page.getByRole('button', { name: /Заявки\(\d+\)/ }),
     createRequestButton: page.getByRole('button', { name: 'Создать заявку' }),
 
+    // Таблица поданных заявок на вкладке «Заявки»
+    requestsTable: page
+      .locator('table')
+      .filter({ has: page.getByRole('columnheader', { name: 'ФИО создателя' }) }),
+    requestsEmptyState: page.getByText('Нет поданных заявок'),
+
     // Модал «Управление заявками» — шаг 1 (заявки)
     modal,
 

@@ -78,6 +78,19 @@ export const createDistributionRequestsPage = (page: Page) => {
       return match ? Number(match[1]) : 0;
     },
 
+    openRequestsTab: async (): Promise<void> => {
+      await locators.requestsTab.waitFor({ state: 'visible', timeout: config.timeouts.long });
+      await locators.requestsTab.click();
+    },
+
+    getRequestsRowsCount: async (): Promise<number> => {
+      await locators.requestsTable.waitFor({ state: 'visible', timeout: config.timeouts.long });
+      return locators.requestsTable
+        .locator('tbody tr')
+        .filter({ hasNotText: 'Нет поданных заявок' })
+        .count();
+    },
+
     markVisitsAsLocalTrip: async (): Promise<void> => {
       const boxes = locators.visitLocalTripCheckboxes;
       const count = await boxes.count();

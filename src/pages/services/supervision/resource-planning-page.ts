@@ -2,10 +2,7 @@ import { APIRequestContext, Page } from '@playwright/test';
 import { createBasePage } from '../../base-page';
 import { createResourcePlanningLocators } from '../../../locators/resource-planning.locators';
 import { config } from '../../../config';
-import {
-  getWorkCompositionInfo,
-  WorkCompositionInfo,
-} from '../../../test-data/api/project-api';
+import { getWorkCompositionInfo, WorkCompositionInfo } from '../../../test-data/api/project-api';
 
 export const createResourcePlanningPage = (page: Page) => {
   const basePage = createBasePage(page);
@@ -79,6 +76,10 @@ export const createResourcePlanningPage = (page: Page) => {
     searchWork: async (name: string): Promise<void> => {
       await locators.searchInput.fill(name);
       await page.waitForLoadState('networkidle').catch(() => {});
+    },
+
+    assertWorkVisible: async (name: string): Promise<void> => {
+      await basePage.waitForElement(locators.workCard(name), config.timeouts.long);
     },
 
     openWork: async (name: string): Promise<void> => {
