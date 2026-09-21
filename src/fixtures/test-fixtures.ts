@@ -27,13 +27,15 @@ import { createMedicalCommissionPage } from '../pages/ot-pb/medical-commission-p
 import { createIndustrialSafetyPage } from '../pages/ot-pb/industrial-safety-page';
 import { projectFactory } from '../test-data/factory/project-factory';
 import { workFactory } from '../test-data/factory/work-factory';
+import { userFactory } from '../test-data/factory/user-factory';
 import { addDays, formatDmy, today } from '../utils/date';
 import {
   createProjectViaApi,
   createWorkViaApi,
   getFirstContractPk,
 } from '../test-data/api/project-api';
-import type { ProjectData, WorkData } from '../types';
+import { createUserViaApi, deleteUserViaApi } from '../test-data/api/user-api';
+import type { ProjectData, UserCredentials, WorkData } from '../types';
 
 export interface UserContextKit {
   page: Page;
@@ -53,7 +55,12 @@ export interface CreatedWork extends CreatedProject {
   workPk: string;
 }
 
-type CreateUserPage = (userId: string) => Promise<UserContextKit>;
+export interface CreatedUser extends UserCredentials {
+  /** uuid созданного через API пользователя. */
+  uuid: string;
+}
+
+type CreateUserPage = (userId: string) => Promise<UserContextKit>; // fixme
 
 export interface TestFixtures {
   testConfig: typeof config;
@@ -87,6 +94,7 @@ export interface TestFixtures {
   createdProject: CreatedProject;
   createdWork: CreatedWork;
   createdWorkExecution: CreatedWork;
+  createdUser: CreatedUser;
 }
 
 export const test = base.extend<TestFixtures>({
@@ -261,6 +269,12 @@ export const test = base.extend<TestFixtures>({
       status: 'Выполнение работы',
     });
     await use({ ...createdProject, work, workPk });
+  },
+
+  createdUser: async ({ apiRequest }, use) => {
+    const user = await createUserViaApi(apiRequest, userFactory.regular());
+    await use(user);
+    await deleteUserViaApi(apiRequest, user.uuid);
   },
 
   createUserPage: async ({ browser }, use) => {

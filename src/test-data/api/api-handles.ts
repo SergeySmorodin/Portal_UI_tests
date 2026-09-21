@@ -1,6 +1,7 @@
 export const api = {
   auth: {
     login: '/api/auth/jwt/create/',
+    add_user: '/api/auth/users/',
   },
   company: '/api/company/',
   contract: '/api/contract/',
