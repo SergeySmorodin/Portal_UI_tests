@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 import path from 'path';
-import { STORAGE_STATE_PATH, authUsers } from './global-setup';
+import { STORAGE_STATE_PATH } from './global-setup';
 
 // Загружаем .env ПЕРЕД созданием конфигурации
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
@@ -42,7 +42,7 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      testIgnore: ['**/login-page.spec.ts', '**/workflows/**'],
+      testIgnore: ['**/login-page.spec.ts'],
       use: {
         ...chromeDevice,
         storageState: STORAGE_STATE_PATH,
@@ -53,14 +53,5 @@ export default defineConfig({
       testMatch: '**/login-page.spec.ts',
       use: { ...chromeDevice },
     },
-    // Multi-user сценарии: появляются автоматически, если в .env заданы LOGIN_2/LOGIN_3
-    ...authUsers.slice(1).map((user, i) => ({
-      name: `chromium-user${i + 2}`,
-      testMatch: '**/workflows/**',
-      use: {
-        ...chromeDevice,
-        storageState: user.storageStatePath,
-      },
-    })),
   ],
 });

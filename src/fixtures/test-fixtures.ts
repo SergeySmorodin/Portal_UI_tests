@@ -1,6 +1,5 @@
 import { APIRequestContext, BrowserContext, Page, test as base, expect } from '@playwright/test';
 import { config, type AppConfig } from '../config';
-import { authUsers } from '../../global-setup';
 import { createLoginPage } from '../pages/login/login-page';
 import { createMainPage } from '../pages/main/main-page';
 import { createLkPage } from '../pages/profile/lk-page';
@@ -40,6 +39,8 @@ import type { ProjectData, UserCredentials, WorkData } from '../types';
 export interface UserContextKit {
   page: Page;
   context: BrowserContext;
+  /** Данные созданного через API пользователя, под которым авторизована page. */
+  user: CreatedUser;
 }
 
 export interface CreatedProject {
@@ -60,7 +61,11 @@ export interface CreatedUser extends UserCredentials {
   uuid: string;
 }
 
-type CreateUserPage = (userId: string) => Promise<UserContextKit>; // fixme
+/**
+ * Создаёт нового пользователя через API и возвращает его авторизованную page/context.
+ * Пользователи создаются изолированно, поэтому тесты не зависят от существующих учёток.
+ */
+type CreateUserPage = (overrides?: Partial<UserCredentials>) => Promise<UserContextKit>;
 
 export interface TestFixtures {
   testConfig: typeof config;
@@ -277,19 +282,34 @@ export const test = base.extend<TestFixtures>({
     await deleteUserViaApi(apiRequest, user.uuid);
   },
 
-  createUserPage: async ({ browser }, use) => {
-    const createUserPage: CreateUserPage = async (userId) => {
-      const user = authUsers.find((u) => u.id === userId);
-      if (!user) {
-        throw new Error(
-          `Пользователь "${userId}" не настроен. Укажите соответствующие LOGIN_*/PASSWORD_* в .env. Доступно: ${authUsers.map((u) => u.id).join(', ')}.`
-        );
-      }
-      const context = await browser.newContext({ storageState: user.storageStatePath });
+  createUserPage: async ({ browser, apiRequest }, use) => {
+    const contexts: BrowserContext[] = [];
+    const users: CreatedUser[] = [];
+
+    const createUserPage: CreateUserPage = async (overrides) => {
+      const user = await createUserViaApi(apiRequest, userFactory.regular(overrides));
+      users.push(user);
+
+      const context = await browser.newContext();
+      contexts.push(context);
       const page = await context.newPage();
-      return { page, context };
+
+      const loginPage = createLoginPage(page);
+      await loginPage.open();
+      await loginPage.login({ username: user.username, password: user.password });
+      await loginPage.waitForLoginSuccess();
+
+      return { page, context, user };
     };
+
     await use(createUserPage);
+
+    for (const context of contexts) {
+      await context.close();
+    }
+    for (const user of users) {
+      await deleteUserViaApi(apiRequest, user.uuid);
+    }
   },
 });
 
