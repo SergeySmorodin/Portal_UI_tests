@@ -121,7 +121,14 @@ test.describe('Табель работ', () => {
         }
       });
 
-      // todo отправить на согласование
+      await test.step('Отправить табель на согласование', async () => {
+        await reportCardPage.openApproval();
+        await reportCardPage.submitApproval(work.stopDate);
+      });
+
+      await test.step('Проверить, что табель отправлен на согласование', async () => {
+        await expect.poll(async () => reportCardPage.getPeriodsCount()).toBeGreaterThan(0);
+      });
     }
   );
 });

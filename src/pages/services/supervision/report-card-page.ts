@@ -82,6 +82,23 @@ export const createReportCardPage = (page: Page) => {
     save: async (): Promise<void> => {
       await locators.saveButton.click();
     },
+
+    openApproval: async (): Promise<void> => {
+      await locators.approvalButton.click();
+      await locators.approvalModal.waitFor({ state: 'visible', timeout: config.timeouts.long });
+    },
+
+    submitApproval: async (periodEnd: string): Promise<void> => {
+      await locators.approvalPeriodEndInput.fill(periodEnd);
+      await locators.approvalSubmitButton.click();
+      await locators.approvalModal.waitFor({ state: 'hidden', timeout: config.timeouts.long });
+    },
+
+    getPeriodsCount: async (): Promise<number> => {
+      const text = (await locators.periodsCount.textContent())?.trim() || '';
+      const match = text.match(/Периодов:\s*(\d+)/);
+      return match ? Number(match[1]) : 0;
+    },
   };
 };
 
