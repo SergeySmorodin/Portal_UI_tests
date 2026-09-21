@@ -2,7 +2,10 @@ import { APIRequestContext, Page } from '@playwright/test';
 import { createBasePage } from '../../base-page';
 import { createResourcePlanningLocators } from '../../../locators/resource-planning.locators';
 import { config } from '../../../config';
-import { getWorkCompositionInfo } from '../../../test-data/api/project-api';
+import {
+  getWorkCompositionInfo,
+  WorkCompositionInfo,
+} from '../../../test-data/api/project-api';
 
 export const createResourcePlanningPage = (page: Page) => {
   const basePage = createBasePage(page);
@@ -26,6 +29,28 @@ export const createResourcePlanningPage = (page: Page) => {
   const saveVisits = async (): Promise<void> => {
     await basePage.waitForElement(locators.saveButton);
     await locators.saveButton.click();
+  };
+
+  const addAvailableWorkersInternal = async (count: number): Promise<string[]> => {
+    await locators.availableAddButton(0).waitFor({
+      state: 'visible',
+      timeout: config.timeouts.long,
+    });
+    const total = await locators.availableAddButtons.count();
+    if (total < count) {
+      throw new Error(
+        `Доступно только ${total} доступных работников, а запрошено добавить ${count}`
+      );
+    }
+
+    const added: string[] = [];
+    for (let i = 0; i < count; i++) {
+      const name = (await locators.availablePersonName(i).textContent())?.trim() || '';
+      await locators.availableAddButton(i).click();
+      added.push(name);
+      await page.waitForLoadState('networkidle').catch(() => {});
+    }
+    return added;
   };
 
   const waitForCondition = async (
@@ -70,27 +95,7 @@ export const createResourcePlanningPage = (page: Page) => {
 
     openWorkByPk: openWorkByPkInternal,
 
-    addAvailableWorkers: async (count: number): Promise<string[]> => {
-      await locators.availableAddButton(0).waitFor({
-        state: 'visible',
-        timeout: config.timeouts.long,
-      });
-      const total = await locators.availableAddButtons.count();
-      if (total < count) {
-        throw new Error(
-          `Доступно только ${total} доступных работников, а запрошено добавить ${count}`
-        );
-      }
-
-      const added: string[] = [];
-      for (let i = 0; i < count; i++) {
-        const name = (await locators.availablePersonName(i).textContent())?.trim() || '';
-        await locators.availableAddButton(i).click();
-        added.push(name);
-        await page.waitForLoadState('networkidle').catch(() => {});
-      }
-      return added;
-    },
+    addAvailableWorkers: addAvailableWorkersInternal,
 
     getClaimedPersonnelCount: async (): Promise<string> => {
       return (await locators.claimedCount.textContent())?.trim() || '';
@@ -110,29 +115,25 @@ export const createResourcePlanningPage = (page: Page) => {
 
     /**
      * Сохраняет визиты так, чтобы изменение гарантированно зафиксировалось на сервере:
-     * сначала дожидается заявленного персонала, затем сохраняет визиты и проверяет их наличие
-     * через API, повторяя попытку (с перезагрузкой страницы работы) при сбое.
+     * открывает «Управление визитами», сохраняет и проверяет наличие заявленного
+     * персонала и визитов через API, повторяя попытку при сбое.
+     *
+     * Важно: добавление доступных работников меняет только состояние UI, на сервере
+     * персонал появляется лишь после сохранения, поэтому дожидаться его до `saveVisits`
+     * нельзя.
      */
     saveVisitsPersisted: async (
       request: APIRequestContext,
       workPk: string,
       count: number
     ): Promise<void> => {
-      const composition = (): Promise<
-        import('../../../test-data/api/project-api').WorkCompositionInfo
-      > => getWorkCompositionInfo(request, workPk);
+      const composition = (): Promise<WorkCompositionInfo> =>
+        getWorkCompositionInfo(request, workPk);
 
-      const personnelCommitted = await waitForCondition(
-        async () => (await composition()).personCount >= count,
-        config.timeouts.long
-      );
-      if (!personnelCommitted) {
-        throw new Error(
-          `Заявленный персонал не зафиксирован на сервере (ожидалось ${count}): ${JSON.stringify(
-            await composition()
-          )}`
-        );
-      }
+      const savedOnServer = async (): Promise<boolean> => {
+        const info = await composition();
+        return info.personCount >= count && info.visitCount >= count;
+      };
 
       let attempts = 0;
       while (true) {
@@ -140,16 +141,24 @@ export const createResourcePlanningPage = (page: Page) => {
         await openVisitsManagement();
         await saveVisits();
 
-        const info = await composition();
-        if (info.visitCount >= count) {
+        if (await waitForCondition(savedOnServer, config.timeouts.long)) {
           return;
         }
         if (attempts >= 3) {
           throw new Error(
-            `Визиты не сохранились после ${attempts} попыток: ${JSON.stringify(info)}`
+            `Заявленный персонал и визиты не зафиксированы после ${attempts} попыток: ${JSON.stringify(
+              await composition()
+            )}`
           );
         }
+
+        // Перезагрузка сбрасывает локально добавленных работников —
+        // добавляем недостающих заново и пробуем сохранить ещё раз.
         await openWorkByPkInternal(workPk);
+        const missing = count - (await composition()).personCount;
+        if (missing > 0) {
+          await addAvailableWorkersInternal(missing);
+        }
       }
     },
   };
