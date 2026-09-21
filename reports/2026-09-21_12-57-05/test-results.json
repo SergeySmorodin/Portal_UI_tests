@@ -1,0 +1,4646 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "D:\\WORK\\Projects\\Portal_UI_tests\\node_modules\\@playwright\\test\\cli.js",
+      "test"
+    ],
+    "configFile": "D:\\WORK\\Projects\\Portal_UI_tests\\playwright.config.ts",
+    "rootDir": "D:/WORK/Projects/Portal_UI_tests/src/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": "D:\\WORK\\Projects\\Portal_UI_tests\\global-setup.ts",
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 4
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/WORK/Projects/Portal_UI_tests/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "D:/WORK/Projects/Portal_UI_tests/src/tests",
+        "testIgnore": [
+          "**/login-page.spec.ts",
+          "**/workflows/**"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "D:/WORK/Projects/Portal_UI_tests/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "chromium-login",
+        "name": "chromium-login",
+        "testDir": "D:/WORK/Projects/Portal_UI_tests/src/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/login-page.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results.json"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.1",
+    "workers": 4,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "certification_page\\certification-page.spec.ts",
+      "file": "certification_page/certification-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Загрузка сертификационных документов",
+          "file": "certification_page/certification-page.spec.ts",
+          "line": 49,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Загрузка разрешительного документа (Сертификат)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3905,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу загрузки документа",
+                          "duration": 760
+                        },
+                        {
+                          "title": "Выбрать тип и заполнить основные поля",
+                          "duration": 201
+                        },
+                        {
+                          "title": "Загрузить файл и установить даты",
+                          "duration": 160
+                        },
+                        {
+                          "title": "Сохранить документ",
+                          "duration": 218
+                        },
+                        {
+                          "title": "Найти документ в списке",
+                          "duration": 1478
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:55:59.389Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f76d5ca576d474f14c02-d1a694dbff1b2787b716",
+              "file": "certification_page/certification-page.spec.ts",
+              "line": 50,
+              "column": 3
+            },
+            {
+              "title": "Загрузка протокола испытаний",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3729,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу загрузки документа",
+                          "duration": 697
+                        },
+                        {
+                          "title": "Выбрать тип и заполнить основные поля",
+                          "duration": 191
+                        },
+                        {
+                          "title": "Загрузить файл и установить даты",
+                          "duration": 169
+                        },
+                        {
+                          "title": "Сохранить документ",
+                          "duration": 168
+                        },
+                        {
+                          "title": "Найти документ в списке",
+                          "duration": 1488
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:55:59.374Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f76d5ca576d474f14c02-588f4162d8fb3f75fa96",
+              "file": "certification_page/certification-page.spec.ts",
+              "line": 63,
+              "column": 3
+            },
+            {
+              "title": "Загрузка нормативного документа (ТУ/ПМ)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 3794,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу загрузки документа",
+                          "duration": 784
+                        },
+                        {
+                          "title": "Выбрать тип и заполнить основные поля",
+                          "duration": 166
+                        },
+                        {
+                          "title": "Загрузить файл и установить даты",
+                          "duration": 133
+                        },
+                        {
+                          "title": "Сохранить документ",
+                          "duration": 169
+                        },
+                        {
+                          "title": "Найти документ в списке",
+                          "duration": 1473
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:55:59.389Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f76d5ca576d474f14c02-ce5b139ba6f3dd50a3b6",
+              "file": "certification_page/certification-page.spec.ts",
+              "line": 76,
+              "column": 3
+            },
+            {
+              "title": "Загрузка руководства по эксплуатации",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 3455,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу загрузки документа",
+                          "duration": 706
+                        },
+                        {
+                          "title": "Выбрать тип и заполнить основные поля",
+                          "duration": 111
+                        },
+                        {
+                          "title": "Загрузить файл и установить даты",
+                          "duration": 168
+                        },
+                        {
+                          "title": "Сохранить документ",
+                          "duration": 225
+                        },
+                        {
+                          "title": "Найти документ в списке",
+                          "duration": 1489
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:55:59.326Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f76d5ca576d474f14c02-9490962b514aed26f1fc",
+              "file": "certification_page/certification-page.spec.ts",
+              "line": 89,
+              "column": 3
+            },
+            {
+              "title": "Загрузка паспорта оборудования",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 3022,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу загрузки документа",
+                          "duration": 718
+                        },
+                        {
+                          "title": "Выбрать тип и заполнить основные поля",
+                          "duration": 77
+                        },
+                        {
+                          "title": "Загрузить файл и установить даты",
+                          "duration": 83
+                        },
+                        {
+                          "title": "Сохранить документ",
+                          "duration": 124
+                        },
+                        {
+                          "title": "Найти документ в списке",
+                          "duration": 1535
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:03.185Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f76d5ca576d474f14c02-be0823d36760a26dc3f5",
+              "file": "certification_page/certification-page.spec.ts",
+              "line": 102,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "counterparties_page\\company-page.spec.ts",
+      "file": "counterparties_page/company-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Создание компании",
+          "file": "counterparties_page/company-page.spec.ts",
+          "line": 7,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Заполнение формы, сохранение и проверка в списке",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2755,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу создания компании",
+                          "duration": 644
+                        },
+                        {
+                          "title": "Заполнить основные поля",
+                          "duration": 270
+                        },
+                        {
+                          "title": "Сохранить компанию",
+                          "duration": 156
+                        },
+                        {
+                          "title": "Найти компанию в списке через поиск",
+                          "duration": 976
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:03.439Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b71115f6ac3d09ca1873-6a1a01898970f950b8bc",
+              "file": "counterparties_page/company-page.spec.ts",
+              "line": 8,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "counterparties_page\\curator-page.spec.ts",
+      "file": "counterparties_page/curator-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Создание куратора",
+          "file": "counterparties_page/curator-page.spec.ts",
+          "line": 7,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Заполнение формы, сохранение и проверка в списке",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 3083,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу создания куратора",
+                          "duration": 722
+                        },
+                        {
+                          "title": "Заполнить основные поля",
+                          "duration": 338
+                        },
+                        {
+                          "title": "Выбрать рандомную компанию",
+                          "duration": 191
+                        },
+                        {
+                          "title": "Сохранить куратора",
+                          "duration": 110
+                        },
+                        {
+                          "title": "Найти куратора в списке через поиск",
+                          "duration": 954
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:03.550Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f2060dabeff204926a3-ae4ff445d926a0eb53ab",
+              "file": "counterparties_page/curator-page.spec.ts",
+              "line": 8,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "main_page\\main-page.spec.ts",
+      "file": "main_page/main-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Главная страница",
+          "file": "main_page/main-page.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Отображение элементов главной страницы",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2002,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть главную страницу",
+                          "duration": 764
+                        },
+                        {
+                          "title": "Проверить ссылку на профиль сотрудника",
+                          "duration": 27
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:03.626Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a66da85306ab5f08ab39-02562e98348f34e54b86",
+              "file": "main_page/main-page.spec.ts",
+              "line": 4,
+              "column": 3
+            },
+            {
+              "title": "Переход в профиль сотрудника с главной страницы",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1181,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть главную страницу",
+                          "duration": 617
+                        },
+                        {
+                          "title": "Кликнуть \"Профиль сотрудника\"",
+                          "duration": 83
+                        },
+                        {
+                          "title": "Проверить переход на страницу профиля",
+                          "duration": 2
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:05.648Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a66da85306ab5f08ab39-86d243669a859672cc0b",
+              "file": "main_page/main-page.spec.ts",
+              "line": 14,
+              "column": 3
+            },
+            {
+              "title": "Схема разделов отображается на главной странице",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1654,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть главную страницу",
+                          "duration": 680
+                        },
+                        {
+                          "title": "Проверить раздел \"Сертификаты\"",
+                          "duration": 10
+                        },
+                        {
+                          "title": "Проверить раздел \"Контрагенты\"",
+                          "duration": 6
+                        },
+                        {
+                          "title": "Проверить раздел \"Договоры\"",
+                          "duration": 7
+                        },
+                        {
+                          "title": "Проверить раздел \"Проекты\"",
+                          "duration": 5
+                        },
+                        {
+                          "title": "Проверить раздел \"Работы\"",
+                          "duration": 5
+                        },
+                        {
+                          "title": "Проверить раздел \"Центр аналитики\"",
+                          "duration": 7
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:06.234Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a66da85306ab5f08ab39-224a10ba1ebdc779a73f",
+              "file": "main_page/main-page.spec.ts",
+              "line": 32,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ot-pb_page\\industrial-safety-protocol.spec.ts",
+      "file": "ot-pb_page/industrial-safety-protocol.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Охрана труда — добавление записи промышленной безопасности",
+          "file": "ot-pb_page/industrial-safety-protocol.spec.ts",
+          "line": 4,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Добавление нового протокола промышленной безопасности выбранному сотруднику",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 5813,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу промышленной безопасности",
+                          "duration": 697
+                        },
+                        {
+                          "title": "Выбрать категорию «Выбрать всё»",
+                          "duration": 869
+                        },
+                        {
+                          "title": "Нажать «Показать»",
+                          "duration": 110
+                        },
+                        {
+                          "title": "Выбрать случайного сотрудника из таблицы",
+                          "duration": 123
+                        },
+                        {
+                          "title": "Создать запись",
+                          "duration": 133
+                        },
+                        {
+                          "title": "Заполнить протокол, даты и область",
+                          "duration": 229
+                        },
+                        {
+                          "title": "Сохранить запись",
+                          "duration": 1252
+                        },
+                        {
+                          "title": "Проверить сохранение записи",
+                          "duration": 7
+                        },
+                        {
+                          "title": "Вернуться на главную страницу промышленной безопасности",
+                          "duration": 641
+                        },
+                        {
+                          "title": "Выбрать категорию «Выбрать всё»",
+                          "duration": 831
+                        },
+                        {
+                          "title": "Нажать «Показать»",
+                          "duration": 91
+                        },
+                        {
+                          "title": "Найти запись сотрудника с добавленным протоколом",
+                          "duration": 266
+                        },
+                        {
+                          "title": "Проверить соответствие номера протокола",
+                          "duration": 24
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:06.241Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "88d993417660a31d3d26-23d4c1b874c9e79cb0ff",
+              "file": "ot-pb_page/industrial-safety-protocol.spec.ts",
+              "line": 5,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ot-pb_page\\labor-protection-protocol.spec.ts",
+      "file": "ot-pb_page/labor-protection-protocol.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Охрана труда — добавление протокола",
+          "file": "ot-pb_page/labor-protection-protocol.spec.ts",
+          "line": 4,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Добавление нового протокола охраны труда выбранному сотруднику",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 7896,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу охраны труда",
+                          "duration": 1239
+                        },
+                        {
+                          "title": "Выбрать категорию «Охрана труда»",
+                          "duration": 902
+                        },
+                        {
+                          "title": "Нажать «Показать»",
+                          "duration": 158
+                        },
+                        {
+                          "title": "Выбрать случайного сотрудника из таблицы",
+                          "duration": 120
+                        },
+                        {
+                          "title": "Создать запись",
+                          "duration": 386
+                        },
+                        {
+                          "title": "Добавить новый протокол",
+                          "duration": 288
+                        },
+                        {
+                          "title": "Заполнить форму протокола и прикрепить скан-копию",
+                          "duration": 111
+                        },
+                        {
+                          "title": "Сохранить протокол",
+                          "duration": 147
+                        },
+                        {
+                          "title": "Проверить сохранение протокола",
+                          "duration": 12
+                        },
+                        {
+                          "title": "Обновить страницу создания записей",
+                          "duration": 1115
+                        },
+                        {
+                          "title": "Выбрать созданный протокол «ТЕСТ-ПТ-1789984567058» в таблице сотрудника",
+                          "duration": 73
+                        },
+                        {
+                          "title": "Ввести номер удостоверения",
+                          "duration": 65
+                        },
+                        {
+                          "title": "Заполнить даты начала и окончания",
+                          "duration": 255
+                        },
+                        {
+                          "title": "Сохранить запись",
+                          "duration": 184
+                        },
+                        {
+                          "title": "Проверить сохранение записи",
+                          "duration": 14
+                        },
+                        {
+                          "title": "Вернуться на главную страницу охраны труда",
+                          "duration": 510
+                        },
+                        {
+                          "title": "Выбрать категорию «Охрана труда»",
+                          "duration": 834
+                        },
+                        {
+                          "title": "Нажать «Показать»",
+                          "duration": 75
+                        },
+                        {
+                          "title": "Найти запись сотрудника с добавленным протоколом",
+                          "duration": 286
+                        },
+                        {
+                          "title": "Проверить соответствие номера протокола",
+                          "duration": 6
+                        },
+                        {
+                          "title": "Перейти по ссылке протокола",
+                          "duration": 470
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:06.685Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4308d57f85818ca78c2c-1f02e4b5d7450d2c6734",
+              "file": "ot-pb_page/labor-protection-protocol.spec.ts",
+              "line": 5,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ot-pb_page\\medical-commission-protocol.spec.ts",
+      "file": "ot-pb_page/medical-commission-protocol.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Охрана труда — добавление записи медицинской комиссии",
+          "file": "ot-pb_page/medical-commission-protocol.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Добавление нового заключения медицинской комиссии выбранному сотруднику",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7986,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу медицинской комиссии",
+                          "duration": 746
+                        },
+                        {
+                          "title": "Выбрать категорию «Медицинская комиссия»",
+                          "duration": 2390
+                        },
+                        {
+                          "title": "Нажать «Показать»",
+                          "duration": 125
+                        },
+                        {
+                          "title": "Выбрать случайного сотрудника из таблицы",
+                          "duration": 96
+                        },
+                        {
+                          "title": "Создать запись",
+                          "duration": 230
+                        },
+                        {
+                          "title": "Заполнить даты выдачи заключения и следующей медкомиссии",
+                          "duration": 173
+                        },
+                        {
+                          "title": "Сохранить запись",
+                          "duration": 281
+                        },
+                        {
+                          "title": "Проверить сохранение записи",
+                          "duration": 9
+                        },
+                        {
+                          "title": "Вернуться на главную страницу медицинской комиссии",
+                          "duration": 511
+                        },
+                        {
+                          "title": "Выбрать категорию «Медицинская комиссия»",
+                          "duration": 2364
+                        },
+                        {
+                          "title": "Нажать «Показать»",
+                          "duration": 135
+                        },
+                        {
+                          "title": "Найти запись сотрудника с добавленным заключением",
+                          "duration": 388
+                        },
+                        {
+                          "title": "Проверить даты заключения в таблице результатов",
+                          "duration": 9
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:06.860Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2dd06e17518ea5bd61ac-59044d341149143d8992",
+              "file": "ot-pb_page/medical-commission-protocol.spec.ts",
+              "line": 7,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ot-pb_page\\ot-pb-page.spec.ts",
+      "file": "ot-pb_page/ot-pb-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Теститрование разделов фильтрации Охраны труда, Мед осмотров и Промышленной безопасности",
+          "file": "ot-pb_page/ot-pb-page.spec.ts",
+          "line": 4,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "Промышленная безопасность",
+              "file": "ot-pb_page/ot-pb-filters.ts",
+              "line": 112,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "Выбор категорий и отображение всех сотрудников",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 2398,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу промышленной безопасности",
+                              "duration": 792
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 898
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 87
+                            },
+                            {
+                              "title": "Проверить отображение таблицы результатов",
+                              "duration": 21
+                            },
+                            {
+                              "title": "Проверить отображение сотрудников",
+                              "duration": 15
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:07.952Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-fcbd2dcc6472c95ce632",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 113,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтр по ФИО отображает выбранного сотрудника",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 2611,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу промышленной безопасности",
+                              "duration": 692
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 884
+                            },
+                            {
+                              "title": "Выбрать случайную фамилию из выпадающего списка",
+                              "duration": 266
+                            },
+                            {
+                              "title": "Проверить совпадение выбранной ФИО «Хохлов Павел Юрьевич»",
+                              "duration": 20
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 69
+                            },
+                            {
+                              "title": "Проверить отображение выбранного сотрудника в таблице",
+                              "duration": 39
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:10.398Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-b60320b2b504c1019f9a",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 148,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтр «Только с данными» исключает пустых сотрудников",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 3,
+                          "status": "passed",
+                          "duration": 2553,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу промышленной безопасности",
+                              "duration": 755
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 872
+                            },
+                            {
+                              "title": "Включить переключатель «Только с данными»",
+                              "duration": 68
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 119
+                            },
+                            {
+                              "title": "Проверить отображение результатов",
+                              "duration": 77
+                            },
+                            {
+                              "title": "Проверить, что отображаются только сотрудники с данными",
+                              "duration": 106
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:12.127Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-cae62cde4448074d4250",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 194,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по должности",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 2600,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу промышленной безопасности",
+                              "duration": 749
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 907
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 78
+                            },
+                            {
+                              "title": "Выбрать случайную должность из отображаемых сотрудников",
+                              "duration": 161
+                            },
+                            {
+                              "title": "Проверить подсветку выбранной должности «Начальник смены»",
+                              "duration": 12
+                            },
+                            {
+                              "title": "Нажать «Показать» после фильтрации по должности",
+                              "duration": 70
+                            },
+                            {
+                              "title": "Проверить, что отображаются только сотрудники с выбранной должностью",
+                              "duration": 40
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:13.046Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-8bf23ae835d06280a4a1",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 235,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по отделу",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 5070,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу промышленной безопасности",
+                              "duration": 680
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 1363
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 73
+                            },
+                            {
+                              "title": "Выбрать отдел, у которого есть записи",
+                              "duration": 2290
+                            },
+                            {
+                              "title": "Проверить подсветку выбранного отдела «Группа по врезкам и перекрытиям - Тюменская область, стандарт»",
+                              "duration": 23
+                            },
+                            {
+                              "title": "Нажать «Показать» после фильтрации по отделу",
+                              "duration": 83
+                            },
+                            {
+                              "title": "Проверить отображение результатов после фильтрации по отделу",
+                              "duration": 18
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:14.654Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-d3df71d08e9f1aa57848",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 294,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по филиалу",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 3,
+                          "status": "passed",
+                          "duration": 3456,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу промышленной безопасности",
+                              "duration": 777
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 862
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 113
+                            },
+                            {
+                              "title": "Выбрать филиал, у которого есть записи",
+                              "duration": 1150
+                            },
+                            {
+                              "title": "Проверить подсветку выбранного филиала «Обособленное подразделение ООО \"Сервисная Компания ИНТРА\" (г.Уфа)»",
+                              "duration": 9
+                            },
+                            {
+                              "title": "Нажать «Показать» после фильтрации по филиалу",
+                              "duration": 47
+                            },
+                            {
+                              "title": "Проверить отображение результатов после фильтрации по филиалу",
+                              "duration": 18
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:14.749Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-a95ff6620d40a3c3e50d",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 346,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по сроку действия",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 3275,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу промышленной безопасности",
+                              "duration": 774
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 1358
+                            },
+                            {
+                              "title": "Включить фильтр «отсутствует»",
+                              "duration": 30
+                            },
+                            {
+                              "title": "Проверить, что кнопка «отсутствует» стала активной",
+                              "duration": 7
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 53
+                            },
+                            {
+                              "title": "Проверить отображение результатов с фильтром «отсутствует»",
+                              "duration": 16
+                            },
+                            {
+                              "title": "Выключить фильтр «отсутствует»",
+                              "duration": 43
+                            },
+                            {
+                              "title": "Включить фильтр «просрочено»",
+                              "duration": 34
+                            },
+                            {
+                              "title": "Проверить, что кнопка «просрочено» стала активной",
+                              "duration": 6
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 68
+                            },
+                            {
+                              "title": "Проверить отображение результатов с фильтром «просрочено»",
+                              "duration": 18
+                            },
+                            {
+                              "title": "Выключить фильтр «просрочено»",
+                              "duration": 57
+                            },
+                            {
+                              "title": "Включить фильтр «до 30 дней»",
+                              "duration": 32
+                            },
+                            {
+                              "title": "Проверить, что кнопка «до 30 дней» стала активной",
+                              "duration": 6
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 34
+                            },
+                            {
+                              "title": "Проверить отображение результатов с фильтром «до 30 дней»",
+                              "duration": 15
+                            },
+                            {
+                              "title": "Выключить фильтр «до 30 дней»",
+                              "duration": 37
+                            },
+                            {
+                              "title": "Включить фильтр «> 30 дней»",
+                              "duration": 28
+                            },
+                            {
+                              "title": "Проверить, что кнопка «> 30 дней» стала активной",
+                              "duration": 6
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 53
+                            },
+                            {
+                              "title": "Проверить отображение результатов с фильтром «> 30 дней»",
+                              "duration": 16
+                            },
+                            {
+                              "title": "Выключить фильтр «> 30 дней»",
+                              "duration": 131
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:14.918Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-d54b8572244ea425067f",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 394,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по периоду",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 4359,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу промышленной безопасности",
+                              "duration": 776
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 2368
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 106
+                            },
+                            {
+                              "title": "Выбрать период по отображаемой записи",
+                              "duration": 478
+                            },
+                            {
+                              "title": "Нажать «Показать» после фильтрации по периоду",
+                              "duration": 67
+                            },
+                            {
+                              "title": "Проверить, что отображаются записи с периодом 16.09.2026 — 16.09.2027",
+                              "duration": 57
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:15.745Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-df2e931d64aa87f23e2d",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 446,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по протоколу",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 2189,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу промышленной безопасности",
+                              "duration": 606
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 857
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 103
+                            },
+                            {
+                              "title": "Выбрать протокол из отображаемых записей",
+                              "duration": 102
+                            },
+                            {
+                              "title": "Нажать «Показать» после фильтрации по протоколу",
+                              "duration": 41
+                            },
+                            {
+                              "title": "Проверить, что отображаются записи с протоколом «ТЕСТ-ПБ-1789639933212»",
+                              "duration": 40
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:18.223Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-b1ffe87595449dc164a8",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 519,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по удостоверению",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Фильтр по удостоверению поддерживается только на страницах «Охрана труда» и «Медицинская комиссия»",
+                          "location": {
+                            "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\ot-pb_page\\ot-pb-filters.ts",
+                            "line": 595,
+                            "column": 12
+                          }
+                        }
+                      ],
+                      "expectedStatus": "skipped",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 3,
+                          "status": "skipped",
+                          "duration": 433,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-09-21T09:56:18.253Z",
+                          "annotations": [
+                            {
+                              "type": "skip",
+                              "description": "Фильтр по удостоверению поддерживается только на страницах «Охрана труда» и «Медицинская комиссия»",
+                              "location": {
+                                "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\ot-pb_page\\ot-pb-filters.ts",
+                                "line": 595,
+                                "column": 12
+                              }
+                            }
+                          ],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-6578021478138f0d60fb",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 586,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Охрана труда",
+              "file": "ot-pb_page/ot-pb-filters.ts",
+              "line": 112,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "Выбор категорий и отображение всех сотрудников",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 3,
+                          "status": "passed",
+                          "duration": 2574,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу охраны труда",
+                              "duration": 712
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 1286
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 108
+                            },
+                            {
+                              "title": "Проверить отображение таблицы результатов",
+                              "duration": 46
+                            },
+                            {
+                              "title": "Проверить отображение сотрудников",
+                              "duration": 25
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:18.714Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-dca0a2dab1a747a242ba",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 113,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтр по ФИО отображает выбранного сотрудника",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 2642,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу охраны труда",
+                              "duration": 688
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 1220
+                            },
+                            {
+                              "title": "Выбрать случайную фамилию из выпадающего списка",
+                              "duration": 131
+                            },
+                            {
+                              "title": "Проверить совпадение выбранной ФИО «Биткина Елена Равильевна»",
+                              "duration": 11
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 57
+                            },
+                            {
+                              "title": "Проверить отображение выбранного сотрудника в таблице",
+                              "duration": 37
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:19.751Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-293a76fb5157bad331b3",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 148,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтр «Только с данными» исключает пустых сотрудников",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 4169,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу охраны труда",
+                              "duration": 674
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 2820
+                            },
+                            {
+                              "title": "Включить переключатель «Только с данными»",
+                              "duration": 37
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 95
+                            },
+                            {
+                              "title": "Проверить отображение результатов",
+                              "duration": 33
+                            },
+                            {
+                              "title": "Проверить, что отображаются только сотрудники с данными",
+                              "duration": 53
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:20.146Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-54c887e1c74e9123c507",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 194,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по должности",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 2838,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу охраны труда",
+                              "duration": 694
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 1304
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 115
+                            },
+                            {
+                              "title": "Выбрать случайную должность из отображаемых сотрудников",
+                              "duration": 147
+                            },
+                            {
+                              "title": "Проверить подсветку выбранной должности «Ведущий инженер-механик»",
+                              "duration": 13
+                            },
+                            {
+                              "title": "Нажать «Показать» после фильтрации по должности",
+                              "duration": 80
+                            },
+                            {
+                              "title": "Проверить, что отображаются только сотрудники с выбранной должностью",
+                              "duration": 57
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:20.440Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-208debffde5b74875ee6",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 235,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по отделу",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 3,
+                          "status": "passed",
+                          "duration": 4818,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу охраны труда",
+                              "duration": 711
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 1287
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 109
+                            },
+                            {
+                              "title": "Выбрать отдел, у которого есть записи",
+                              "duration": 2019
+                            },
+                            {
+                              "title": "Проверить подсветку выбранного отдела «Производственный отдел (ф-л Самара)»",
+                              "duration": 13
+                            },
+                            {
+                              "title": "Нажать «Показать» после фильтрации по отделу",
+                              "duration": 102
+                            },
+                            {
+                              "title": "Проверить отображение результатов после фильтрации по отделу",
+                              "duration": 47
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:21.317Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-e66369c15ee1dd26125b",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 294,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по филиалу",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 3958,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу охраны труда",
+                              "duration": 667
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 1224
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 98
+                            },
+                            {
+                              "title": "Выбрать филиал, у которого есть записи",
+                              "duration": 1314
+                            },
+                            {
+                              "title": "Проверить подсветку выбранного филиала «Обособленное подразделение ООО \"Сервисная Компания ИНТРА\" (г. Омск)»",
+                              "duration": 15
+                            },
+                            {
+                              "title": "Нажать «Показать» после фильтрации по филиалу",
+                              "duration": 135
+                            },
+                            {
+                              "title": "Проверить отображение результатов после фильтрации по филиалу",
+                              "duration": 42
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:22.421Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-0e2f718aaae27d55e8fb",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 346,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по сроку действия",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 5730,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу охраны труда",
+                              "duration": 1738
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 1838
+                            },
+                            {
+                              "title": "Включить фильтр «отсутствует»",
+                              "duration": 30
+                            },
+                            {
+                              "title": "Проверить, что кнопка «отсутствует» стала активной",
+                              "duration": 9
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 149
+                            },
+                            {
+                              "title": "Проверить отображение результатов с фильтром «отсутствует»",
+                              "duration": 59
+                            },
+                            {
+                              "title": "Выключить фильтр «отсутствует»",
+                              "duration": 125
+                            },
+                            {
+                              "title": "Включить фильтр «просрочено»",
+                              "duration": 129
+                            },
+                            {
+                              "title": "Проверить, что кнопка «просрочено» стала активной",
+                              "duration": 18
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 147
+                            },
+                            {
+                              "title": "Проверить отображение результатов с фильтром «просрочено»",
+                              "duration": 44
+                            },
+                            {
+                              "title": "Выключить фильтр «просрочено»",
+                              "duration": 110
+                            },
+                            {
+                              "title": "Включить фильтр «до 30 дней»",
+                              "duration": 84
+                            },
+                            {
+                              "title": "Проверить, что кнопка «до 30 дней» стала активной",
+                              "duration": 12
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 155
+                            },
+                            {
+                              "title": "Проверить отображение результатов с фильтром «до 30 дней»",
+                              "duration": 28
+                            },
+                            {
+                              "title": "Выключить фильтр «до 30 дней»",
+                              "duration": 129
+                            },
+                            {
+                              "title": "Включить фильтр «> 30 дней»",
+                              "duration": 106
+                            },
+                            {
+                              "title": "Проверить, что кнопка «> 30 дней» стала активной",
+                              "duration": 17
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 139
+                            },
+                            {
+                              "title": "Проверить отображение результатов с фильтром «> 30 дней»",
+                              "duration": 42
+                            },
+                            {
+                              "title": "Выключить фильтр «> 30 дней»",
+                              "duration": 121
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:23.300Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-3ef02d99f7b25e0c260f",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 394,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по периоду",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 3248,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу охраны труда",
+                              "duration": 737
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 1303
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 140
+                            },
+                            {
+                              "title": "Выбрать период по отображаемой записи",
+                              "duration": 356
+                            },
+                            {
+                              "title": "Нажать «Показать» после фильтрации по периоду",
+                              "duration": 113
+                            },
+                            {
+                              "title": "Проверить, что отображаются записи с периодом 17.09.2026 — 17.09.2027",
+                              "duration": 84
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:24.341Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-bddaf4f6c9752abcf94a",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 446,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по протоколу",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Фильтр по протоколу поддерживается только на странице «Промышленная безопасность»",
+                          "location": {
+                            "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\ot-pb_page\\ot-pb-filters.ts",
+                            "line": 530,
+                            "column": 12
+                          }
+                        }
+                      ],
+                      "expectedStatus": "skipped",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 3,
+                          "status": "skipped",
+                          "duration": 504,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-09-21T09:56:26.161Z",
+                          "annotations": [
+                            {
+                              "type": "skip",
+                              "description": "Фильтр по протоколу поддерживается только на странице «Промышленная безопасность»",
+                              "location": {
+                                "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\ot-pb_page\\ot-pb-filters.ts",
+                                "line": 530,
+                                "column": 12
+                              }
+                            }
+                          ],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-585018090f08e084eaeb",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 519,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по удостоверению",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 2914,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу охраны труда",
+                              "duration": 714
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 1375
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 162
+                            },
+                            {
+                              "title": "Выбрать удостоверение из отображаемых записей",
+                              "duration": 118
+                            },
+                            {
+                              "title": "Нажать «Показать» после фильтрации по удостоверению",
+                              "duration": 50
+                            },
+                            {
+                              "title": "Проверить, что отображаются записи с удостоверением «8978989»",
+                              "duration": 51
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:26.404Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-0ecdc33a805ab2ca0c29",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 586,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Медицинская комиссия",
+              "file": "ot-pb_page/ot-pb-filters.ts",
+              "line": 112,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "Выбор категорий и отображение всех сотрудников",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 3,
+                          "status": "passed",
+                          "duration": 3494,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу медицинской комиссии",
+                              "duration": 787
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 1973
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 115
+                            },
+                            {
+                              "title": "Проверить отображение таблицы результатов",
+                              "duration": 36
+                            },
+                            {
+                              "title": "Проверить отображение сотрудников",
+                              "duration": 24
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:26.690Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-5a596385914abe63399c",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 113,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтр по ФИО отображает выбранного сотрудника",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 2593,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу медицинской комиссии",
+                              "duration": 705
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 952
+                            },
+                            {
+                              "title": "Выбрать случайную фамилию из выпадающего списка",
+                              "duration": 187
+                            },
+                            {
+                              "title": "Проверить совпадение выбранной ФИО «Фролова Мария Игоревна»",
+                              "duration": 12
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 86
+                            },
+                            {
+                              "title": "Проверить отображение выбранного сотрудника в таблице",
+                              "duration": 51
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:27.616Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-3cf26bd7995ab161d3e2",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 148,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтр «Только с данными» исключает пустых сотрудников",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 3969,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу медицинской комиссии",
+                              "duration": 796
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 2415
+                            },
+                            {
+                              "title": "Включить переключатель «Только с данными»",
+                              "duration": 44
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 85
+                            },
+                            {
+                              "title": "Проверить отображение результатов",
+                              "duration": 25
+                            },
+                            {
+                              "title": "Проверить, что отображаются только сотрудники с данными",
+                              "duration": 104
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:29.063Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-8575773b3cf2dd3958dc",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 194,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по должности",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 4425,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу медицинской комиссии",
+                              "duration": 2324
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 1377
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 73
+                            },
+                            {
+                              "title": "Выбрать случайную должность из отображаемых сотрудников",
+                              "duration": 125
+                            },
+                            {
+                              "title": "Проверить подсветку выбранной должности «Слесарь-ремонтник 3 разряда»",
+                              "duration": 10
+                            },
+                            {
+                              "title": "Нажать «Показать» после фильтрации по должности",
+                              "duration": 47
+                            },
+                            {
+                              "title": "Проверить, что отображаются только сотрудники с выбранной должностью",
+                              "duration": 30
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:29.348Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-82ca9efe6003f4e40cdd",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 235,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по отделу",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 3,
+                          "status": "passed",
+                          "duration": 4220,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу медицинской комиссии",
+                              "duration": 796
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 1478
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 84
+                            },
+                            {
+                              "title": "Выбрать отдел, у которого есть записи",
+                              "duration": 1225
+                            },
+                            {
+                              "title": "Проверить подсветку выбранного отдела «Аппарат управления(ф-л Самара)»",
+                              "duration": 15
+                            },
+                            {
+                              "title": "Нажать «Показать» после фильтрации по отделу",
+                              "duration": 63
+                            },
+                            {
+                              "title": "Проверить отображение результатов после фильтрации по отделу",
+                              "duration": 22
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:30.237Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-a7181bedefa569954489",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 294,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по филиалу",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 4113,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу медицинской комиссии",
+                              "duration": 630
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 1409
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 90
+                            },
+                            {
+                              "title": "Выбрать филиал, у которого есть записи",
+                              "duration": 1317
+                            },
+                            {
+                              "title": "Проверить подсветку выбранного филиала «Служба комплексных ремонтов»",
+                              "duration": 9
+                            },
+                            {
+                              "title": "Нажать «Показать» после фильтрации по филиалу",
+                              "duration": 102
+                            },
+                            {
+                              "title": "Проверить отображение результатов после фильтрации по филиалу",
+                              "duration": 22
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:30.260Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-fb46d41f6aa2c86108fa",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 346,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по сроку действия",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 4469,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу медицинской комиссии",
+                              "duration": 707
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 2442
+                            },
+                            {
+                              "title": "Включить фильтр «отсутствует»",
+                              "duration": 51
+                            },
+                            {
+                              "title": "Проверить, что кнопка «отсутствует» стала активной",
+                              "duration": 7
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 100
+                            },
+                            {
+                              "title": "Проверить отображение результатов с фильтром «отсутствует»",
+                              "duration": 18
+                            },
+                            {
+                              "title": "Выключить фильтр «отсутствует»",
+                              "duration": 49
+                            },
+                            {
+                              "title": "Включить фильтр «просрочено»",
+                              "duration": 46
+                            },
+                            {
+                              "title": "Проверить, что кнопка «просрочено» стала активной",
+                              "duration": 9
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 57
+                            },
+                            {
+                              "title": "Проверить отображение результатов с фильтром «просрочено»",
+                              "duration": 17
+                            },
+                            {
+                              "title": "Выключить фильтр «просрочено»",
+                              "duration": 47
+                            },
+                            {
+                              "title": "Включить фильтр «до 30 дней»",
+                              "duration": 48
+                            },
+                            {
+                              "title": "Проверить, что кнопка «до 30 дней» стала активной",
+                              "duration": 11
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 61
+                            },
+                            {
+                              "title": "Проверить отображение результатов с фильтром «до 30 дней»",
+                              "duration": 18
+                            },
+                            {
+                              "title": "Выключить фильтр «до 30 дней»",
+                              "duration": 74
+                            },
+                            {
+                              "title": "Включить фильтр «> 30 дней»",
+                              "duration": 61
+                            },
+                            {
+                              "title": "Проверить, что кнопка «> 30 дней» стала активной",
+                              "duration": 11
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 131
+                            },
+                            {
+                              "title": "Проверить отображение результатов с фильтром «> 30 дней»",
+                              "duration": 31
+                            },
+                            {
+                              "title": "Выключить фильтр «> 30 дней»",
+                              "duration": 81
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:33.061Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-7b323b23a6b77a41ea33",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 394,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по периоду",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 2739,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу медицинской комиссии",
+                              "duration": 703
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 948
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 127
+                            },
+                            {
+                              "title": "Выбрать период по отображаемой записи",
+                              "duration": 382
+                            },
+                            {
+                              "title": "Нажать «Показать» после фильтрации по периоду",
+                              "duration": 68
+                            },
+                            {
+                              "title": "Проверить, что отображаются записи с периодом 21.09.2026 — 21.09.2027",
+                              "duration": 51
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:33.797Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-59898c6ca89b4c2468ab",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 446,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по протоколу",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Фильтр по протоколу поддерживается только на странице «Промышленная безопасность»",
+                          "location": {
+                            "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\ot-pb_page\\ot-pb-filters.ts",
+                            "line": 530,
+                            "column": 12
+                          }
+                        }
+                      ],
+                      "expectedStatus": "skipped",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "parallelIndex": 1,
+                          "status": "skipped",
+                          "duration": 518,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2026-09-21T09:56:34.404Z",
+                          "annotations": [
+                            {
+                              "type": "skip",
+                              "description": "Фильтр по протоколу поддерживается только на странице «Промышленная безопасность»",
+                              "location": {
+                                "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\ot-pb_page\\ot-pb-filters.ts",
+                                "line": 530,
+                                "column": 12
+                              }
+                            }
+                          ],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-ee5cc40c86e93ef10c3a",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 519,
+                  "column": 5
+                },
+                {
+                  "title": "Фильтрация по удостоверению",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 3,
+                          "status": "passed",
+                          "duration": 3067,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу медицинской комиссии",
+                              "duration": 1273
+                            },
+                            {
+                              "title": "Выбрать все категории",
+                              "duration": 907
+                            },
+                            {
+                              "title": "Нажать «Показать»",
+                              "duration": 108
+                            },
+                            {
+                              "title": "Выбрать удостоверение из отображаемых записей",
+                              "duration": 146
+                            },
+                            {
+                              "title": "Нажать «Показать» после фильтрации по удостоверению",
+                              "duration": 55
+                            },
+                            {
+                              "title": "Проверить, что отображаются записи с удостоверением «Алексеев__В.С._МО_29.09.2025.»",
+                              "duration": 42
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:34.485Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "7989727412cb76ee468c-ae0657b8a038de8f1b19",
+                  "file": "ot-pb_page/ot-pb-filters.ts",
+                  "line": 586,
+                  "column": 5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "profile_page\\lk-page.spec.ts",
+      "file": "profile_page/lk-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Профиль сотрудника (ЛК)",
+          "file": "profile_page/lk-page.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Отображение вкладок профиля",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1174,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть профиль сотрудника",
+                          "duration": 684
+                        },
+                        {
+                          "title": "Проверить вкладку \"Общая информация\"",
+                          "duration": 12
+                        },
+                        {
+                          "title": "Проверить вкладку \"История проектов\"",
+                          "duration": 10
+                        },
+                        {
+                          "title": "Проверить вкладку \"Аттестация\"",
+                          "duration": 8
+                        },
+                        {
+                          "title": "Проверить вкладку \"Доп. образование\"",
+                          "duration": 9
+                        },
+                        {
+                          "title": "Проверить вкладку \"Настройки\"",
+                          "duration": 8
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:34.966Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5fa79f23a82d317fcb-378e9dc9c8b567f7c571",
+              "file": "profile_page/lk-page.spec.ts",
+              "line": 4,
+              "column": 3
+            },
+            {
+              "title": "Вкладка \"Общая информация\" содержит основные данные сотрудника",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1333,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть профиль сотрудника",
+                          "duration": 704
+                        },
+                        {
+                          "title": "Проверить заголовок с ФИО пользователя",
+                          "duration": 13
+                        },
+                        {
+                          "title": "Проверить отображение основных полей",
+                          "duration": 87
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:36.157Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5fa79f23a82d317fcb-574426d40944625a311f",
+              "file": "profile_page/lk-page.spec.ts",
+              "line": 16,
+              "column": 3
+            },
+            {
+              "title": "Вкладка \"История проектов\" показывает пустое состояние",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 1194,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть вкладку \"История проектов\"",
+                          "duration": 761
+                        },
+                        {
+                          "title": "Проверить сообщение об отсутствии проектов",
+                          "duration": 8
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:36.608Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5fa79f23a82d317fcb-549112322d91105d2314",
+              "file": "profile_page/lk-page.spec.ts",
+              "line": 33,
+              "column": 3
+            },
+            {
+              "title": "Переключение между вкладками профиля",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1651,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть профиль сотрудника",
+                          "duration": 596
+                        },
+                        {
+                          "title": "Открыть вкладку \"Аттестация\" и проверить заголовок раздела",
+                          "duration": 49
+                        },
+                        {
+                          "title": "Открыть вкладку \"Доп. образование\" и проверить заголовок раздела",
+                          "duration": 261
+                        },
+                        {
+                          "title": "Вернуться на вкладку \"Общая информация\"",
+                          "duration": 249
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:37.507Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5fa79f23a82d317fcb-eba92f878e74cdecaa07",
+              "file": "profile_page/lk-page.spec.ts",
+              "line": 44,
+              "column": 3
+            },
+            {
+              "title": "Боковое меню содержит основные разделы портала",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1285,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть профиль сотрудника",
+                          "duration": 698
+                        },
+                        {
+                          "title": "Открыть боковое меню",
+                          "duration": 66
+                        },
+                        {
+                          "title": "Проверить пункт меню \"Главная\"",
+                          "duration": 5
+                        },
+                        {
+                          "title": "Проверить пункт меню \"СКиП\"",
+                          "duration": 5
+                        },
+                        {
+                          "title": "Проверить пункт меню \"ТДО\"",
+                          "duration": 5
+                        },
+                        {
+                          "title": "Проверить пункт меню \"Сопровождение проектов\"",
+                          "duration": 5
+                        },
+                        {
+                          "title": "Проверить пункт меню \"Сервисы\"",
+                          "duration": 4
+                        },
+                        {
+                          "title": "Проверить пункт меню \"Охрана труда\"",
+                          "duration": 4
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:37.573Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5fa79f23a82d317fcb-6f6cda80eb7d932cdf0a",
+              "file": "profile_page/lk-page.spec.ts",
+              "line": 67,
+              "column": 3
+            },
+            {
+              "title": "Вкладка \"Настройки\" содержит форму изменения пароля",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1192,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть вкладку \"Настройки\"",
+                          "duration": 702
+                        },
+                        {
+                          "title": "Проверить элементы управления настройками",
+                          "duration": 10
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:37.612Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1d5fa79f23a82d317fcb-b9f890aaf364c3714de2",
+              "file": "profile_page/lk-page.spec.ts",
+              "line": 83,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "services_page\\supervision\\business-trip-request.spec.ts",
+      "file": "services_page/supervision/business-trip-request.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Создание заявки на командировку",
+          "file": "services_page/supervision/business-trip-request.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Создание заявки на командировку после добавления визитов",
+              "ok": false,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 19713,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\nCall Log:\n- Timeout 9000ms exceeded while waiting on the predicate",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\nCall Log:\n- Timeout 9000ms exceeded while waiting on the predicate\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\services_page\\supervision\\business-trip-request.spec.ts:92:12\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\services_page\\supervision\\business-trip-request.spec.ts:87:7",
+                        "location": {
+                          "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\services_page\\supervision\\business-trip-request.spec.ts",
+                          "column": 12,
+                          "line": 92
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 90 |\u001b[39m             timeout\u001b[33m:\u001b[39m config\u001b[33m.\u001b[39mtimeouts\u001b[33m.\u001b[39mlong\u001b[33m,\u001b[39m\n \u001b[90m 91 |\u001b[39m           })\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 92 |\u001b[39m           \u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 93 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 94 |\u001b[39m\n \u001b[90m 95 |\u001b[39m       \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Проверить отображение заявок на вкладке «Заявки»'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\services_page\\supervision\\business-trip-request.spec.ts",
+                            "column": 12,
+                            "line": 92
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\nCall Log:\n- Timeout 9000ms exceeded while waiting on the predicate\n\n\u001b[0m \u001b[90m 90 |\u001b[39m             timeout\u001b[33m:\u001b[39m config\u001b[33m.\u001b[39mtimeouts\u001b[33m.\u001b[39mlong\u001b[33m,\u001b[39m\n \u001b[90m 91 |\u001b[39m           })\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 92 |\u001b[39m           \u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 93 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 94 |\u001b[39m\n \u001b[90m 95 |\u001b[39m       \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Проверить отображение заявок на вкладке «Заявки»'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m\n\u001b[2m    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\services_page\\supervision\\business-trip-request.spec.ts:92:12\u001b[22m\n\u001b[2m    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\services_page\\supervision\\business-trip-request.spec.ts:87:7\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Добавить визиты на странице распределения",
+                          "duration": 5492
+                        },
+                        {
+                          "title": "Найти работу на странице «Создание заявки на командировку» и выбрать проект",
+                          "duration": 1198
+                        },
+                        {
+                          "title": "Проверить наличие визитов",
+                          "duration": 199
+                        },
+                        {
+                          "title": "Нажать «Создать заявку»",
+                          "duration": 50
+                        },
+                        {
+                          "title": "Заполнить поля заявки в форме «Управление заявками»",
+                          "duration": 308
+                        },
+                        {
+                          "title": "Нажать «Далее»",
+                          "duration": 70
+                        },
+                        {
+                          "title": "Добавить билеты и указать их в «Массовом редактировании билетов»",
+                          "duration": 1960
+                        },
+                        {
+                          "title": "Отправить на согласование",
+                          "duration": 63
+                        },
+                        {
+                          "title": "Проверить, что визиты перешли в статус «На согласовании»",
+                          "duration": 374
+                        },
+                        {
+                          "title": "Проверить счетчик созданных заявок",
+                          "duration": 8019,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\nCall Log:\n- Timeout 9000ms exceeded while waiting on the predicate",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\nCall Log:\n- Timeout 9000ms exceeded while waiting on the predicate\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\services_page\\supervision\\business-trip-request.spec.ts:92:12\n    at D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\services_page\\supervision\\business-trip-request.spec.ts:87:7",
+                            "location": {
+                              "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\services_page\\supervision\\business-trip-request.spec.ts",
+                              "column": 12,
+                              "line": 92
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 90 |\u001b[39m             timeout\u001b[33m:\u001b[39m config\u001b[33m.\u001b[39mtimeouts\u001b[33m.\u001b[39mlong\u001b[33m,\u001b[39m\n \u001b[90m 91 |\u001b[39m           })\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 92 |\u001b[39m           \u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 93 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 94 |\u001b[39m\n \u001b[90m 95 |\u001b[39m       \u001b[36mawait\u001b[39m test\u001b[33m.\u001b[39mstep(\u001b[32m'Проверить отображение заявок на вкладке «Заявки»'\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:37.848Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\services_page-supervision--2d665-ку-после-добавления-визитов-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\services_page-supervision--2d665-ку-после-добавления-визитов-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\WORK\\Projects\\Portal_UI_tests\\test-results\\services_page-supervision--2d665-ку-после-добавления-визитов-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\services_page\\supervision\\business-trip-request.spec.ts",
+                        "column": 12,
+                        "line": 92
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "13e804cd1c457db844c4-57f7de5196581b97f1e8",
+              "file": "services_page/supervision/business-trip-request.spec.ts",
+              "line": 7,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "services_page\\supervision\\demobilization-request.spec.ts",
+      "file": "services_page/supervision/demobilization-request.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Демобилизация после командировки",
+          "file": "services_page/supervision/demobilization-request.spec.ts",
+          "line": 29,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Подать заявку на демобилизацию после командировки",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "location": {
+                        "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\services_page\\supervision\\demobilization-request.spec.ts",
+                        "line": 30,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-21T09:56:38.818Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "location": {
+                            "file": "D:\\WORK\\Projects\\Portal_UI_tests\\src\\tests\\services_page\\supervision\\demobilization-request.spec.ts",
+                            "line": 30,
+                            "column": 8
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f9cf7866ed53b0e910b9-6379c513cef778386075",
+              "file": "services_page/supervision/demobilization-request.spec.ts",
+              "line": 30,
+              "column": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "services_page\\supervision\\project-visits.spec.ts",
+      "file": "services_page/supervision/project-visits.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Распределение на работу",
+          "file": "services_page/supervision/project-visits.spec.ts",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Создать работу через API и добавить визиты доступного персонала",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 6753,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Найти созданную работу на странице распределения",
+                          "duration": 1274
+                        },
+                        {
+                          "title": "Добавить визиты доступного персонала",
+                          "duration": 501
+                        },
+                        {
+                          "title": "Проверить появление работников в Заявленном персонале",
+                          "duration": 91
+                        },
+                        {
+                          "title": "Открыть Управление визитами и сохранить",
+                          "duration": 3423
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:38.846Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4f29e1ce68dbd95a1dfa-c57fbc7ca0cdfd832070",
+              "file": "services_page/supervision/project-visits.spec.ts",
+              "line": 6,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "services_page\\supervision\\report-card.spec.ts",
+      "file": "services_page/supervision/report-card.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Табель работ",
+          "file": "services_page/supervision/report-card.spec.ts",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Открыть табель работы со статусом «Выполнение работы» и проверить персонал",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 15804,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Добавить визиты доступного персонала",
+                          "duration": 5382
+                        },
+                        {
+                          "title": "Отправить заявку на командировку на согласование",
+                          "duration": 3505
+                        },
+                        {
+                          "title": "Найти созданный мегапроект на странице «Проекты направления супервайзинга»",
+                          "duration": 3007
+                        },
+                        {
+                          "title": "Открыть табель созданной работы",
+                          "duration": 79
+                        },
+                        {
+                          "title": "Проверить табель работы",
+                          "duration": 210
+                        },
+                        {
+                          "title": "Создать табели участникам",
+                          "duration": 71
+                        },
+                        {
+                          "title": "Открыть строки ставок и заполнить значения ставок",
+                          "duration": 339
+                        },
+                        {
+                          "title": "Заполнить рабочие часы первых трёх дней",
+                          "duration": 203
+                        },
+                        {
+                          "title": "Сохранить табель",
+                          "duration": 71
+                        },
+                        {
+                          "title": "Проверить сумму часов и сумму денег",
+                          "duration": 286
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:38.891Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "be5b0bfc040983022a89-1cace05bcbfe5162e0a8",
+              "file": "services_page/supervision/report-card.spec.ts",
+              "line": 6,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "tdo_page\\contract-page.spec.ts",
+      "file": "tdo_page/contract-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Создание договора",
+          "file": "tdo_page/contract-page.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Заполнение формы, сохранение и проверка в списке",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4591,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу создания договора",
+                          "duration": 713
+                        },
+                        {
+                          "title": "Заполнить основные поля",
+                          "duration": 330
+                        },
+                        {
+                          "title": "Выбрать рандомный статус",
+                          "duration": 51
+                        },
+                        {
+                          "title": "Выбрать рандомную компанию",
+                          "duration": 148
+                        },
+                        {
+                          "title": "Добавить рандомного менеджера",
+                          "duration": 155
+                        },
+                        {
+                          "title": "Добавить рандомный вид работ",
+                          "duration": 120
+                        },
+                        {
+                          "title": "Загрузить файл договора",
+                          "duration": 30
+                        },
+                        {
+                          "title": "Сохранить договор",
+                          "duration": 222
+                        },
+                        {
+                          "title": "Проверить редирект после успешного сохранения",
+                          "duration": 143
+                        },
+                        {
+                          "title": "Найти договор в списке через поиск",
+                          "duration": 2352
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:39.205Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4a6b6b572e1b2ed04e16-1fe977a2eccaf28fa548",
+              "file": "tdo_page/contract-page.spec.ts",
+              "line": 7,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "tdo_page\\project-page.spec.ts",
+      "file": "tdo_page/project-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Создание мегапроекта",
+          "file": "tdo_page/project-page.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Заполнение формы, сохранение и проверка в списке",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3326,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Открыть страницу создания мегапроекта",
+                          "duration": 622
+                        },
+                        {
+                          "title": "Заполнить основные поля",
+                          "duration": 181
+                        },
+                        {
+                          "title": "Выбрать статус Действующий",
+                          "duration": 25
+                        },
+                        {
+                          "title": "Выбрать рандомную группу проектов",
+                          "duration": 192
+                        },
+                        {
+                          "title": "Выбрать рандомный тип проекта",
+                          "duration": 39
+                        },
+                        {
+                          "title": "Выбрать рандомное подразделение",
+                          "duration": 74
+                        },
+                        {
+                          "title": "Выбрать рандомный вид проекта",
+                          "duration": 37
+                        },
+                        {
+                          "title": "Сохранить мегапроект",
+                          "duration": 118
+                        },
+                        {
+                          "title": "Найти мегапроект в списке через поиск",
+                          "duration": 1628
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:43.842Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "3fa4684885ac9b3cd5e1-ddcb338f9ec56af064da",
+              "file": "tdo_page/project-page.spec.ts",
+              "line": 7,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "tdo_page\\work-page.spec.ts",
+      "file": "tdo_page/work-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Работы",
+          "file": "tdo_page/work-page.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Создать мегапроект через API и добавить в него работу",
+              "ok": true,
+              "tags": [
+                "smoke"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 7708,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Найти мегапроект в списке и перейти по ссылке Работы",
+                          "duration": 3348
+                        },
+                        {
+                          "title": "Создать новую работу через кнопку \"+\" в панели навигации",
+                          "duration": 120
+                        },
+                        {
+                          "title": "Заполнить форму работы",
+                          "duration": 339
+                        },
+                        {
+                          "title": "Выбрать рандомный договор",
+                          "duration": 935
+                        },
+                        {
+                          "title": "Сохранить работу",
+                          "duration": 261
+                        },
+                        {
+                          "title": "Найти созданную работу в списке всех работ",
+                          "duration": 2059
+                        }
+                      ],
+                      "startTime": "2026-09-21T09:56:45.635Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "baf8e23d684b514faef9-baa7967dfda36745de60",
+              "file": "tdo_page/work-page.spec.ts",
+              "line": 7,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "login_page\\login-page.spec.ts",
+      "file": "login_page/login-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Авторизация",
+          "file": "login_page/login-page.spec.ts",
+          "line": 5,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "Позитивные сценарии",
+              "file": "login_page/login-page.spec.ts",
+              "line": 6,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "Отображение формы логина",
+                  "ok": true,
+                  "tags": [
+                    "smoke"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 4,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 979,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 587
+                            },
+                            {
+                              "title": "Проверить отображение поля \"Имя пользователя\"",
+                              "duration": 17
+                            },
+                            {
+                              "title": "Проверить отображение поля \"Пароль\"",
+                              "duration": 6
+                            },
+                            {
+                              "title": "Проверить отображение кнопки \"Войти\"",
+                              "duration": 14
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:48.365Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-d9721f32890874c7baec",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 7,
+                  "column": 5
+                },
+                {
+                  "title": "Успешная авторизация",
+                  "ok": true,
+                  "tags": [
+                    "smoke"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 4,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 2274,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 585
+                            },
+                            {
+                              "title": "Ввести данные администратора и нажать кнопку входа",
+                              "duration": 63
+                            },
+                            {
+                              "title": "Проверить успешную авторизацию",
+                              "duration": 838
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:49.713Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-d2503c4e2eb092d288e9",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 25,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Негативные сценарии",
+              "file": "login_page/login-page.spec.ts",
+              "line": 40,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "Вход с неверным паролем",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 4,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 1701,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 700
+                            },
+                            {
+                              "title": "Ввести данные пользователя с неверным паролем",
+                              "duration": 651
+                            },
+                            {
+                              "title": "Проверить сообщение об ошибке",
+                              "duration": 69
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:52.006Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAx0J3QtSDQvdCw0LnQtNC10L3QviDQsNC60YLQuNCy0L3QvtC5INGD0YfQtdGC0L3QvtC5INC30LDQv9C40YHQuCDRgSDRg9C60LDQt9Cw0L3QvdGL0LzQuCDQtNCw0L3QvdGL0LzQuNCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80Lh7ImRldGFpbCI6ItCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80LgifQ=="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-f6348dfe9d17b25c60eb",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 41,
+                  "column": 5
+                },
+                {
+                  "title": "Вход несуществующего пользователя",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 5,
+                          "parallelIndex": 3,
+                          "status": "passed",
+                          "duration": 1820,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 587
+                            },
+                            {
+                              "title": "Ввести данные несуществующего пользователя",
+                              "duration": 76
+                            },
+                            {
+                              "title": "Проверить сообщение об ошибке",
+                              "duration": 837
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:54.355Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAx0J3QtSDQvdCw0LnQtNC10L3QviDQsNC60YLQuNCy0L3QvtC5INGD0YfQtdGC0L3QvtC5INC30LDQv9C40YHQuCDRgSDRg9C60LDQt9Cw0L3QvdGL0LzQuCDQtNCw0L3QvdGL0LzQuNCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80Lh7ImRldGFpbCI6ItCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80LgifQ=="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-222831e7e6c0a03303c2",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 60,
+                  "column": 5
+                },
+                {
+                  "title": "Вход с пустыми полями",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 4,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 1024,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 603
+                            },
+                            {
+                              "title": "Нажать кнопку входа без заполнения полей",
+                              "duration": 35
+                            },
+                            {
+                              "title": "Проверить сообщение об ошибке валидации",
+                              "duration": 110
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:53.723Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAwUmVxdWVzdCBmYWlsZWQgd2l0aCBzdGF0dXMgY29kZSA0MDB7InVzZXJuYW1lIjpbItCt0YLQviDQv9C+0LvQtSDQvdC1INC80L7QttC10YIg0LHRi9GC0Ywg0L/Rg9GB0YLRi9C8LiJdLCJwYXNzd29yZCI6WyLQrdGC0L4g0L/QvtC70LUg0L3QtSDQvNC+0LbQtdGCINCx0YvRgtGMINC/0YPRgdGC0YvQvC4iXX0="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-98756f3d36c57ee99828",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 77,
+                  "column": 5
+                },
+                {
+                  "title": "Пароль скрыт на форме ввода",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 6,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 880,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 613
+                            },
+                            {
+                              "title": "Проверить, что поле пароля имеет тип password",
+                              "duration": 11
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:55.641Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-bef008ec97b95fb48b4d",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 92,
+                  "column": 5
+                },
+                {
+                  "title": "Вход с пустым логином и заполненным паролем",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 4,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 975,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 574
+                            },
+                            {
+                              "title": "Заполнить только пароль и нажать кнопку входа",
+                              "duration": 73
+                            },
+                            {
+                              "title": "Проверить сообщение об ошибке",
+                              "duration": 93
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:54.762Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAwUmVxdWVzdCBmYWlsZWQgd2l0aCBzdGF0dXMgY29kZSA0MDB7InVzZXJuYW1lIjpbItCt0YLQviDQv9C+0LvQtSDQvdC1INC80L7QttC10YIg0LHRi9GC0Ywg0L/Rg9GB0YLRi9C8LiJdfQ=="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-fc81e3396af460746b38",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 102,
+                  "column": 5
+                },
+                {
+                  "title": "Вход с заполненным логином и пустым паролем",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 4,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 982,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 583
+                            },
+                            {
+                              "title": "Заполнить только логин и нажать кнопку входа",
+                              "duration": 78
+                            },
+                            {
+                              "title": "Проверить сообщение об ошибке",
+                              "duration": 95
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:55.751Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAwUmVxdWVzdCBmYWlsZWQgd2l0aCBzdGF0dXMgY29kZSA0MDB7InBhc3N3b3JkIjpbItCt0YLQviDQv9C+0LvQtSDQvdC1INC80L7QttC10YIg0LHRi9GC0Ywg0L/Rg9GB0YLRi9C8LiJdfQ=="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-58effe12425869d8c698",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 117,
+                  "column": 5
+                },
+                {
+                  "title": "Инъекция в поля авторизации: SQL-инъекция",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 5,
+                          "parallelIndex": 3,
+                          "status": "passed",
+                          "duration": 1739,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 585
+                            },
+                            {
+                              "title": "Ввести sql-инъекция в поля логина",
+                              "duration": 67
+                            },
+                            {
+                              "title": "Проверить, что авторизация не выполнена и приложение не сломалось",
+                              "duration": 812
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:56.448Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAx0J3QtSDQvdCw0LnQtNC10L3QviDQsNC60YLQuNCy0L3QvtC5INGD0YfQtdGC0L3QvtC5INC30LDQv9C40YHQuCDRgSDRg9C60LDQt9Cw0L3QvdGL0LzQuCDQtNCw0L3QvdGL0LzQuNCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80Lh7ImRldGFpbCI6ItCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80LgifQ=="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-dcb8ef30d064cb0c3f87",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 139,
+                  "column": 7
+                },
+                {
+                  "title": "Инъекция в поля авторизации: XSS-строка",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium-login",
+                      "projectName": "chromium-login",
+                      "results": [
+                        {
+                          "workerIndex": 4,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 1682,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "steps": [
+                            {
+                              "title": "Открыть страницу логина",
+                              "duration": 598
+                            },
+                            {
+                              "title": "Ввести xss-строка в поля логина",
+                              "duration": 58
+                            },
+                            {
+                              "title": "Проверить, что авторизация не выполнена и приложение не сломалось",
+                              "duration": 809
+                            }
+                          ],
+                          "startTime": "2026-09-21T09:56:56.748Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "error-message",
+                              "contentType": "text/plain",
+                              "body": "RXJyb3IgNDAx0J3QtSDQvdCw0LnQtNC10L3QviDQsNC60YLQuNCy0L3QvtC5INGD0YfQtdGC0L3QvtC5INC30LDQv9C40YHQuCDRgSDRg9C60LDQt9Cw0L3QvdGL0LzQuCDQtNCw0L3QvdGL0LzQuNCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80Lh7ImRldGFpbCI6ItCd0LUg0L3QsNC50LTQtdC90L4g0LDQutGC0LjQstC90L7QuSDRg9GH0LXRgtC90L7QuSDQt9Cw0L/QuNGB0Lgg0YEg0YPQutCw0LfQsNC90L3Ri9C80Lgg0LTQsNC90L3Ri9C80LgifQ=="
+                            }
+                          ]
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "be808fad44c64f5625f6-f0e2c9c958a2e4942182",
+                  "file": "login_page/login-page.spec.ts",
+                  "line": 139,
+                  "column": 7
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-21T09:55:56.125Z",
+    "duration": 62517.442,
+    "expected": 61,
+    "skipped": 4,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}
