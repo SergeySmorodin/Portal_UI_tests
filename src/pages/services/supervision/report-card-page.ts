@@ -2,6 +2,7 @@ import { Page } from '@playwright/test';
 import { createBasePage } from '../../base-page';
 import { createReportCardLocators } from '../../../locators/report-card.locators';
 import { config } from '../../../config';
+import { api } from '../../../test-data/api/api-handles';
 
 export const createReportCardPage = (page: Page) => {
   const basePage = createBasePage(page);
@@ -79,8 +80,19 @@ export const createReportCardPage = (page: Page) => {
       return await lastCellValue(name, 1);
     },
 
+    // Сохранение шлёт PATCH /api/project_report_card/<pk>/ и затем перезагружает
+    // табель (GET). Дожидаемся завершения обоих запросов, иначе последующий
+    // ререндер страницы «отцепляет» открытую модалку согласования.
     save: async (): Promise<void> => {
+      const patched = page.waitForResponse(
+        (resp) =>
+          resp.url().includes(api.reportCard) && resp.request().method() === 'PATCH' && resp.ok(),
+        { timeout: config.timeouts.long }
+      );
+
       await locators.saveButton.click();
+      await patched;
+      await page.waitForLoadState('networkidle').catch(() => {});
     },
 
     openApproval: async (): Promise<void> => {
