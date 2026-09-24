@@ -38,8 +38,8 @@ export const createProjectViaApi = async (
     data: {
       code: project.code,
       status: project.status,
-      start_date: project.startDate,
-      stop_date: project.stopDate,
+      start: project.startDate,
+      stop: project.stopDate,
       group_project: project.groupProject || undefined,
       type_project: project.typeProject || undefined,
       department_project: project.departmentProject || undefined,

@@ -25,7 +25,10 @@ export const createEmployeeTimelinePage = (page: Page) => {
     open: async (): Promise<void> => {
       await basePage.openRelative(PAGE_PATH);
       await waitForDataLoaded();
-      await basePage.expectVisible(locators.employeeNameInput);
+      await locators.employeeNameInput.waitFor({
+        state: 'visible',
+        timeout: config.timeouts.long,
+      });
     },
 
     setPeriod: async (from: string, to: string): Promise<void> => {
