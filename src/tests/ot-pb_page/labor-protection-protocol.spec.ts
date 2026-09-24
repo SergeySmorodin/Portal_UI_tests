@@ -97,6 +97,7 @@ test.describe('Охрана труда — добавление протокол
         laborProtectionPage.locators.surnameSearchInput,
         employee
       );
+      await laborProtectionPage.fillCertificateSearch(certificateNumber);
       await laborProtectionPage.clickShow();
       await laborProtectionPage.verifyProtocolInResults(employee, protocolNumber);
     });
