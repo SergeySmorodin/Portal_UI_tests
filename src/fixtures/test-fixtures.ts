@@ -22,6 +22,7 @@ import { createDistributionRequestsPage } from '../pages/services/supervision/di
 import { createWorkingToolsPage } from '../pages/services/supervision/working-tools-page';
 import { createReportCardPage } from '../pages/services/supervision/report-card-page';
 import { createTimeTablePage } from '../pages/services/supervision/time-table-page';
+import { createEmployeeTimelinePage } from '../pages/services/supervision/employee-timeline-page';
 import { createLaborProtectionPage } from '../pages/ot-pb/labor-protection-page';
 import { createMedicalCommissionPage } from '../pages/ot-pb/medical-commission-page';
 import { createIndustrialSafetyPage } from '../pages/ot-pb/industrial-safety-page';
@@ -92,6 +93,7 @@ export interface TestFixtures {
   workingToolsPage: ReturnType<typeof createWorkingToolsPage>;
   reportCardPage: ReturnType<typeof createReportCardPage>;
   timeTablePage: ReturnType<typeof createTimeTablePage>;
+  employeeTimelinePage: ReturnType<typeof createEmployeeTimelinePage>;
   laborProtectionPage: ReturnType<typeof createLaborProtectionPage>;
   medicalCommissionPage: ReturnType<typeof createMedicalCommissionPage>;
   industrialSafetyPage: ReturnType<typeof createIndustrialSafetyPage>;
@@ -223,6 +225,11 @@ export const test = base.extend<TestFixtures>({
   timeTablePage: async ({ authenticatedPage }, use) => {
     const timeTablePage = createTimeTablePage(authenticatedPage);
     await use(timeTablePage);
+  },
+
+  employeeTimelinePage: async ({ authenticatedPage }, use) => {
+    const employeeTimelinePage = createEmployeeTimelinePage(authenticatedPage);
+    await use(employeeTimelinePage);
   },
 
   laborProtectionPage: async ({ authenticatedPage }, use) => {
