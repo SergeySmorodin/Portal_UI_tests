@@ -1,8 +1,10 @@
-import { Page } from '@playwright/test';
+import { Download, Page } from '@playwright/test';
 import { createBasePage } from '../base-page';
+import { config } from '../../config';
 import {
   createCertificationUploadLocators,
   createCertificationSearchLocators,
+  createCertificationDetailLocators,
 } from '../../locators/certification-page.locators';
 import { CertificationData } from '../../types';
 
@@ -91,7 +93,30 @@ export const createCertificationSearchPage = (page: Page) => {
       await locators.searchInput.fill(name);
       await page.waitForLoadState('networkidle').catch(() => {});
     },
+
+    openDocument: async (name: string): Promise<void> => {
+      await basePage.click(locators.docNameLink(name));
+    },
   };
 };
 
 export type CertificationSearchPage = ReturnType<typeof createCertificationSearchPage>;
+
+export const createCertificationDetailPage = (page: Page) => {
+  const basePage = createBasePage(page);
+
+  const locators = createCertificationDetailLocators(page);
+
+  return {
+    ...basePage,
+    locators,
+
+    download: async (): Promise<Download> => {
+      const downloadPromise = page.waitForEvent('download', { timeout: config.timeouts.long });
+      await basePage.click(locators.downloadButton);
+      return downloadPromise;
+    },
+  };
+};
+
+export type CertificationDetailPage = ReturnType<typeof createCertificationDetailPage>;

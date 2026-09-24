@@ -34,6 +34,19 @@ export const createCertificationSearchLocators = (page: Page) => ({
   // Таблица
   table: page.locator('table'),
   docRow: (name: string) => page.locator('table tbody tr').filter({ hasText: name }),
+  docNameLink: (name: string) =>
+    page.locator('table tbody tr').filter({ hasText: name }).getByRole('link', { name }),
 });
 
 export type CertificationSearchLocators = ReturnType<typeof createCertificationSearchLocators>;
+
+export const createCertificationDetailLocators = (page: Page) => ({
+  heading: page.locator('h1'),
+
+  // Кнопки управления
+  downloadButton: page.getByRole('button', { name: 'Скачать' }),
+  previewButton: page.getByRole('button', { name: 'Предпросмотр' }),
+  closeButton: page.getByRole('button', { name: 'Закрыть' }),
+});
+
+export type CertificationDetailLocators = ReturnType<typeof createCertificationDetailLocators>;

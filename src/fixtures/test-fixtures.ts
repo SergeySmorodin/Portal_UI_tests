@@ -15,6 +15,7 @@ import { createCuratorPage, createCuratorsListPage } from '../pages/counterparti
 import {
   createCertificationUploadPage,
   createCertificationSearchPage,
+  createCertificationDetailPage,
 } from '../pages/certification/certification-page';
 import { createResourcePlanningPage } from '../pages/services/supervision/resource-planning-page';
 import { createDistributionRequestsPage } from '../pages/services/supervision/distribution-requests-page';
@@ -85,6 +86,7 @@ export interface TestFixtures {
   curatorsListPage: ReturnType<typeof createCuratorsListPage>;
   certificationUploadPage: ReturnType<typeof createCertificationUploadPage>;
   certificationSearchPage: ReturnType<typeof createCertificationSearchPage>;
+  certificationDetailPage: ReturnType<typeof createCertificationDetailPage>;
   resourcePlanningPage: ReturnType<typeof createResourcePlanningPage>;
   distributionRequestsPage: ReturnType<typeof createDistributionRequestsPage>;
   workingToolsPage: ReturnType<typeof createWorkingToolsPage>;
@@ -191,6 +193,11 @@ export const test = base.extend<TestFixtures>({
   certificationSearchPage: async ({ authenticatedPage }, use) => {
     const certificationSearchPage = createCertificationSearchPage(authenticatedPage);
     await use(certificationSearchPage);
+  },
+
+  certificationDetailPage: async ({ authenticatedPage }, use) => {
+    const certificationDetailPage = createCertificationDetailPage(authenticatedPage);
+    await use(certificationDetailPage);
   },
 
   resourcePlanningPage: async ({ authenticatedPage }, use) => {
