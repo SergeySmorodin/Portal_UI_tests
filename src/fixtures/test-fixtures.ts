@@ -290,18 +290,18 @@ export const test = base.extend<TestFixtures>({
     await use({ ...createdProject, work, workPk });
   },
 
-  createdUser: async ({ apiRequest }, use) => {
-    const user = await createUserViaApi(apiRequest, userFactory.regular());
+  createdUser: async ({ request, apiRequest }, use) => {
+    const user = await createUserViaApi(request, userFactory.regular());
     await use(user);
     await deleteUserViaApi(apiRequest, user.uuid);
   },
 
-  createUserPage: async ({ browser, apiRequest }, use) => {
+  createUserPage: async ({ browser, request, apiRequest }, use) => {
     const contexts: BrowserContext[] = [];
     const users: CreatedUser[] = [];
 
     const createUserPage: CreateUserPage = async (overrides) => {
-      const user = await createUserViaApi(apiRequest, userFactory.regular(overrides));
+      const user = await createUserViaApi(request, userFactory.regular(overrides));
       users.push(user);
 
       const context = await browser.newContext();
