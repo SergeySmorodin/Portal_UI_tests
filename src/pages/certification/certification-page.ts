@@ -111,10 +111,28 @@ export const createCertificationDetailPage = (page: Page) => {
     ...basePage,
     locators,
 
+    /** Открывает карточку документа по pk: /certification/document/<resourceType>/<pk>. */
+    open: async (resourceType: string, pk: string): Promise<void> => {
+      await basePage.openRelative(`/certification/document/${resourceType}/${pk}`);
+      await basePage.expectVisible(locators.heading);
+    },
+
     download: async (): Promise<Download> => {
       const downloadPromise = page.waitForEvent('download', { timeout: config.timeouts.long });
       await basePage.click(locators.downloadButton);
       return downloadPromise;
+    },
+
+    /**
+     * Нажимает «Предпросмотр» и возвращает открывшуюся вкладку с файлом документа.
+     * Приложение отдаёт файл через blob-URL, поэтому вкладка появляется сразу после клика.
+     */
+    preview: async (): Promise<Page> => {
+      const popupPromise = page.waitForEvent('popup', { timeout: config.timeouts.long });
+      await basePage.click(locators.previewButton);
+      const popup = await popupPromise;
+      await popup.waitForLoadState('domcontentloaded').catch(() => {});
+      return popup;
     },
   };
 };

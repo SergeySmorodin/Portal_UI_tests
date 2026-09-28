@@ -31,8 +31,13 @@ export const createCertificationSearchLocators = (page: Page) => ({
   // Поиск
   searchInput: page.locator('input[name="search"]'),
 
+  // Счётчик и пагинация
+  documentsCounter: page.getByText(/^Документы \(\d+\)$/),
+  paginationInfo: page.getByText(/^Показано \d+-\d+ из \d+$/),
+
   // Таблица
   table: page.locator('table'),
+  rows: page.locator('table tbody tr'),
   docRow: (name: string) => page.locator('table tbody tr').filter({ hasText: name }),
   docNameLink: (name: string) =>
     page.locator('table tbody tr').filter({ hasText: name }).getByRole('link', { name }),
@@ -42,6 +47,13 @@ export type CertificationSearchLocators = ReturnType<typeof createCertificationS
 
 export const createCertificationDetailLocators = (page: Page) => ({
   heading: page.locator('h1'),
+
+  // Тип документа над карточкой, например «Разрешительный документ (Сертификат/Декларация)»
+  documentTypeCaption: page.locator('main div.text-center'),
+
+  // Значение поля карточки по его подписи («Наименование», «Номер / Обозначение», «Статус» и т.д.)
+  fieldValue: (label: string) =>
+    page.getByText(label, { exact: true }).locator('xpath=following-sibling::div[1]'),
 
   // Кнопки управления
   downloadButton: page.getByRole('button', { name: 'Скачать' }),

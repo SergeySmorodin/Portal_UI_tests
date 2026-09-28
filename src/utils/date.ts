@@ -18,6 +18,16 @@ export const parseDmy = (value: string): Date => {
 export const formatYmd = (date: Date): string =>
   `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 
+/** Разбирает дату «yyyy-mm-dd» в Date. Обратна к formatYmd. */
+export const parseYmd = (value: string): Date => {
+  const [year, month, day] = value.split('-').map(Number);
+  return new Date(year, month - 1, day);
+};
+
+/** dd.mm.yyyy — формат дат в карточке сертификационного документа. */
+export const formatDotDmy = (date: Date): string =>
+  `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()}`;
+
 export const today = (): Date => new Date();
 
 export const addDays = (date: Date, days: number): Date => {

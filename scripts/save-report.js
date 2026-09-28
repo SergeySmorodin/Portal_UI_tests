@@ -84,6 +84,13 @@ function parseStats(data) {
   };
 }
 
+function formatDate(dirName) {
+  const m = dirName.match(/^(\d{4})-(\d{2})-(\d{2})_(\d{2})-(\d{2})-(\d{2})$/);
+  if (!m) return dirName.replace('_', ' ');
+  const [, y, mo, d, h, mi, s] = m;
+  return `${d}-${mo}-${y} ${h}-${mi}-${s}`;
+}
+
 function generateIndex(reportsDir) {
   const runs = fs
     .readdirSync(reportsDir)
@@ -100,7 +107,7 @@ function generateIndex(reportsDir) {
           summary = parseStats(JSON.parse(fs.readFileSync(jsonPath, 'utf-8')));
         } catch {}
       }
-      const date = run.replace('_', ' ');
+      const date = formatDate(run);
       if (!summary) {
         return `<tr><td>${i + 1}</td><td><a href="${run}/index.html">${date}</a></td><td colspan="5">—</td></tr>`;
       }
