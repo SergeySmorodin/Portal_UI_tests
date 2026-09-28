@@ -1,9 +1,9 @@
 import { APIRequestContext } from '@playwright/test';
 import { config } from '../../config';
-import { UserCredentials } from '../../types';
+import { UserRegistrationData } from '../../types';
 import { api } from './api-handles';
 
-export interface CreatedApiUser extends UserCredentials {
+export interface CreatedApiUser extends UserRegistrationData {
   uuid: string;
 }
 
@@ -13,10 +13,10 @@ export interface CreatedApiUser extends UserCredentials {
  */
 export const createUserViaApi = async (
   request: APIRequestContext,
-  user: UserCredentials
+  user: UserRegistrationData
 ): Promise<CreatedApiUser> => {
   const response = await request.post(api.auth.add_user, {
-    data: { username: user.username, password: user.password },
+    data: { username: user.username, password: user.password, snils: user.snils },
   });
 
   if (!response.ok()) {
@@ -26,7 +26,7 @@ export const createUserViaApi = async (
   }
 
   const body = (await response.json()) as { uuid?: string };
-  return { uuid: body.uuid ?? '', username: user.username, password: user.password };
+  return { uuid: body.uuid ?? '', ...user };
 };
 
 /** Удаляет пользователя через API /api/auth/users/<uuid>. */

@@ -3,6 +3,10 @@ export interface UserCredentials {
   password: string;
 }
 
+export interface UserRegistrationData extends UserCredentials {
+  snils: string;
+}
+
 export interface ErrorInfo {
   message: string;
   code?: string;

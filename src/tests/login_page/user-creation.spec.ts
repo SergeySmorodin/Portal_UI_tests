@@ -9,6 +9,7 @@ test.describe('Создание пользователя через API', () => 
       await test.step('Проверить, что пользователь создан через API /api/auth/users/', async () => {
         expect(createdUser.uuid).toBeTruthy();
         expect(createdUser.username).toBeTruthy();
+        expect(createdUser.snils).toMatch(/^\d{11}$/);
       });
 
       await test.step('Войти под созданным пользователем в новом контексте', async () => {

@@ -36,7 +36,7 @@ import {
   getFirstContractPk,
 } from '../test-data/api/project-api';
 import { createUserViaApi, deleteUserViaApi } from '../test-data/api/user-api';
-import type { ProjectData, UserCredentials, WorkData } from '../types';
+import type { ProjectData, UserRegistrationData, WorkData } from '../types';
 
 export interface UserContextKit {
   page: Page;
@@ -58,7 +58,7 @@ export interface CreatedWork extends CreatedProject {
   workPk: string;
 }
 
-export interface CreatedUser extends UserCredentials {
+export interface CreatedUser extends UserRegistrationData {
   /** uuid созданного через API пользователя. */
   uuid: string;
 }
@@ -67,7 +67,7 @@ export interface CreatedUser extends UserCredentials {
  * Создаёт нового пользователя через API и возвращает его авторизованную page/context.
  * Пользователи создаются изолированно, поэтому тесты не зависят от существующих учёток.
  */
-type CreateUserPage = (overrides?: Partial<UserCredentials>) => Promise<UserContextKit>;
+type CreateUserPage = (overrides?: Partial<UserRegistrationData>) => Promise<UserContextKit>;
 
 export interface TestFixtures {
   testConfig: typeof config;

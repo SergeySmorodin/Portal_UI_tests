@@ -11,6 +11,9 @@ test.describe('Мультипользовательский сценарий', (
 
       await test.step('Проверить, что пользователи различаются', async () => {
         expect(author.user.username).not.toBe(approver.user.username);
+        expect(author.user.snils).not.toBe(approver.user.snils);
+        expect(author.user.snils).toMatch(/^\d{11}$/);
+        expect(approver.user.snils).toMatch(/^\d{11}$/);
       });
 
       await test.step('Открыть личный кабинет каждого пользователя', async () => {
