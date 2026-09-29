@@ -1,7 +1,7 @@
 {
   "name": "portal_ui_tests",
   "version": "1.0.0",
-  "description": "",
+  "description": "https://sergeysmorodin.github.io/Portal_UI_tests/",
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
