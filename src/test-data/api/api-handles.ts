@@ -34,6 +34,7 @@ export const api = {
   },
   reportCard: '/api/project_report_card/',
   projectOpt2: '/api/project/opt2/',
+  requisition: '/api/requisition/',
   certification: {
     certificate: CERTIFICATION_ENDPOINTS.certificate,
     protocol: CERTIFICATION_ENDPOINTS.protocol,

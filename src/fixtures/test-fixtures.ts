@@ -19,6 +19,7 @@ import {
 } from '../pages/certification/certification-page';
 import { createResourcePlanningPage } from '../pages/services/supervision/resource-planning-page';
 import { createDistributionRequestsPage } from '../pages/services/supervision/distribution-requests-page';
+import { createSkipRequisitionsPage } from '../pages/skip/skip-requisitions-page';
 import { createWorkingToolsPage } from '../pages/services/supervision/working-tools-page';
 import { createReportCardPage } from '../pages/services/supervision/report-card-page';
 import { createTimeTablePage } from '../pages/services/supervision/time-table-page';
@@ -36,6 +37,11 @@ import {
   getFirstContractPk,
 } from '../test-data/api/project-api';
 import { createUserViaApi, deleteUserViaApi } from '../test-data/api/user-api';
+import {
+  assignPortalRole,
+  loginDjangoAdmin,
+  type PortalRole,
+} from '../test-data/api/admin-user-api';
 import type { ProjectData, UserRegistrationData, WorkData } from '../types';
 
 export interface UserContextKit {
@@ -69,6 +75,60 @@ export interface CreatedUser extends UserRegistrationData {
  */
 type CreateUserPage = (overrides?: Partial<UserRegistrationData>) => Promise<UserContextKit>;
 
+/**
+ * Создаёт пользователя с ролью портала (группа + должность) и возвращает его
+ * авторизованную page/context. Группа назначается через Django Admin — через
+ * `/api/auth/users/` она не задаётся.
+ */
+export type CreateRoleUserPage = (role: PortalRole) => Promise<UserContextKit>;
+
+/**
+ * Реестр пользователей, созданных фикстурой, и их браузерных контекстов.
+ *
+ * Нужен, чтобы тестовые пользователи гарантированно удалялись из портала:
+ * - если фабрика упала уже после `createUserViaApi` (например, не назначилась
+ *   группа), пользователь всё равно создан и должен быть удалён сразу;
+ * - ошибка при удалении одного пользователя не должна оставлять остальных.
+ */
+const createUserCleanup = (request: APIRequestContext) => {
+  const entries = new Map<string, BrowserContext>();
+  const errors: string[] = [];
+
+  return {
+    track: (uuid: string, context: BrowserContext): void => {
+      entries.set(uuid, context);
+    },
+
+    /** Пользователь удалён сразу же, не дожидаясь конца теста. */
+    discard: async (uuid: string): Promise<void> => {
+      const context = entries.get(uuid);
+      entries.delete(uuid);
+      if (context) await context.close();
+      try {
+        await deleteUserViaApi(request, uuid);
+      } catch (error) {
+        errors.push(`не удалён сразу (${uuid}): ${(error as Error).message}`);
+      }
+    },
+
+    run: async (): Promise<void> => {
+      for (const [uuid, context] of entries) {
+        await context.close();
+        try {
+          await deleteUserViaApi(request, uuid);
+        } catch (error) {
+          errors.push(`не удалён (${uuid}): ${(error as Error).message}`);
+        }
+      }
+      entries.clear();
+
+      if (errors.length > 0) {
+        throw new Error(`Очистка тестовых пользователей не удалась: ${errors.join('; ')}`);
+      }
+    },
+  };
+};
+
 export interface TestFixtures {
   testConfig: typeof config;
   loginPage: ReturnType<typeof createLoginPage>;
@@ -90,6 +150,7 @@ export interface TestFixtures {
   certificationDetailPage: ReturnType<typeof createCertificationDetailPage>;
   resourcePlanningPage: ReturnType<typeof createResourcePlanningPage>;
   distributionRequestsPage: ReturnType<typeof createDistributionRequestsPage>;
+  skipRequisitionsPage: ReturnType<typeof createSkipRequisitionsPage>;
   workingToolsPage: ReturnType<typeof createWorkingToolsPage>;
   reportCardPage: ReturnType<typeof createReportCardPage>;
   timeTablePage: ReturnType<typeof createTimeTablePage>;
@@ -99,7 +160,9 @@ export interface TestFixtures {
   industrialSafetyPage: ReturnType<typeof createIndustrialSafetyPage>;
   authenticatedPage: Page;
   apiRequest: APIRequestContext;
+  djangoAdminPage: Page;
   createUserPage: CreateUserPage;
+  createRoleUserPage: CreateRoleUserPage;
   createdProject: CreatedProject;
   createdWork: CreatedWork;
   createdWorkExecution: CreatedWork;
@@ -212,6 +275,11 @@ export const test = base.extend<TestFixtures>({
     await use(distributionRequestsPage);
   },
 
+  skipRequisitionsPage: async ({ authenticatedPage }, use) => {
+    const skipRequisitionsPage = createSkipRequisitionsPage(authenticatedPage);
+    await use(skipRequisitionsPage);
+  },
+
   workingToolsPage: async ({ authenticatedPage }, use) => {
     const workingToolsPage = createWorkingToolsPage(authenticatedPage);
     await use(workingToolsPage);
@@ -253,6 +321,20 @@ export const test = base.extend<TestFixtures>({
 
   apiRequest: async ({ authenticatedPage }, use) => {
     await use(authenticatedPage.context().request);
+  },
+
+  djangoAdminPage: async ({ browser, baseURL }, use) => {
+    // Сессия портала не даёт доступа к админке, поэтому нужен отдельный контекст
+    // и собственный вход в Django Admin.
+    const context = await browser.newContext({
+      baseURL,
+      ignoreHTTPSErrors: true,
+    });
+    const page = await context.newPage();
+    await loginDjangoAdmin(page);
+
+    await use(page);
+    await context.close();
   },
 
   createdProject: async ({ apiRequest }, use) => {
@@ -297,33 +379,67 @@ export const test = base.extend<TestFixtures>({
   },
 
   createUserPage: async ({ browser, request, apiRequest }, use) => {
-    const contexts: BrowserContext[] = [];
-    const users: CreatedUser[] = [];
+    const cleanup = createUserCleanup(apiRequest);
 
     const createUserPage: CreateUserPage = async (overrides) => {
       const user = await createUserViaApi(request, userFactory.regular(overrides));
-      users.push(user);
 
       const context = await browser.newContext();
-      contexts.push(context);
-      const page = await context.newPage();
+      cleanup.track(user.uuid, context);
+      try {
+        const page = await context.newPage();
 
-      const loginPage = createLoginPage(page);
-      await loginPage.open();
-      await loginPage.login({ username: user.username, password: user.password });
-      await loginPage.waitForLoginSuccess();
+        const loginPage = createLoginPage(page);
+        await loginPage.open();
+        await loginPage.login({ username: user.username, password: user.password });
+        await loginPage.waitForLoginSuccess();
 
-      return { page, context, user };
+        return { page, context, user };
+      } catch (error) {
+        // Пользователь уже создан в портале — оставлять его нельзя.
+        await cleanup.discard(user.uuid);
+        throw error;
+      }
     };
 
     await use(createUserPage);
+    await cleanup.run();
+  },
 
-    for (const context of contexts) {
-      await context.close();
-    }
-    for (const user of users) {
-      await deleteUserViaApi(apiRequest, user.uuid);
-    }
+  createRoleUserPage: async ({ browser, request, apiRequest, djangoAdminPage }, use) => {
+    const cleanup = createUserCleanup(apiRequest);
+
+    const createRoleUserPage: CreateRoleUserPage = async (role) => {
+      const user = await createUserViaApi(request, userFactory.regular());
+
+      const context = await browser.newContext();
+      cleanup.track(user.uuid, context);
+      try {
+        await assignPortalRole(
+          djangoAdminPage.context().request,
+          djangoAdminPage,
+          user.uuid,
+          user.snils,
+          role
+        );
+
+        const page = await context.newPage();
+
+        const loginPage = createLoginPage(page);
+        await loginPage.open();
+        await loginPage.login({ username: user.username, password: user.password });
+        await loginPage.waitForLoginSuccess();
+
+        return { page, context, user };
+      } catch (error) {
+        // Роль могла не назначиться, а пользователь в портале уже есть.
+        await cleanup.discard(user.uuid);
+        throw error;
+      }
+    };
+
+    await use(createRoleUserPage);
+    await cleanup.run();
   },
 });
 
