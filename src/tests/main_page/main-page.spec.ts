@@ -36,7 +36,9 @@ test.describe('Главная страница', () => {
 
     for (const section of mainPage.mainSections) {
       await test.step(`Проверить раздел "${section}"`, async () => {
-        await expect(mainPage.page.getByText(section, { exact: true }).first()).toBeVisible();
+        await expect(
+          mainPage.locators.sectionSchema.getByText(section, { exact: true }).first()
+        ).toBeVisible();
       });
     }
   });
