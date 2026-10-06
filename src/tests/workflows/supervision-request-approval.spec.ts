@@ -180,46 +180,35 @@ test.describe('Согласование заявки на командировк
     });
   });
 
-  // Известный баг сайта: у группы skip_employee нет доступа к карточке работы —
-  // GET /api/project/opt2/<pk>/ отдаёт 403, поэтому /SKIP/requisitions/p_<pk>
-  // показывает «Проект не найден» и «Новые(0)», хотя сама заявка доступна
-  // через /api/requisition/<pk>/.
-  //
-  // Тело сохранено, чтобы тест можно было включить одним комментарием, но
-  // `test.skip()` в первой строке гарантирует, что оно не выполнится: у
-  // `test.fixme()` само тело всё равно запускается, и падение внутри него
-  // попадает в отчёт как failed.
-  test.fixme(
-    'Сотрудник СКИП обрабатывает заявку в карточке /SKIP/requisitions',
-    {
-      annotation: {
-        type: 'fixme',
-        description:
-          'Карточка заявок СКИП недоступна пользователю skip_employee: 403 на GET /api/project/opt2/<pk>/',
-      },
-    },
-    async ({
-      apiRequest,
-      resourcePlanningPage,
-      createdWork,
-      createRoleUserWithPosition,
-      skipEmployee,
-    }) => {
-      test.skip();
+  test('Сотрудник СКИП обрабатывает заявку в карточке /SKIP/requisitions', async ({
+    apiRequest,
+    resourcePlanningPage,
+    createdWork,
+    createRoleUserWithPosition,
+    skipEmployee,
+  }) => {
+    const { work, workPk } = createdWork;
+    const head = await createServiceHead(createRoleUserWithPosition);
 
-      const { work, workPk } = createdWork;
-      const head = await createServiceHead(createRoleUserWithPosition);
-
+    await test.step('Добавить визиты на странице распределения', async () => {
       await prepareWorkWithVisits(resourcePlanningPage, apiRequest, workPk);
+    });
+
+    await test.step('Отправить заявку на согласование от имени руководителя', async () => {
       await headSubmitsRequest(head, apiRequest, work, workPk);
+    });
 
-      const skipPage = createSkipRequisitionsPage(skipEmployee.page);
+    const skipPage = createSkipRequisitionsPage(skipEmployee.page);
 
+    await test.step('Открыть «Работа с заявками (СКИП)» под пользователем группы skip_employee', async () => {
       await skipPage.open();
+    });
+
+    await test.step('Открыть работу в карточке обработки заявки', async () => {
       await skipPage.openWork(work.name);
       await expect(skipPage.locators.requestsTable).toBeVisible();
-    }
-  );
+    });
+  });
 
   test('Директор сервиса открывает поданную заявку на согласование', async ({
     apiRequest,
@@ -265,47 +254,48 @@ test.describe('Согласование заявки на командировк
     });
   });
 
-  // Известный баг сайта: решение согласующего не фиксируется.
-  // origin_service_director и zam_service_director получают 403 на
-  // PATCH /api/requisition/<pk>/ («У вас недостаточно прав»), а
-  // head_of_service и supervising_leader получают 200, но `success` остаётся
-  // null и статус заявки не меняется — сервер принимает запрос, но не сохраняет его.
-  //
-  // `test.skip()` в первой строке не даёт телу выполниться, см. комментарий выше.
-  test.fixme(
-    'Технический директор согласовывает заявку',
-    {
-      annotation: {
-        type: 'fixme',
-        description:
-          'Решение согласующего не сохраняется: PATCH /api/requisition/<pk>/ отвечает 200, но success остаётся null',
-      },
-    },
-    async ({ apiRequest, resourcePlanningPage, createdWork, createRoleUserWithPosition }) => {
-      test.skip();
+  test('Технический директор согласовывает заявку', async ({
+    apiRequest,
+    resourcePlanningPage,
+    createdWork,
+    createRoleUserWithPosition,
+  }) => {
+    const { work, workPk } = createdWork;
+    const head = await createServiceHead(createRoleUserWithPosition);
 
-      const { work, workPk } = createdWork;
-      const head = await createServiceHead(createRoleUserWithPosition);
-
+    await test.step('Добавить визиты на странице распределения', async () => {
       await prepareWorkWithVisits(resourcePlanningPage, apiRequest, workPk);
+    });
+
+    await test.step('Отправить заявку на согласование от имени руководителя', async () => {
       await headSubmitsRequest(head, apiRequest, work, workPk);
+    });
 
-      const director = await createRoleUserWithPosition(
-        'origin_service_director',
-        SUPERVISION_POSITION_PK
-      );
-      const approval = createDistributionRequestsApprovalPage(director.page);
+    const director = await createRoleUserWithPosition(
+      'origin_service_director',
+      SUPERVISION_POSITION_PK
+    );
+    const approval = createDistributionRequestsApprovalPage(director.page);
 
+    await test.step('Открыть карточку согласования заявки директором', async () => {
       await approval.openWork(workPk);
+    });
+
+    await test.step('Раскрыть состав заявки и выбрать всех сотрудников', async () => {
       await approval.openRequisitionCard();
       await approval.selectAllEmployees();
-      expect(await approval.approve()).toBe(200);
+    });
 
+    await test.step('Согласовать заявку', async () => {
+      expect(await approval.approve()).toBe(200);
+    });
+
+    await test.step('Проверить, что заявка вышла из статуса «На согласование»', async () => {
       await expect
         .poll(async () => (await getWorkRequisitions(apiRequest, workPk))[0]?.status, {
           timeout: config.timeouts.long,
         })
         .not.toBe('На согласование');
-    }
-  );
+    });
+  });
 });
