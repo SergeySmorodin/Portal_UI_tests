@@ -10,7 +10,7 @@ export const MAIN_PAGE_SECTIONS = [
 ] as const;
 
 export const createMainPageLocators = (page: Page) => ({
-  userProfileLink: page.getByRole('link', { name: 'Профиль сотрудника' }),
+  userProfileLink: page.locator('a[href="/lk"]'),
   /** Контейнер SVG-схемы разделов — позволяет не искать подписи по всему документу. */
   sectionSchema: page.locator('.radial-menu-container'),
 });

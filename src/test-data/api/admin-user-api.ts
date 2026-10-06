@@ -2,36 +2,15 @@ import { APIRequestContext, Page } from '@playwright/test';
 import { config } from '../../config';
 
 /**
- * pk групп портала в Django Admin (/api/admin/auth/group/).
- * Через REST API (/api/auth/users/) группа не назначается —
- * единственный рабочий путь — форма админки.
- */
-export const PORTAL_GROUPS = {
-  skip_employee: '7',
-  head_of_service: '21',
-  origin_service_director: '19',
-  zam_service_director: '20',
-  supervising_employee: '13',
-  supervising_leader: '18',
-  personal_manager: '14',
-  supervising_privileged_employee: '26',
-} as const;
-
-export type PortalGroup = keyof typeof PORTAL_GROUPS;
-
-/**
  * pk должности с потоком `project_supervision` (/api/admin/users/position/).
  * Без должности с потоком портал не даёт доступ к карточке работы
  * (`GET /api/project/opt2/<pk>/` отвечает 403) и страница создания заявки
  * не грузит данные проекта.
+ *
+ * Группы портала через админку больше не назначаются — для них есть
+ * API /api/users/profile/<uuid>/groups/ (см. addUserToGroups).
  */
 export const SUPERVISION_POSITION_PK = '581';
-
-export interface PortalRole {
-  group: PortalGroup;
-  /** pk должности; задаёт поток stream и, как следствие, доступ к opt2. */
-  positionPk?: string;
-}
 
 /** Авторизует страницу в Django Admin (сессия портала для этого недостаточно). */
 export const loginDjangoAdmin = async (page: Page): Promise<void> => {
@@ -118,36 +97,30 @@ const nextPersonalNumber = (): string => {
 };
 
 /**
- * Назначает пользователю группу портала и (опционально) должность с нужным потоком.
+ * Назначает пользователю должность с нужным потоком через форму Django Admin.
  *
- * У пользователя, созданного через `/api/auth/users/`, нет ни группы, ни потока,
- * поэтому без этого шага портал не отдаёт карточку работы и не принимает заявку.
+ * У пользователя, созданного через `/api/auth/users/`, нет потока, поэтому без
+ * должности портал не отдаёт карточку работы и не принимает заявку. Группы при
+ * этом не трогаются: они назначаются через API addUserToGroups.
  */
-export const assignPortalRole = async (
+export const assignPortalPosition = async (
   request: APIRequestContext,
   page: Page,
   uuid: string,
   snils: string,
-  role: PortalRole
+  positionPk: string
 ): Promise<void> => {
   const changeUrl = `/api/admin/users/user/${uuid}/change/`;
   await page.goto(changeUrl, { waitUntil: 'domcontentloaded' });
 
-  if (role.positionPk) {
-    await addPositionRow(page);
-  }
+  await addPositionRow(page);
 
   const params = new URLSearchParams(await collectAdminForm(page));
   params.set('snils', formatSnils(snils));
-  params.delete('groups');
-  params.append('groups', PORTAL_GROUPS[role.group]);
-
-  if (role.positionPk) {
-    params.set('position_user-0-position', role.positionPk);
-    params.set('position_user-0-rate_pay', '1.00');
-    params.set('position_user-0-personal_number', nextPersonalNumber());
-    params.set('position_user-0-uuid', '');
-  }
+  params.set('position_user-0-position', positionPk);
+  params.set('position_user-0-rate_pay', '1.00');
+  params.set('position_user-0-personal_number', nextPersonalNumber());
+  params.set('position_user-0-uuid', '');
   params.set('_save', 'Сохранить');
 
   const csrf = await page.evaluate(
@@ -174,7 +147,7 @@ export const assignPortalRole = async (
       .replace(/\s+/g, ' ')
       .trim();
     throw new Error(
-      `Назначение роли «${role.group}» не удалось (${response.status()}): ${errors || 'форма не принята'}`
+      `Назначение должности ${positionPk} не удалось (${response.status()}): ${errors || 'форма не принята'}`
     );
   }
 };

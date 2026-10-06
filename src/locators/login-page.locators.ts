@@ -4,7 +4,7 @@ export const createLoginPageLocators = (page: Page) => ({
   usernameInput: page.locator('#username'),
   passwordInput: page.locator('#pass'),
   loginButton: page.getByRole('button', { name: 'Вход' }),
-  lkLink: page.getByRole('link', { name: 'Профиль сотрудника' }),
+  lkLink: page.locator('a[href="/lk"]'),
   errorMessage: page
     .locator('.error-message, .alert-danger, .alert-error, [class*="error"]')
     .first(),

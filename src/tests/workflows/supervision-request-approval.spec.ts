@@ -1,11 +1,7 @@
 import { APIRequestContext, Page } from '@playwright/test';
 import { config } from '../../config';
-import {
-  expect,
-  test,
-  type CreateRoleUserPage,
-  type UserContextKit,
-} from '../../fixtures/test-fixtures';
+import { expect, test, type UserContextKit } from '../../fixtures/test-fixtures';
+import { type CreateRoleUserWithPosition } from '../../fixtures/role-users.fixtures';
 import { createDistributionRequestsPage } from '../../pages/services/supervision/distribution-requests-page';
 import { createDistributionRequestsApprovalPage } from '../../pages/services/supervision/distribution-requests-approval-page';
 import { createSkipRequisitionsPage } from '../../pages/skip/skip-requisitions-page';
@@ -78,12 +74,13 @@ const submitRequest = async (page: Page, data: RequestData): Promise<void> => {
  * Руководитель, который реально может подать заявку.
  * У группы head_of_service GET /api/project/opt2/ доступен, но отправка заявки
  * (PATCH) отдаёт 403, поэтому используется группа с правом подачи.
+ *
+ * Группа назначается фикстурой через API /api/users/profile/<uuid>/groups/,
+ * должность — через админку: без должности с потоком `project_supervision`
+ * карточка работы недоступна.
  */
-const createServiceHead = (createRoleUserPage: CreateRoleUserPage): Promise<UserContextKit> =>
-  createRoleUserPage({
-    group: 'supervising_privileged_employee',
-    positionPk: SUPERVISION_POSITION_PK,
-  });
+const createServiceHead = (createRoleUser: CreateRoleUserWithPosition): Promise<UserContextKit> =>
+  createRoleUser('supervising_privileged_employee', SUPERVISION_POSITION_PK);
 
 /** Готовит работу с визитами, чтобы заявку можно было подать. */
 const prepareWorkWithVisits = async (
@@ -120,10 +117,10 @@ test.describe('Согласование заявки на командировк
     apiRequest,
     resourcePlanningPage,
     createdWork,
-    createRoleUserPage,
+    createRoleUserWithPosition,
   }) => {
     const { work, workPk } = createdWork;
-    const head = await createServiceHead(createRoleUserPage);
+    const head = await createServiceHead(createRoleUserWithPosition);
 
     await test.step('Добавить визиты на странице распределения', async () => {
       await prepareWorkWithVisits(resourcePlanningPage, apiRequest, workPk);
@@ -156,10 +153,11 @@ test.describe('Согласование заявки на командировк
     apiRequest,
     resourcePlanningPage,
     createdWork,
-    createRoleUserPage,
+    createRoleUserWithPosition,
+    skipEmployee,
   }) => {
     const { project, work, workPk } = createdWork;
-    const head = await createServiceHead(createRoleUserPage);
+    const head = await createServiceHead(createRoleUserWithPosition);
 
     await test.step('Добавить визиты на странице распределения', async () => {
       await prepareWorkWithVisits(resourcePlanningPage, apiRequest, workPk);
@@ -169,7 +167,6 @@ test.describe('Согласование заявки на командировк
       await headSubmitsRequest(head, apiRequest, work, workPk);
     });
 
-    const skipEmployee = await createRoleUserPage({ group: 'skip_employee' });
     const skipPage = createSkipRequisitionsPage(skipEmployee.page);
 
     await test.step('Открыть «Работа с заявками (СКИП)» под пользователем группы skip_employee', async () => {
@@ -201,16 +198,21 @@ test.describe('Согласование заявки на командировк
           'Карточка заявок СКИП недоступна пользователю skip_employee: 403 на GET /api/project/opt2/<pk>/',
       },
     },
-    async ({ apiRequest, resourcePlanningPage, createdWork, createRoleUserPage }) => {
+    async ({
+      apiRequest,
+      resourcePlanningPage,
+      createdWork,
+      createRoleUserWithPosition,
+      skipEmployee,
+    }) => {
       test.skip();
 
       const { work, workPk } = createdWork;
-      const head = await createServiceHead(createRoleUserPage);
+      const head = await createServiceHead(createRoleUserWithPosition);
 
       await prepareWorkWithVisits(resourcePlanningPage, apiRequest, workPk);
       await headSubmitsRequest(head, apiRequest, work, workPk);
 
-      const skipEmployee = await createRoleUserPage({ group: 'skip_employee' });
       const skipPage = createSkipRequisitionsPage(skipEmployee.page);
 
       await skipPage.open();
@@ -223,10 +225,11 @@ test.describe('Согласование заявки на командировк
     apiRequest,
     resourcePlanningPage,
     createdWork,
-    createRoleUserPage,
+    createRoleUserWithPosition,
+    originServiceDirector,
   }) => {
     const { work, workPk } = createdWork;
-    const head = await createServiceHead(createRoleUserPage);
+    const head = await createServiceHead(createRoleUserWithPosition);
 
     await test.step('Добавить визиты на странице распределения', async () => {
       await prepareWorkWithVisits(resourcePlanningPage, apiRequest, workPk);
@@ -236,8 +239,7 @@ test.describe('Согласование заявки на командировк
       await headSubmitsRequest(head, apiRequest, work, workPk);
     });
 
-    const director = await createRoleUserPage({ group: 'origin_service_director' });
-    const approval = createDistributionRequestsApprovalPage(director.page);
+    const approval = createDistributionRequestsApprovalPage(originServiceDirector.page);
 
     await test.step('Открыть карточку согласования заявки директором', async () => {
       await approval.openWork(workPk);
@@ -279,19 +281,19 @@ test.describe('Согласование заявки на командировк
           'Решение согласующего не сохраняется: PATCH /api/requisition/<pk>/ отвечает 200, но success остаётся null',
       },
     },
-    async ({ apiRequest, resourcePlanningPage, createdWork, createRoleUserPage }) => {
+    async ({ apiRequest, resourcePlanningPage, createdWork, createRoleUserWithPosition }) => {
       test.skip();
 
       const { work, workPk } = createdWork;
-      const head = await createServiceHead(createRoleUserPage);
+      const head = await createServiceHead(createRoleUserWithPosition);
 
       await prepareWorkWithVisits(resourcePlanningPage, apiRequest, workPk);
       await headSubmitsRequest(head, apiRequest, work, workPk);
 
-      const director = await createRoleUserPage({
-        group: 'origin_service_director',
-        positionPk: SUPERVISION_POSITION_PK,
-      });
+      const director = await createRoleUserWithPosition(
+        'origin_service_director',
+        SUPERVISION_POSITION_PK
+      );
       const approval = createDistributionRequestsApprovalPage(director.page);
 
       await approval.openWork(workPk);

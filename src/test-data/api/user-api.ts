@@ -1,11 +1,67 @@
 import { APIRequestContext } from '@playwright/test';
 import { config } from '../../config';
 import { UserRegistrationData } from '../../types';
-import { api } from './api-handles';
+import { api, profileGroupsEndpoint } from './api-handles';
 
 export interface CreatedApiUser extends UserRegistrationData {
   uuid: string;
 }
+
+/**
+ * Группы портала: назначаются сотруднику через POST /api/users/profile/<uuid>/groups/
+ * (см. addUserToGroups). Группы задаются именем, а не pk админки.
+ */
+export const PORTAL_GROUPS = [
+  'skip_employee',
+  'tdo_employee',
+  'certification_employee',
+  'head_of_service',
+  'origin_service_director',
+  'ot_pb_employee',
+  'personal_manager',
+  'skr_employee',
+  'skr_leader',
+  'skr_privileged_employee',
+  'supervising_employee',
+  'supervising_leader',
+  'supervising_privileged_employee',
+  'uukr_employee',
+  'uukr_leader',
+  'uukr_privileged_employee',
+  'vp_employee',
+  'vp_leader',
+  'vp_privileged_employee',
+  'welding_chief',
+  'zam_service_director',
+] as const;
+
+export type PortalGroup = (typeof PORTAL_GROUPS)[number];
+
+export interface AddUserToGroupsOptions {
+  /** Заменить текущие группы пользователя вместо добавления к ним. */
+  replace?: boolean;
+}
+
+/**
+ * Добавляет сотрудника в группы через API /api/users/profile/<uuid>/groups/.
+ * По умолчанию группы добавляются к уже имеющимся (replace=false).
+ */
+export const addUserToGroups = async (
+  request: APIRequestContext,
+  uuid: string,
+  groups: readonly PortalGroup[],
+  options: AddUserToGroupsOptions = {}
+): Promise<void> => {
+  const response = await request.post(profileGroupsEndpoint(uuid), {
+    data: { groups, replace: options.replace ?? false },
+  });
+
+  if (!response.ok()) {
+    throw new Error(
+      `Добавление в группы не удалось (${response.status()}): ${await response.text()}`
+    );
+  }
+};
 
 /**
  * Создаёт нового пользователя через API /api/auth/users/.

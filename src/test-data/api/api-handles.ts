@@ -9,6 +9,9 @@ const CERTIFICATION_ENDPOINTS = {
 
 export type CertificationResourceType = keyof typeof CERTIFICATION_ENDPOINTS;
 
+/** API-эндпоинт групп пользователя: /api/users/profile/<uuid>/groups/. */
+export const profileGroupsEndpoint = (uuid: string): string => `/api/users/profile/${uuid}/groups/`;
+
 /** API-эндпоинт списка документов по типу документа. */
 export const certificationEndpoint = (resourceType: CertificationResourceType): string =>
   CERTIFICATION_ENDPOINTS[resourceType];
