@@ -4,9 +4,11 @@ import { expect, test } from '../../../fixtures/test-fixtures';
 
 test.describe('Распределение на работу', () => {
   test(
-    'Создать работу через API и добавить визиты доступного персонала',
+    'Создать работу через API и добавить визиты персонала, созданного через API',
     { tag: '@smoke' },
-    async ({ page, resourcePlanningPage, createdWork }) => {
+    async ({ page, resourcePlanningPage, createdWork, createPortalWorker }) => {
+      test.setTimeout(120_000);
+
       const { work, workPk } = createdWork;
       const VISIT_COUNT = 3;
 
@@ -16,15 +18,31 @@ test.describe('Распределение на работу', () => {
         await resourcePlanningPage.assertWorkVisible(work.name);
       });
 
+      const workers = await test.step(`Создать через API ${VISIT_COUNT} сотрудников`, async () => {
+        const created = [];
+        for (let i = 1; i <= VISIT_COUNT; i += 1) {
+          created.push(
+            await createPortalWorker({
+              lastName: 'Визитов',
+              firstName: `Сотрудник${i}`,
+              patronymic: 'Тестович',
+            })
+          );
+        }
+        return created;
+      });
+      const workerNames = workers.map((worker) => worker.fullName);
+
+      // Карточка работы открывается после создания сотрудников: «Доступный
+      // персонал» подгружается при открытии и не подтягивает новых людей.
       await test.step('Найти созданную работу на странице распределения', async () => {
         await resourcePlanningPage.openWorkByPk(workPk);
       });
 
       let addedWorkers: string[] = [];
-      await test.step('Добавить визиты доступного персонала', async () => {
-        addedWorkers = await resourcePlanningPage.addAvailableWorkers(VISIT_COUNT);
-        expect(addedWorkers).toHaveLength(VISIT_COUNT);
-        expect(addedWorkers.every(Boolean)).toBeTruthy();
+      await test.step('Добавить визиты созданного персонала', async () => {
+        addedWorkers = await resourcePlanningPage.addAvailableWorkersByNames(workerNames);
+        expect(addedWorkers).toEqual(workerNames);
       });
 
       await test.step('Проверить появление работников в Заявленном персонале', async () => {

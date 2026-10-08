@@ -45,6 +45,7 @@ import {
   type RoleUserFixtures,
 } from './role-users.fixtures';
 import { createUserCleanup, type CreatedUser, type UserContextKit } from './user-kit';
+import { createPortalWorkerFixture, type CreatePortalWorker } from './portal-worker.fixtures';
 import type { ProjectData, UserRegistrationData, WorkData } from '../types';
 
 export type { CreatedUser, UserContextKit } from './user-kit';
@@ -102,6 +103,8 @@ export interface TestFixtures extends RoleUserFixtures {
   djangoAdminPage: Page;
   createUserPage: CreateUserPage;
   createRoleUserWithPosition: CreateRoleUserWithPosition;
+  /** Фабрика сотрудников для «Доступного персонала» (создаются и удаляются через API). */
+  createPortalWorker: CreatePortalWorker;
   createdProject: CreatedProject;
   createdWork: CreatedWork;
   createdWorkExecution: CreatedWork;
@@ -350,6 +353,8 @@ export const test = base.extend<TestFixtures>({
   ...roleUserFixtures,
 
   createRoleUserWithPosition: createRoleUserWithPositionFixture,
+
+  createPortalWorker: createPortalWorkerFixture,
 });
 
 export { expect };

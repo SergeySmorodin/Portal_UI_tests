@@ -50,6 +50,56 @@ export const createResourcePlanningPage = (page: Page) => {
     return added;
   };
 
+  /**
+   * Ищет сотрудника по имени в «Доступном персонале». Имена читаются одним
+   * запросом к DOM (список до 125 человек), иначе поиск по одному имени
+   * упирается в таймаут теста.
+   */
+  const findAvailableIndex = async (name: string): Promise<number> => {
+    const scan = async (): Promise<number> => {
+      const names = await locators.availableSection.last().evaluate((section) =>
+        Array.from(section.querySelectorAll('button[title="Добавить"]')).map((button) => {
+          const span = button.parentElement?.querySelector('span');
+          return (span?.textContent ?? '').trim();
+        })
+      );
+      return names.indexOf(name);
+    };
+
+    let index = await scan();
+    if (index >= 0) return index;
+
+    for (let attempt = 0; attempt < 20 && index < 0; attempt++) {
+      await locators.availableSection
+        .last()
+        .hover()
+        .catch(() => {});
+      await page.mouse.wheel(0, 800);
+      await page.waitForTimeout(300);
+      index = await scan();
+    }
+    return index;
+  };
+
+  const addAvailableWorkersByNamesInternal = async (names: string[]): Promise<string[]> => {
+    await locators.availableAddButton(0).waitFor({
+      state: 'visible',
+      timeout: config.timeouts.long,
+    });
+
+    const added: string[] = [];
+    for (const name of names) {
+      const index = await findAvailableIndex(name);
+      if (index < 0) {
+        throw new Error(`Сотрудник «${name}» не найден в Доступном персонале`);
+      }
+      await locators.availableAddButton(index).click();
+      added.push(name);
+      await page.waitForLoadState('networkidle').catch(() => {});
+    }
+    return added;
+  };
+
   const waitForCondition = async (
     predicate: () => Promise<boolean>,
     timeout: number
@@ -97,6 +147,8 @@ export const createResourcePlanningPage = (page: Page) => {
     openWorkByPk: openWorkByPkInternal,
 
     addAvailableWorkers: addAvailableWorkersInternal,
+
+    addAvailableWorkersByNames: addAvailableWorkersByNamesInternal,
 
     getClaimedPersonnelCount: async (): Promise<string> => {
       return (await locators.claimedCount.textContent())?.trim() || '';

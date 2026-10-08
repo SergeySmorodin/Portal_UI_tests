@@ -97,18 +97,24 @@ const nextPersonalNumber = (): string => {
 };
 
 /**
- * Назначает пользователю должность с нужным потоком через форму Django Admin.
+ * Назначает пользователю должности через форму Django Admin.
  *
  * У пользователя, созданного через `/api/auth/users/`, нет потока, поэтому без
  * должности портал не отдаёт карточку работы и не принимает заявку. Группы при
  * этом не трогаются: они назначаются через API addUserToGroups.
+ *
+ * Дополнительно проставляется `kind` (вид занятости): без него (`worker`)
+ * сотрудник не попадает в кандидатов `available_user` карточки работы
+ * (`GET /api/project/opt1/<pk>/`) — фильтр отбрасывает пользователей
+ * без вида занятости и с `office`.
  */
 export const assignPortalPosition = async (
   request: APIRequestContext,
   page: Page,
   uuid: string,
   snils: string,
-  positionPk: string
+  positionPk: string,
+  kind: string = 'worker'
 ): Promise<void> => {
   const changeUrl = `/api/admin/users/user/${uuid}/change/`;
   await page.goto(changeUrl, { waitUntil: 'domcontentloaded' });
@@ -117,6 +123,7 @@ export const assignPortalPosition = async (
 
   const params = new URLSearchParams(await collectAdminForm(page));
   params.set('snils', formatSnils(snils));
+  params.set('kind', kind);
   params.set('position_user-0-position', positionPk);
   params.set('position_user-0-rate_pay', '1.00');
   params.set('position_user-0-personal_number', nextPersonalNumber());

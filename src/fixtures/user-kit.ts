@@ -20,11 +20,12 @@ export interface UserContextKit {
  * - ошибка при удалении одного пользователя не должна оставлять остальных.
  */
 export const createUserCleanup = (request: APIRequestContext) => {
-  const entries = new Map<string, BrowserContext>();
+  const entries = new Map<string, BrowserContext | undefined>();
   const errors: string[] = [];
 
   return {
-    track: (uuid: string, context: BrowserContext): void => {
+    /** `context` не обязателен: у сотрудников, созданных только для API, его нет. */
+    track: (uuid: string, context?: BrowserContext): void => {
       entries.set(uuid, context);
     },
 
@@ -42,7 +43,7 @@ export const createUserCleanup = (request: APIRequestContext) => {
 
     run: async (): Promise<void> => {
       for (const [uuid, context] of entries) {
-        await context.close();
+        if (context) await context.close();
         try {
           await deleteUserViaApi(request, uuid);
         } catch (error) {
