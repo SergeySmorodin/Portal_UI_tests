@@ -1,7 +1,12 @@
-import { APIRequestContext, Page } from '@playwright/test';
+import { APIRequestContext } from '@playwright/test';
 import { userFactory } from '../test-data/factory/user-factory';
-import { assignPortalPosition, SUPERVISION_POSITION_PK } from '../test-data/api/admin-user-api';
-import { createUserViaApi, deleteUserViaApi } from '../test-data/api/user-api';
+import {
+  createUserViaApi,
+  deleteUserViaApi,
+  nextPersonalNumber,
+  updateUserProfile,
+  SUPERVISION_POSITION_PK,
+} from '../test-data/api/user-api';
 import { createUserCleanup } from './user-kit';
 
 /** ФИО создаваемого сотрудника (полное имя = «Фамилия Имя Отчество»). */
@@ -23,46 +28,33 @@ export type CreatePortalWorker = (name: PortalWorkerName) => Promise<CreatedPort
 interface PortalWorkerArgs {
   request: APIRequestContext;
   apiRequest: APIRequestContext;
-  djangoAdminPage: Page;
 }
 
 /**
  * Создаёт сотрудника, которого портал показывает в «Доступном персонале»
  * карточки работы (`GET /api/project/opt1/<pk>/` -> `available_user`):
  *
- * 1. `POST /api/auth/users/` — учётная запись;
+ * 1. `POST /api/auth/users/` — учётная запись вместе с должностью с потоком
+ *    `Супервайзинг` (`SUPERVISION_POSITION_PK`);
  * 2. `PATCH /api/users/profile/<uuid>/` — ФИО и почта (без ФИО имя в списке
- *    пустое, без почты сотрудник не проходит отбор кандидатов);
- * 3. форма Django Admin — должность с потоком `Супервайзинг`
- *    (`SUPERVISION_POSITION_PK`) и вид занятости `worker`: кандидатами
- *    считаются только пользователи с `kind` `worker`/`itr`, без вида занятости
- *    в список не попадают.
+ *    пустое, без почты сотрудник не проходит отбор кандидатов).
  */
 const createPortalWorker =
-  ({ request, apiRequest, djangoAdminPage }: PortalWorkerArgs) =>
+  ({ request, apiRequest }: PortalWorkerArgs) =>
   async ({ lastName, firstName, patronymic }: PortalWorkerName): Promise<CreatedPortalWorker> => {
-    const user = await createUserViaApi(request, userFactory.regular());
+    const user = await createUserViaApi(request, userFactory.regular(), {
+      position: SUPERVISION_POSITION_PK,
+      ratePay: '1.00',
+      personalNumber: nextPersonalNumber(),
+    });
 
     try {
-      const patch = await apiRequest.patch(`/api/users/profile/${user.uuid}/`, {
-        data: {
-          last_name: lastName,
-          first_name: firstName,
-          patronymic,
-          email: `${user.username}@example.com`,
-        },
+      await updateUserProfile(apiRequest, user.uuid, {
+        lastName,
+        firstName,
+        patronymic,
+        email: `${user.username}@example.com`,
       });
-      if (!patch.ok()) {
-        throw new Error(`Заполнение профиля не удалось (${patch.status()}): ${await patch.text()}`);
-      }
-
-      await assignPortalPosition(
-        djangoAdminPage.context().request,
-        djangoAdminPage,
-        user.uuid,
-        user.snils,
-        SUPERVISION_POSITION_PK
-      );
 
       return { uuid: user.uuid, fullName: `${lastName} ${firstName} ${patronymic}` };
     } catch (error) {
@@ -82,11 +74,11 @@ type CreatePortalWorkerFixture = (
  * Playwright определяет зависимости фикстуры по именам параметров.
  */
 export const createPortalWorkerFixture: CreatePortalWorkerFixture = async (
-  { request, apiRequest, djangoAdminPage },
+  { request, apiRequest },
   use
 ) => {
   const cleanup = createUserCleanup(apiRequest);
-  const createWorker = createPortalWorker({ request, apiRequest, djangoAdminPage });
+  const createWorker = createPortalWorker({ request, apiRequest });
 
   await use(async (name) => {
     const worker = await createWorker(name);

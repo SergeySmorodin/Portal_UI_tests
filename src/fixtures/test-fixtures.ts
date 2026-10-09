@@ -36,17 +36,17 @@ import {
   createWorkViaApi,
   getFirstContractPk,
 } from '../test-data/api/project-api';
-import { createUserViaApi, deleteUserViaApi } from '../test-data/api/user-api';
-import { loginDjangoAdmin } from '../test-data/api/admin-user-api';
 import {
-  createRoleUserWithPositionFixture,
-  roleUserFixtures,
-  type CreateRoleUserWithPosition,
-  type RoleUserFixtures,
-} from './role-users.fixtures';
+  createUserViaApi,
+  deleteUserViaApi,
+  nextPersonalNumber,
+  updateUserProfile,
+  type CreateUserOptions,
+  type UserProfileData,
+} from '../test-data/api/user-api';
 import { createUserCleanup, type CreatedUser, type UserContextKit } from './user-kit';
 import { createPortalWorkerFixture, type CreatePortalWorker } from './portal-worker.fixtures';
-import type { ProjectData, UserRegistrationData, WorkData } from '../types';
+import type { ProjectData, WorkData } from '../types';
 
 export type { CreatedUser, UserContextKit } from './user-kit';
 
@@ -63,13 +63,20 @@ export interface CreatedWork extends CreatedProject {
   workPk: string;
 }
 
-/**
- * Создаёт нового пользователя через API и возвращает его авторизованную page/context.
- * Пользователи создаются изолированно, поэтому тесты не зависят от существующих учёток.
- */
-type CreateUserPage = (overrides?: Partial<UserRegistrationData>) => Promise<UserContextKit>;
+/** Опции создания пользователя единой фабрикой createUserPage. */
+export interface CreateUserPageOptions extends CreateUserOptions {
+  /** ФИО/почта, заполняемые в профиле (нужны сотрудникам «Доступного персонала»). */
+  profile?: UserProfileData;
+}
 
-export interface TestFixtures extends RoleUserFixtures {
+/**
+ * Создаёт нового пользователя через API (должность и группы — одним запросом)
+ * и возвращает его авторизованную page/context. Пользователи создаются
+ * изолированно, поэтому тесты не зависят от существующих учёток.
+ */
+type CreateUserPage = (options?: CreateUserPageOptions) => Promise<UserContextKit>;
+
+export interface TestFixtures {
   testConfig: typeof config;
   loginPage: ReturnType<typeof createLoginPage>;
   mainPage: ReturnType<typeof createMainPage>;
@@ -100,9 +107,7 @@ export interface TestFixtures extends RoleUserFixtures {
   industrialSafetyPage: ReturnType<typeof createIndustrialSafetyPage>;
   authenticatedPage: Page;
   apiRequest: APIRequestContext;
-  djangoAdminPage: Page;
   createUserPage: CreateUserPage;
-  createRoleUserWithPosition: CreateRoleUserWithPosition;
   /** Фабрика сотрудников для «Доступного персонала» (создаются и удаляются через API). */
   createPortalWorker: CreatePortalWorker;
   createdProject: CreatedProject;
@@ -265,20 +270,6 @@ export const test = base.extend<TestFixtures>({
     await use(authenticatedPage.context().request);
   },
 
-  djangoAdminPage: async ({ browser, baseURL }, use) => {
-    // Сессия портала не даёт доступа к админке, поэтому нужен отдельный контекст
-    // и собственный вход в Django Admin.
-    const context = await browser.newContext({
-      baseURL,
-      ignoreHTTPSErrors: true,
-    });
-    const page = await context.newPage();
-    await loginDjangoAdmin(page);
-
-    await use(page);
-    await context.close();
-  },
-
   createdProject: async ({ apiRequest }, use) => {
     const project = projectFactory.active();
     const { pk, code } = await createProjectViaApi(apiRequest, project);
@@ -323,12 +314,25 @@ export const test = base.extend<TestFixtures>({
   createUserPage: async ({ browser, request, apiRequest }, use) => {
     const cleanup = createUserCleanup(apiRequest);
 
-    const createUserPage: CreateUserPage = async (overrides) => {
-      const user = await createUserViaApi(request, userFactory.regular(overrides));
+    const createUserPage: CreateUserPage = async (options = {}) => {
+      const { profile, ...createOptions } = options;
+      const hasPosition = Boolean(createOptions.position);
+
+      // Для пользователя с должностью ставка и табельный номер обязательны.
+      const user = await createUserViaApi(request, userFactory.regular(), {
+        ...createOptions,
+        ratePay: createOptions.ratePay ?? (hasPosition ? '1.00' : undefined),
+        personalNumber:
+          createOptions.personalNumber ?? (hasPosition ? nextPersonalNumber() : undefined),
+      });
 
       const context = await browser.newContext();
       cleanup.track(user.uuid, context);
       try {
+        if (profile) {
+          await updateUserProfile(apiRequest, user.uuid, profile);
+        }
+
         const page = await context.newPage();
 
         const loginPage = createLoginPage(page);
@@ -347,12 +351,6 @@ export const test = base.extend<TestFixtures>({
     await use(createUserPage);
     await cleanup.run();
   },
-
-  // Фикстуры пользователей групп портала (role-users.fixtures.ts): группа
-  // назначается через API /api/users/profile/<uuid>/groups/.
-  ...roleUserFixtures,
-
-  createRoleUserWithPosition: createRoleUserWithPositionFixture,
 
   createPortalWorker: createPortalWorkerFixture,
 });
