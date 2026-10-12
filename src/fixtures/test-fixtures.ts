@@ -40,9 +40,7 @@ import {
   createUserViaApi,
   deleteUserViaApi,
   nextPersonalNumber,
-  updateUserProfile,
   type CreateUserOptions,
-  type UserProfileData,
 } from '../test-data/api/user-api';
 import { createUserCleanup, type CreatedUser, type UserContextKit } from './user-kit';
 import { createPortalWorkerFixture, type CreatePortalWorker } from './portal-worker.fixtures';
@@ -64,10 +62,7 @@ export interface CreatedWork extends CreatedProject {
 }
 
 /** Опции создания пользователя единой фабрикой createUserPage. */
-export interface CreateUserPageOptions extends CreateUserOptions {
-  /** ФИО/почта, заполняемые в профиле (нужны сотрудникам «Доступного персонала»). */
-  profile?: UserProfileData;
-}
+export type CreateUserPageOptions = CreateUserOptions;
 
 /**
  * Создаёт нового пользователя через API (должность и группы — одним запросом)
@@ -315,24 +310,18 @@ export const test = base.extend<TestFixtures>({
     const cleanup = createUserCleanup(apiRequest);
 
     const createUserPage: CreateUserPage = async (options = {}) => {
-      const { profile, ...createOptions } = options;
-      const hasPosition = Boolean(createOptions.position);
+      const hasPosition = Boolean(options.position);
 
       // Для пользователя с должностью ставка и табельный номер обязательны.
       const user = await createUserViaApi(request, userFactory.regular(), {
-        ...createOptions,
-        ratePay: createOptions.ratePay ?? (hasPosition ? '1.00' : undefined),
-        personalNumber:
-          createOptions.personalNumber ?? (hasPosition ? nextPersonalNumber() : undefined),
+        ...options,
+        ratePay: options.ratePay ?? (hasPosition ? '1.00' : undefined),
+        personalNumber: options.personalNumber ?? (hasPosition ? nextPersonalNumber() : undefined),
       });
 
       const context = await browser.newContext();
       cleanup.track(user.uuid, context);
       try {
-        if (profile) {
-          await updateUserProfile(apiRequest, user.uuid, profile);
-        }
-
         const page = await context.newPage();
 
         const loginPage = createLoginPage(page);

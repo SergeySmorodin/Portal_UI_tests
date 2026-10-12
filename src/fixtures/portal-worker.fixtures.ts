@@ -2,9 +2,7 @@ import { APIRequestContext } from '@playwright/test';
 import { userFactory } from '../test-data/factory/user-factory';
 import {
   createUserViaApi,
-  deleteUserViaApi,
   nextPersonalNumber,
-  updateUserProfile,
   SUPERVISION_POSITION_PK,
 } from '../test-data/api/user-api';
 import { createUserCleanup } from './user-kit';
@@ -34,33 +32,28 @@ interface PortalWorkerArgs {
  * Создаёт сотрудника, которого портал показывает в «Доступном персонале»
  * карточки работы (`GET /api/project/opt1/<pk>/` -> `available_user`):
  *
- * 1. `POST /api/auth/users/` — учётная запись вместе с должностью с потоком
- *    `Супервайзинг` (`SUPERVISION_POSITION_PK`);
- * 2. `PATCH /api/users/profile/<uuid>/` — ФИО и почта (без ФИО имя в списке
- *    пустое, без почты сотрудник не проходит отбор кандидатов).
+ * `POST /api/auth/users/` — учётная запись вместе с должностью с потоком
+ * `Супервайзинг` (`SUPERVISION_POSITION_PK`) и ФИО/почтой (без ФИО имя в
+ * списке пустое, без почты сотрудник не проходит отбор кандидатов).
  */
 const createPortalWorker =
-  ({ request, apiRequest }: PortalWorkerArgs) =>
+  ({ request }: PortalWorkerArgs) =>
   async ({ lastName, firstName, patronymic }: PortalWorkerName): Promise<CreatedPortalWorker> => {
-    const user = await createUserViaApi(request, userFactory.regular(), {
+    const user = userFactory.regular();
+
+    const created = await createUserViaApi(request, user, {
       position: SUPERVISION_POSITION_PK,
       ratePay: '1.00',
       personalNumber: nextPersonalNumber(),
-    });
-
-    try {
-      await updateUserProfile(apiRequest, user.uuid, {
+      profile: {
         lastName,
         firstName,
         patronymic,
         email: `${user.username}@example.com`,
-      });
+      },
+    });
 
-      return { uuid: user.uuid, fullName: `${lastName} ${firstName} ${patronymic}` };
-    } catch (error) {
-      await deleteUserViaApi(apiRequest, user.uuid).catch(() => {});
-      throw error;
-    }
+    return { uuid: created.uuid, fullName: `${lastName} ${firstName} ${patronymic}` };
   };
 
 type CreatePortalWorkerFixture = (

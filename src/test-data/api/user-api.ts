@@ -71,9 +71,17 @@ const describeCreateUserFailure = (
   return `Создание пользователя через API не удалось (${status}): ${body}`;
 };
 
+/** ФИО и почта пользователя, сохраняемые сразу при создании. */
+export interface UserProfileData {
+  lastName: string;
+  firstName: string;
+  patronymic: string;
+  email: string;
+}
+
 /** Дополнительные поля создания пользователя (одним запросом POST /api/auth/users/). */
 export interface CreateUserOptions {
-  /** pk должности. */
+  /** pk должности. Уходит вложенным объектом position_user вместе со ставкой и табельным номером. */
   position?: string;
   /** Ставка по должности, например «1.00». */
   ratePay?: string;
@@ -81,11 +89,15 @@ export interface CreateUserOptions {
   personalNumber?: string;
   /** Подразделение/сотрудник компании (uuid). */
   companyEmployee?: string;
+  profile?: UserProfileData;
   /** Группы портала, назначаемые при создании. */
   groups?: readonly PortalGroup[];
   /** Заменить текущие группы, а не добавить к ним. */
   replace?: boolean;
 }
+
+/** Порталу нужен числовой pk должности: строковые pk из констант приводим к числу. */
+const toPositionPk = (pk: string): number | string => (/^\d+$/.test(pk) ? Number(pk) : pk);
 
 let personalNumberSeq = 0;
 
@@ -111,13 +123,25 @@ export const createUserViaApi = async (
   const data: Record<string, unknown> = {
     username: user.username,
     password: user.password,
-    snils: user.snils,
   };
 
-  if (options.position) data.position = options.position;
-  if (options.ratePay) data.rate_pay = options.ratePay;
-  if (options.personalNumber) data.personal_number = options.personalNumber;
-  if (options.companyEmployee) data.company_employee = options.companyEmployee;
+  if (options.profile) {
+    data.first_name = options.profile.firstName;
+    data.last_name = options.profile.lastName;
+    data.patronymic = options.profile.patronymic;
+    data.email = options.profile.email;
+  }
+
+  if (options.position) {
+    const positionUser: Record<string, unknown> = {
+      position: { pk: toPositionPk(options.position) },
+    };
+    if (options.ratePay) positionUser.rate_pay = options.ratePay;
+    if (options.personalNumber) positionUser.personal_number = options.personalNumber;
+    if (options.companyEmployee) positionUser.company_employee = options.companyEmployee;
+    data.position_user = positionUser;
+  }
+
   if (options.groups?.length) data.groups = options.groups;
   if (options.replace !== undefined) data.replace = options.replace;
 
@@ -131,41 +155,11 @@ export const createUserViaApi = async (
   return { uuid: body.uuid ?? '', ...user };
 };
 
-/** Данные профиля пользователя, заполняемые через PATCH /api/users/profile/<uuid>/. */
-export interface UserProfileData {
-  lastName: string;
-  firstName: string;
-  patronymic: string;
-  email: string;
-}
-
-/** Заполняет ФИО и почту пользователя через PATCH /api/users/profile/<uuid>/. */
-export const updateUserProfile = async (
-  request: APIRequestContext,
-  uuid: string,
-  profile: UserProfileData
-): Promise<void> => {
-  const response = await request.patch(`/api/users/profile/${uuid}/`, {
-    data: {
-      last_name: profile.lastName,
-      first_name: profile.firstName,
-      patronymic: profile.patronymic,
-      email: profile.email,
-    },
-  });
-
-  if (!response.ok()) {
-    throw new Error(
-      `Заполнение профиля не удалось (${response.status()}): ${await response.text()}`
-    );
-  }
-};
-
 /** Удаляет пользователя через API /api/auth/users/<uuid>. */
 export const deleteUserViaApi = async (request: APIRequestContext, uuid: string): Promise<void> => {
   if (!uuid) return;
 
-  const response = await request.delete(`${api.auth.add_user}${uuid}`, {
+  const response = await request.delete(`${api.auth.add_user}${uuid}/`, {
     data: { current_password: config.password },
   });
 
