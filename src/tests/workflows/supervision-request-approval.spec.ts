@@ -333,7 +333,9 @@ test.describe('Согласование заявки на командировк
     await test.step('Проверить, что заявка отображается во вкладке «Обработанные»', async () => {
       await skipPage.openProcessedTab();
       await expect(skipPage.locators.processedRequestsTab).toBeVisible();
-      expect(await skipPage.processedRequestsCount()).toBeGreaterThan(0);
+      await expect
+        .poll(async () => skipPage.processedRequestsCount(), { timeout: config.timeouts.long })
+        .toBeGreaterThan(0);
     });
 
     await test.step('Проверить, что заявка работы ушла из статуса «На согласование»', async () => {
