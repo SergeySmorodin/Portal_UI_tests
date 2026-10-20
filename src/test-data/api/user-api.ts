@@ -37,7 +37,6 @@ export const PORTAL_GROUPS = [
 
 export type PortalGroup = (typeof PORTAL_GROUPS)[number];
 
-
 export const SUPERVISION_POSITION_PK = '581';
 
 /** Признаки того, что DRF-поле `position` не нашло pk должности в базе. */

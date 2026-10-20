@@ -145,8 +145,7 @@ export const createSkipRequisitionsPage = (page: Page) => {
 
       const finished = page.waitForResponse(
         (response) =>
-          response.url().includes('/api/requisition/') &&
-          response.request().method() === 'PATCH',
+          response.url().includes('/api/requisition/') && response.request().method() === 'PATCH',
         { timeout: config.timeouts.long }
       );
       await locators.finishConfirmYes.click();

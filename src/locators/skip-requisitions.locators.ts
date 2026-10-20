@@ -48,9 +48,7 @@ export const createSkipRequisitionsLocators = (page: Page) => ({
   processingHeading: page.getByText('Обработка заявки (СКИП)', { exact: true }),
   processingStepHeading: page.getByText(/^Шаг \d из \d$/),
   /** Шаг 2 «Суточные»: даты начала периодов суточных (по одной на сотрудника/период). */
-  perDiemStartInputs: page
-    .locator('.fixed.inset-0')
-    .locator('input[placeholder="дд-мм-гггг"]'),
+  perDiemStartInputs: page.locator('.fixed.inset-0').locator('input[placeholder="дд-мм-гггг"]'),
   massEditStart: page
     .locator('.fixed.inset-0')
     .locator('label', { hasText: 'Старт:' })
