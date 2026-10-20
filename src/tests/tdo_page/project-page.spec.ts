@@ -25,9 +25,8 @@ test.describe('Создание мегапроекта', () => {
         expect(status).toBeTruthy();
       });
 
-      await test.step('Выбрать рандомную группу проектов', async () => {
-        const group = await projectPage.selectRandomGroupProject();
-        expect(group).toBeTruthy();
+      await test.step('Выбрать рандомную группу проектов (если доступны)', async () => {
+        await projectPage.selectRandomGroupProject();
       });
 
       await test.step('Выбрать рандомный тип проекта', async () => {

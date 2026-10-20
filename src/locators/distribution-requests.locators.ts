@@ -20,6 +20,11 @@ export const createDistributionRequestsLocators = (page: Page) => {
       .locator('table')
       .filter({ has: page.getByRole('columnheader', { name: 'ФИО создателя' }) }),
     requestsEmptyState: page.getByText('Нет поданных заявок'),
+    viewRequestButton: page.getByTitle('Просмотр заявки'),
+    requestViewModal: page
+      .locator('.fixed.inset-0')
+      .filter({ has: page.getByText('Просмотр заявки', { exact: true }) })
+      .last(),
 
     // Модал «Управление заявками» — шаг 1 (заявки)
     modal,
@@ -78,6 +83,9 @@ export const createDistributionRequestsLocators = (page: Page) => {
         .locator('div.bg-white.rounded-lg.p-4')
         .nth(index)
         .getByRole('button', { name: '+ Добавить билет' }),
+
+    // Кнопка «+ Добавить всем» — добавляет каждому сотруднику строку маршрута
+    addTicketToAllButton: modal.getByRole('button', { name: '+ Добавить всем' }),
 
     submitForApprovalButton: page.getByRole('button', { name: 'Отправить на согласование' }),
   };

@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { expect, Page } from '@playwright/test';
 import { createBasePage } from '../../base-page';
 import { createDistributionRequestsLocators } from '../../../locators/distribution-requests.locators';
 import { config } from '../../../config';
@@ -83,6 +83,30 @@ export const createDistributionRequestsPage = (page: Page) => {
       await locators.requestsTab.click();
     },
 
+    /**
+     * На вкладке «Заявки» открывает модал «Просмотр заявки» по кнопке `fa-eye`
+     * и возвращает его текст (состав, перемещения, история согласования).
+     */
+    openRequestView: async (): Promise<string> => {
+      await locators.requestsTable.waitFor({ state: 'visible', timeout: config.timeouts.long });
+      await locators.viewRequestButton.first().click();
+      await locators.requestViewModal.waitFor({
+        state: 'visible',
+        timeout: config.timeouts.long,
+      });
+      await expect(locators.requestViewModal)
+        .not.toContainText('Загрузка данных', { timeout: config.timeouts.long })
+        .catch(() => {});
+      return ((await locators.requestViewModal.innerText()) ?? '').replace(/\s+/g, ' ').trim();
+    },
+
+    closeRequestView: async (): Promise<void> => {
+      await page.getByRole('button', { name: 'Закрыть' }).last().click();
+      await locators.requestViewModal
+        .waitFor({ state: 'hidden', timeout: config.timeouts.long })
+        .catch(() => {});
+    },
+
     getRequestsRowsCount: async (): Promise<number> => {
       await locators.requestsTable.waitFor({ state: 'visible', timeout: config.timeouts.long });
       return locators.requestsTable
@@ -127,6 +151,25 @@ export const createDistributionRequestsPage = (page: Page) => {
     selectMassEditCity,
 
     addTicketsToAllVisits,
+
+    /**
+     * Шаг «Перемещение»: добавляет каждому сотруднику строку маршрута кнопкой
+     * «+ Добавить всем». Если кнопка недоступна (уже есть билеты), добавляет
+     * билеты по одной карточке визита — как делает `addTicketsToAllVisits`.
+     */
+    addRoutesToAll: async (count: number): Promise<void> => {
+      const addAll = locators.addTicketToAllButton;
+      if ((await addAll.count()) > 0 && (await addAll.first().isVisible())) {
+        await addAll.first().click();
+        return;
+      }
+      await addTicketsToAllVisits(count);
+    },
+
+    /** Добавляет дополнительный билет первому сотруднику («сложный» маршрут). */
+    addExtraTicketToFirst: async (): Promise<void> => {
+      await addTicketToVisit(0);
+    },
 
     fillMassEdit: async (fields: MassEditFields): Promise<void> => {
       await locators.massEditDate('Дата:').fill(fields.date);

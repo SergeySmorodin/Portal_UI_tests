@@ -37,15 +37,7 @@ export const PORTAL_GROUPS = [
 
 export type PortalGroup = (typeof PORTAL_GROUPS)[number];
 
-/**
- * pk должности с потоком `project_supervision` (/api/admin/users/position/).
- * Без должности с потоком портал не даёт доступ к карточке работы
- * (`GET /api/project/opt2/<pk>/` отвечает 403) и страница создания заявки
- * не грузит данные проекта.
- *
- * ВНИМАНИЕ: pk привязан к конкретной базе. Если такой должности в базе нет,
- * createUserViaApi бросит понятную ошибку с указанием на эту константу.
- */
+
 export const SUPERVISION_POSITION_PK = '581';
 
 /** Признаки того, что DRF-поле `position` не нашло pk должности в базе. */
@@ -102,8 +94,7 @@ const toPositionPk = (pk: string): number | string => (/^\d+$/.test(pk) ? Number
 let personalNumberSeq = 0;
 
 /**
- * Табельный номер должен быть уникален в пределах должности, иначе портал
- * отвечает ошибкой «Человек на должности с таким Табельный номер уже существует».
+ * Табельный номер должен быть уникален
  */
 export const nextPersonalNumber = (): string => {
   personalNumberSeq += 1;

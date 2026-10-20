@@ -12,6 +12,8 @@ export const createDistributionRequestsApprovalLocators = (page: Page) => ({
 
   /** Таблица «Заявки(N)» со статусом заявки. */
   requestsHeading: page.getByText(/^Заявки\(\d+\)$/),
+  requestsTab: page.getByRole('button', { name: /^Заявки\(\d+\)$/ }),
+  visitsTab: page.getByRole('button', { name: /^Визиты\(\d+\)$/ }),
   requestsTable: page
     .locator('table')
     .filter({ has: page.getByRole('columnheader', { name: 'СТАТУС' }) }),
@@ -24,20 +26,37 @@ export const createDistributionRequestsApprovalLocators = (page: Page) => ({
    */
   openApprovalButton: page.getByTitle('Согласовать'),
 
+  /** Иконка `fa-eye` в строке заявки списка «Согласование заявок (N)». */
+  openWorkButton: page.getByTitle('Просмотр'),
+
   /** Раскрытая карточка: состав заявки и перемещения. */
   requisitionComposition: page.getByText(/^Состав заявки \(\d+\)$/),
-  selectAllEmployees: page.getByText('Выбрать всех'),
+  /** Чекбокс «Выбрать всех» рядом с подписью. */
+  selectAllEmployees: page.locator('input[type="checkbox"]').first(),
   selectedEmployeesCount: page.getByText(/^Выбрано: \d+$/),
   movementTable: page
     .locator('table')
     .filter({ has: page.getByRole('columnheader', { name: 'ТРАНСПОРТ' }) }),
+
+  /** Таблица «Перемещения (N)» в карточке согласования. */
+  movementHeading: page.getByText(/^Перемещения \(\d+\)$/),
+  compositionHeading: page.getByText(/^Состав заявки \(\d+\)$/),
+
+  /** Модал просмотра заявки, открываемый иконкой `fa-eye`. */
+  viewModal: page
+    .locator('.fixed.inset-0')
+    .filter({ has: page.getByText('Просмотр заявки', { exact: true }) })
+    .last(),
+  viewModalClose: page.getByRole('button', { name: 'Закрыть' }).last(),
 
   /** Кнопки решения согласующего: «Согласовано» / «Не согласовано». */
   approveButton: page.locator('button').filter({ hasText: /^Согласовано$/ }),
   rejectButton: page.locator('button').filter({ hasText: /^Не согласовано$/ }),
 
   /** Блок «История согласования»: список сотрудников и их этапов. */
-  approvalHistory: page.locator('div.bg-white').filter({ hasText: 'История согласования' }),
+  approvalHistory: page
+    .getByText('История согласования', { exact: true })
+    .locator('xpath=ancestor::div[contains(@class,"bg-white")][1]'),
 });
 
 export type DistributionRequestsApprovalLocators = ReturnType<

@@ -31,7 +31,11 @@ export const createProjectPage = (page: Page) => {
       return statusValue;
     },
 
+    // Группа проектов необязательна: бэкенд может не отдавать group_project_choices,
+    // тогда список пуст и выбирать нечего.
     selectRandomGroupProject: async (): Promise<string> => {
+      const options = locators.groupProjectSelect.locator('option[value]:not([value=""])');
+      if ((await options.count()) === 0) return '';
       return basePage.selectRandomOption(locators.groupProjectSelect);
     },
 
