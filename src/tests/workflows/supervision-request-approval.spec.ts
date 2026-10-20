@@ -308,11 +308,7 @@ test.describe('Согласование заявки на командировк
       await expect(skipPage.locators.processingStepHeading).toContainText('Шаг 1 из 3');
 
       for (let i = 0; i < VISIT_COUNT; i++) {
-        await skipPage.correctVisitDates(
-          i,
-          formatDmy(correctedStart),
-          formatDmy(correctedStop)
-        );
+        await skipPage.correctVisitDates(i, formatDmy(correctedStart), formatDmy(correctedStop));
       }
     });
 
@@ -344,6 +340,86 @@ test.describe('Согласование заявки на командировк
           timeout: config.timeouts.long,
         })
         .not.toBe('На согласование');
+    });
+  });
+
+  test('СЦЕНАРИЙ 4. Руководитель отклоняет заявку, руководитель корректирует и согласует повторно', async ({
+    apiRequest,
+    resourcePlanningPage,
+    createdWork,
+    createUserPage,
+  }) => {
+    const { work, workPk } = createdWork;
+    const head = await createServiceHead(createUserPage);
+    const rejectionReason = 'Некорректная дата вылета, требуется корректировка';
+
+    await test.step('Подготовить визиты и подать заявку на согласование', async () => {
+      await submitRequestAwaitingApproval(apiRequest, resourcePlanningPage, work, workPk, head);
+    });
+
+    const leader = await createServiceLeader(createUserPage);
+    const approval = createDistributionRequestsApprovalPage(leader.page);
+
+    await test.step('Руководитель отклоняет заявку с указанием причины', async () => {
+      await approval.findAndOpenWork(work.name);
+      await approval.openRequisitionCard();
+      await approval.selectAllEmployees();
+      await expect(approval.locators.selectedEmployeesCount).toHaveText(`Выбрано: ${VISIT_COUNT}`);
+      expect(await approval.reject(rejectionReason)).toBe(200);
+    });
+
+    await test.step('Проверить статус «Не согласован» и отказ в корректировке кнопками сверху', async () => {
+      await expect
+        .poll(async () => (await getWorkRequisitions(apiRequest, workPk))[0]?.status, {
+          timeout: config.timeouts.long,
+        })
+        .toBe('Не согласован');
+
+      const requests = createDistributionRequestsPage(head.page);
+      await requests.open();
+      await requests.findWork(work.name);
+      await expect(requests.locators.createRequestButton).toBeDisabled();
+      await expect(requests.locators.correctionRequestButton).toBeDisabled();
+      await expect(requests.locators.correctionRequestButton).toHaveAttribute(
+        'title',
+        'Нет фактических визитов, доступных для корректировки'
+      );
+    });
+
+    await test.step('Корректировать отклонённую заявку иконкой «Редактировать заявку»', async () => {
+      const requests = createDistributionRequestsPage(head.page);
+      expect(await requests.editAndResubmitRequest()).toBe(200);
+
+      await expect
+        .poll(async () => (await getWorkRequisitions(apiRequest, workPk))[0]?.status, {
+          timeout: config.timeouts.long,
+        })
+        .toBe('На согласование');
+    });
+
+    await test.step('Руководитель повторно согласует скорректированную заявку', async () => {
+      await approval.findAndOpenWork(work.name);
+      await approval.openRequisitionCard();
+      await approval.selectAllEmployees();
+      await expect(approval.locators.selectedEmployeesCount).toHaveText(`Выбрано: ${VISIT_COUNT}`);
+      expect(await approval.approve()).toBe(200);
+
+      await expect
+        .poll(
+          async () => {
+            try {
+              return await approval.getApprovalHistory();
+            } catch {
+              return '';
+            }
+          },
+          { timeout: 30000 }
+        )
+        .toContain('Согласовано');
+
+      const history = await approval.getApprovalHistory();
+      expect(history).toContain('Рук. службы');
+      expect(history).toContain('Согласовано');
     });
   });
 });

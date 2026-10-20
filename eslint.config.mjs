@@ -10,6 +10,7 @@ export default tseslint.config(
       'test-results.json',
       'playwright-report/**',
       'playwright/.auth/**',
+      '.playwright-mcp/**',
     ],
   },
 

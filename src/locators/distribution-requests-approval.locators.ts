@@ -53,6 +53,9 @@ export const createDistributionRequestsApprovalLocators = (page: Page) => ({
   approveButton: page.locator('button').filter({ hasText: /^Согласовано$/ }),
   rejectButton: page.locator('button').filter({ hasText: /^Не согласовано$/ }),
 
+  /** Поля «Причина отклонения» — по одному на выбранного сотрудника. */
+  rejectionCommentInput: page.getByPlaceholder('Причина отклонения (обязательно при отказе)'),
+
   /** Блок «История согласования»: список сотрудников и их этапов. */
   approvalHistory: page
     .getByText('История согласования', { exact: true })

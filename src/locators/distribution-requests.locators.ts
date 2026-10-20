@@ -14,6 +14,7 @@ export const createDistributionRequestsLocators = (page: Page) => {
     visitsTab: page.getByRole('button', { name: /Визиты\(\d+\)/ }),
     requestsTab: page.getByRole('button', { name: /Заявки\(\d+\)/ }),
     createRequestButton: page.getByRole('button', { name: 'Создать заявку' }),
+    correctionRequestButton: page.getByRole('button', { name: 'Корректировочная заявка' }),
 
     // Таблица поданных заявок на вкладке «Заявки»
     requestsTable: page
@@ -21,6 +22,7 @@ export const createDistributionRequestsLocators = (page: Page) => {
       .filter({ has: page.getByRole('columnheader', { name: 'ФИО создателя' }) }),
     requestsEmptyState: page.getByText('Нет поданных заявок'),
     viewRequestButton: page.getByTitle('Просмотр заявки'),
+    editRequestButton: page.getByTitle('Редактировать заявку'),
     requestViewModal: page
       .locator('.fixed.inset-0')
       .filter({ has: page.getByText('Просмотр заявки', { exact: true }) })

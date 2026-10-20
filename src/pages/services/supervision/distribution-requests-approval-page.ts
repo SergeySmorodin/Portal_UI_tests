@@ -110,6 +110,30 @@ export const createDistributionRequestsApprovalPage = (page: Page) => {
       return (await response).status();
     },
 
+    /**
+     * Отклоняет заявку и возвращает HTTP-статус ответа `PATCH /api/requisition/<pk>/`.
+     *
+     * Первый клик по «Не согласовано» раскрывает блок «Комментарии для
+     * отклонения» и показывает ошибку валидации, пока причина не заполнена
+     * у каждого выбранного сотрудника.
+     */
+    reject: async (reason: string): Promise<number> => {
+      await locators.rejectButton.first().click();
+      const comments = locators.rejectionCommentInput;
+      await comments.first().waitFor({ state: 'visible', timeout: config.timeouts.long });
+      const count = await comments.count();
+      for (let i = 0; i < count; i++) {
+        await comments.nth(i).fill(reason);
+      }
+
+      const response = page.waitForResponse(
+        (r) => r.url().includes('/api/requisition/') && r.request().method() === 'PATCH',
+        { timeout: config.timeouts.long }
+      );
+      await locators.rejectButton.first().click();
+      return (await response).status();
+    },
+
     /** Текст блока «История согласования» — этап и состояние каждого сотрудника. */
     getApprovalHistory: async (): Promise<string> => {
       const history = locators.approvalHistory;

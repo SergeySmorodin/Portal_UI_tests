@@ -107,6 +107,42 @@ export const createDistributionRequestsPage = (page: Page) => {
         .catch(() => {});
     },
 
+    /**
+     * Открывает отклонённую заявку иконкой «Редактировать заявку»
+     * и проводит модал «Управление заявками» до повторной отправки.
+     *
+     * Возвращает HTTP-статус `PATCH /api/requisition/<pk>/` — в режиме
+     * редактирования заявка отправляется на этот эндпоинт, а не на opt2.
+     */
+    editAndResubmitRequest: async (): Promise<number> => {
+      await locators.requestsTab.waitFor({ state: 'visible', timeout: config.timeouts.long });
+      await locators.requestsTab.click();
+      await locators.requestsTable.waitFor({ state: 'visible', timeout: config.timeouts.long });
+      await locators.editRequestButton.first().waitFor({
+        state: 'visible',
+        timeout: config.timeouts.long,
+      });
+      await locators.editRequestButton.first().click();
+
+      await locators.requestHeaderDate('Старт:').waitFor({
+        state: 'visible',
+        timeout: config.timeouts.long,
+      });
+      await locators.nextButton.waitFor({ state: 'visible', timeout: config.timeouts.long });
+      await locators.nextButton.click();
+
+      await locators.submitForApprovalButton.waitFor({
+        state: 'visible',
+        timeout: config.timeouts.long,
+      });
+      const submitted = page.waitForResponse(
+        (r) => r.url().includes('/api/requisition/') && r.request().method() === 'PATCH',
+        { timeout: config.timeouts.long }
+      );
+      await locators.submitForApprovalButton.click();
+      return (await submitted).status();
+    },
+
     getRequestsRowsCount: async (): Promise<number> => {
       await locators.requestsTable.waitFor({ state: 'visible', timeout: config.timeouts.long });
       return locators.requestsTable
