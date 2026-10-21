@@ -25,14 +25,15 @@ export const createReportCardLocators = (page: Page) => {
         .nth(5)
         .locator('input')
         .first(),
+    // В строке таблицы input'ы идут в порядке: чекбокс (0), ставка (1),
+    // далее ячейки дней. Ячейки дней появляются только для дат визита,
+    // поэтому индексируем именно по найденным input'ам ячеек дней.
     workerDayInput: (name: string, dayIndex: number) =>
       page
         .locator('table tbody tr')
         .filter({ hasText: name })
-        .locator('td')
-        .nth(6 + dayIndex)
-        .locator('input')
-        .first(),
+        .locator('td input')
+        .nth(dayIndex + 2),
     workerDayCells: (name: string) =>
       page.locator('table tbody tr').filter({ hasText: name }).locator('td'),
 

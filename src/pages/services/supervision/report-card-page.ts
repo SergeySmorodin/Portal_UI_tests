@@ -102,6 +102,8 @@ export const createReportCardPage = (page: Page) => {
 
     submitApproval: async (periodEnd: string): Promise<void> => {
       await locators.approvalPeriodEndInput.fill(periodEnd);
+      // Календарь react-datepicker перекрывает кнопку отправки — закрываем его.
+      await page.keyboard.press('Escape');
       await locators.approvalSubmitButton.click();
       await locators.approvalModal.waitFor({ state: 'hidden', timeout: config.timeouts.long });
     },
