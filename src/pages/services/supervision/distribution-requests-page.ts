@@ -212,46 +212,39 @@ export const createDistributionRequestsPage = (page: Page) => {
       await locators.massEditSelect('Транспорт:').selectOption({ label: fields.transport });
     },
 
+    /**
+     * Открывает модал «Управление демобилизацией» кнопкой «Демобилизация».
+     * Модал открывается сразу на шаге «Сотрудники», где нет кнопки «Назад».
+     */
     openDemobilization: async (): Promise<void> => {
       await locators.demobilizationButton.waitFor({
         state: 'visible',
         timeout: config.timeouts.long,
       });
+      await expect(locators.demobilizationButton).toBeEnabled({ timeout: config.timeouts.long });
       await locators.demobilizationButton.click();
+      await locators.modal.waitFor({ state: 'visible', timeout: config.timeouts.long });
       await locators.nextButton.waitFor({ state: 'visible', timeout: config.timeouts.long });
-      await locators.backButton.waitFor({ state: 'visible', timeout: config.timeouts.long });
     },
 
-    backToCompositionStep: async (): Promise<void> => {
-      await locators.backButton.click();
-      await locators.requestHeaderSelect('Денежные:').waitFor({
+    /**
+     * Шаг «Сотрудники» модала демобилизации: выбирает всех сотрудников
+     * чекбоксом в шапке таблицы и проверяет счётчик «Выбрано визитов: count».
+     */
+    selectAllModalVisits: async (count: number): Promise<void> => {
+      await locators.selectedVisitsCount.waitFor({
         state: 'visible',
         timeout: config.timeouts.long,
       });
-    },
-
-    fillDemobilizationCommon: async (fields: RequestCommonFields): Promise<void> => {
-      await locators.requestHeaderSelect('Проживание:').selectOption({ label: fields.living });
-      await locators.requestHeaderSelect('Такси:').selectOption({ label: fields.taxi });
-      await locators.requestHeaderInput('Денежные:').fill(fields.money);
-      await locators.requestHeaderSelect('Пропуск:').selectOption({ label: fields.pass });
-    },
-
-    fillVisitMoney: async (value: string): Promise<void> => {
-      const inputs = locators.visitMoneyInputs;
-      await inputs.first().waitFor({ state: 'visible', timeout: config.timeouts.long });
-
-      // Отбираем инпуты, у которых value содержит маркер несогласованной заявки
-      const handles = await inputs.evaluateAll((els) =>
-        els
-          .map((el, index) => ({ index, value: (el as HTMLInputElement).value }))
-          .filter(({ value }) => /не согласована|Последняя поданная заявка/.test(value))
-          .map(({ index }) => index)
-      );
-
-      for (const index of handles) {
-        await inputs.nth(index).fill(value);
+      const selected = async (): Promise<number> => {
+        const text = (await locators.selectedVisitsCount.textContent()) ?? '';
+        return Number(text.match(/(\d+)/)?.[1] ?? 0);
+      };
+      if ((await selected()) !== count) {
+        await locators.selectAllVisitsCheckbox.click();
       }
+      await expect(locators.selectedVisitsCount).toHaveText(`Выбрано визитов: ${count}`);
+      await expect(locators.nextButton).toBeEnabled();
     },
 
     submitForApproval: async (): Promise<void> => {

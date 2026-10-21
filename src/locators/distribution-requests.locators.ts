@@ -3,7 +3,7 @@ import { Page } from '@playwright/test';
 export const createDistributionRequestsLocators = (page: Page) => {
   const modal = page
     .locator('div.bg-white.rounded-lg')
-    .filter({ has: page.getByText('Управление заявками', { exact: true }) });
+    .filter({ has: page.getByText(/Управление (заявками|демобилизацией)/) });
 
   return {
     // Страница выбора проекта (создание заявки на командировку)
@@ -64,14 +64,10 @@ export const createDistributionRequestsLocators = (page: Page) => {
     // Кнопка «Демобилизация» на странице визитов/заявок работы (активна после подачи заявки на командировку)
     demobilizationButton: page.getByRole('button', { name: 'Демобилизация' }),
 
-    // Кнопка «Назад» в шаге 2 модала (возврат к шагу 1 — составу командировки)
-    backButton: modal.getByRole('button', { name: 'Назад' }),
-
-    // Числовые поля «Денежные» в составе командировки (переопределяют не согласованную заявку)
-    // Поиск полей, значение которых содержит сообщение о несогласованной заявке
-    visitMoneyInputs: modal.locator(
-      'input[value*="не согласована"], input[value*="Последняя поданная заявка"]'
-    ),
+    // Модал «Управление демобилизацией» — шаг 1 «Сотрудники»: таблица с чекбоксами
+    selectAllVisitsCheckbox: modal.locator('thead input[type="checkbox"]'),
+    /** Счётчик выбранных визитов «Выбрано визитов: N» (в шапке и футере модала). */
+    selectedVisitsCount: modal.getByText(/^Выбрано визитов: \d+$/).first(),
 
     // Отметка визитов как «Местная командировка» (без билетов и суточных) на шаге «Заявки»
     visitLocalTripCheckboxes: modal.locator(

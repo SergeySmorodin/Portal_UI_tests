@@ -1,20 +1,20 @@
 import { APIRequestContext, Page } from '@playwright/test';
-import { config } from '../../config';
+import { config } from '../../../config';
 import {
   expect,
   test,
   type CreateUserPageOptions,
   type UserContextKit,
-} from '../../fixtures/test-fixtures';
-import { createDistributionRequestsPage } from '../../pages/services/supervision/distribution-requests-page';
-import { createDistributionRequestsApprovalPage } from '../../pages/services/supervision/distribution-requests-approval-page';
-import { createSkipRequisitionsPage } from '../../pages/skip/skip-requisitions-page';
-import { type ResourcePlanningPage } from '../../pages/services/supervision/resource-planning-page';
-import { SUPERVISION_POSITION_PK } from '../../test-data/api/user-api';
-import { areVisitsApproved } from '../../test-data/api/project-api';
-import { getWorkRequisitions } from '../../test-data/api/requisition-api';
-import { type WorkData } from '../../types';
-import { formatDmy, parseDmy, randomDate } from '../../utils/date';
+} from '../../../fixtures/test-fixtures';
+import { createDistributionRequestsPage } from '../../../pages/services/supervision/distribution-requests-page';
+import { createDistributionRequestsApprovalPage } from '../../../pages/services/supervision/distribution-requests-approval-page';
+import { createSkipRequisitionsPage } from '../../../pages/skip/skip-requisitions-page';
+import { type ResourcePlanningPage } from '../../../pages/services/supervision/resource-planning-page';
+import { SUPERVISION_POSITION_PK } from '../../../test-data/api/user-api';
+import { areVisitsApproved, getVisitsActuals } from '../../../test-data/api/project-api';
+import { getWorkRequisitions } from '../../../test-data/api/requisition-api';
+import { type WorkData } from '../../../types';
+import { formatDmy, parseDmy, randomDate } from '../../../utils/date';
 
 const VISIT_COUNT = 2;
 
@@ -145,6 +145,45 @@ const submitRequestAwaitingApproval = async (
       timeout: config.timeouts.long,
     })
     .toBe('На согласование');
+};
+
+/**
+ * Сотрудник СКИП находит заявку, берёт её в работу, корректирует даты визитов,
+ * проходит шаги «Суточные» и «Билеты» и завершает обработку — заявка полностью
+ * согласована (lvl_2 «СКИП»), визиты переходят в статус «Фактическое».
+ * Возвращает скорректированные даты визитов (dd.mm.yyyy).
+ */
+const skipEmployeeProcessesRequest = async (
+  skipUser: UserContextKit,
+  work: WorkData
+): Promise<{ start: string; stop: string }> => {
+  const skipPage = createSkipRequisitionsPage(skipUser.page);
+  await skipPage.open();
+  await skipPage.findWork(work.name);
+  await skipPage.openWork(work.name);
+  await expect(skipPage.locators.requestsTable).toBeVisible();
+
+  const visitStart = parseDmy(work.startDate);
+  const visitStop = parseDmy(work.stopDate);
+  const correctedStart = randomDate(visitStart, visitStop);
+  const correctedStop = randomDate(correctedStart, visitStop);
+
+  await skipPage.takeRequestIntoWork();
+  await expect(skipPage.locators.processingStepHeading).toContainText('Шаг 1 из 3');
+
+  for (let i = 0; i < VISIT_COUNT; i++) {
+    await skipPage.correctVisitDates(i, formatDmy(correctedStart), formatDmy(correctedStop));
+  }
+
+  await skipPage.processingNext();
+  await expect(skipPage.locators.processingStepHeading).toContainText('Шаг 2 из 3');
+  await skipPage.alignPerDiemStart(formatDmy(correctedStart));
+
+  await skipPage.processingNext();
+  await expect(skipPage.locators.processingStepHeading).toContainText('Шаг 3 из 3');
+  await skipPage.finishProcessing();
+
+  return { start: formatDmy(correctedStart), stop: formatDmy(correctedStop) };
 };
 
 test.describe('Согласование заявки на командировку в супервайзинге', () => {
@@ -398,6 +437,132 @@ test.describe('Согласование заявки на командировк
     });
 
     await test.step('Руководитель повторно согласует скорректированную заявку', async () => {
+      await approval.findAndOpenWork(work.name);
+      await approval.openRequisitionCard();
+      await approval.selectAllEmployees();
+      await expect(approval.locators.selectedEmployeesCount).toHaveText(`Выбрано: ${VISIT_COUNT}`);
+      expect(await approval.approve()).toBe(200);
+
+      await expect
+        .poll(
+          async () => {
+            try {
+              return await approval.getApprovalHistory();
+            } catch {
+              return '';
+            }
+          },
+          { timeout: 30000 }
+        )
+        .toContain('Согласовано');
+
+      const history = await approval.getApprovalHistory();
+      expect(history).toContain('Рук. службы');
+      expect(history).toContain('Согласовано');
+    });
+  });
+
+  test('СЦЕНАРИЙ 5. Демобилизация после командировки и согласование заявки руководителем', async ({
+    apiRequest,
+    resourcePlanningPage,
+    createdWork,
+    createUserPage,
+  }) => {
+    test.setTimeout(300_000);
+
+    const { work, workPk } = createdWork;
+    const head = await createServiceHead(createUserPage);
+    const leader = await createServiceLeader(createUserPage);
+    const approval = createDistributionRequestsApprovalPage(leader.page);
+    const requests = createDistributionRequestsPage(head.page);
+
+    let demobilizationDate = '';
+    let requisitionPksBeforeDemobilization: string[] = [];
+
+    await test.step('Подготовить визиты, подать заявку и согласовать её руководителем', async () => {
+      await submitRequestAwaitingApproval(apiRequest, resourcePlanningPage, work, workPk, head);
+
+      await approval.findAndOpenWork(work.name);
+      await approval.openRequisitionCard();
+      await approval.selectAllEmployees();
+      expect(await approval.approve()).toBe(200);
+    });
+
+    await test.step('Сотрудник СКИП обрабатывает заявку до завершения', async () => {
+      const skipUser = await createSkipEmployee(createUserPage);
+      const dates = await skipEmployeeProcessesRequest(skipUser, work);
+      demobilizationDate = dates.stop;
+
+      await expect
+        .poll(async () => (await getWorkRequisitions(apiRequest, workPk))[0]?.status, {
+          timeout: config.timeouts.long,
+        })
+        .not.toBe('На согласование');
+    });
+
+    await test.step('Проверить, что визиты перешли в статус «Фактическое»', async () => {
+      await expect
+        .poll(async () => (await getVisitsActuals(apiRequest, workPk)).join(', '), {
+          timeout: config.timeouts.long,
+        })
+        .toBe('Фактическое');
+    });
+
+    await test.step('Открыть демобилизацию и выбрать всех сотрудников', async () => {
+      await requests.open();
+      await requests.findWork(work.name);
+      await requests.openDemobilization();
+      await requests.selectAllModalVisits(VISIT_COUNT);
+      await requests.clickNext();
+    });
+
+    await test.step('Добавить билеты и указать дату возврата не позднее окончания командировки', async () => {
+      await requests.addRoutesToAll(VISIT_COUNT);
+      await requests.selectMassEditCity('Откуда:', 'Санкт-Петербург');
+      await requests.selectMassEditCity('Куда:', 'Москва');
+      await requests.fillMassEdit({ date: demobilizationDate, transport: 'Авиа' });
+    });
+
+    await test.step('Отправить заявку на демобилизацию на согласование', async () => {
+      requisitionPksBeforeDemobilization = (await getWorkRequisitions(apiRequest, workPk)).map(
+        (r) => r.pk
+      );
+
+      const submitted = head.page.waitForResponse(
+        (response) =>
+          response.url().includes('/api/project/opt2/') && response.request().method() === 'PATCH',
+        { timeout: config.timeouts.long }
+      );
+      await requests.submitForApproval();
+
+      const response = await submitted;
+      expect(
+        response.status(),
+        `Заявка не отправлена: ${response.status()} ${await response.text()}`
+      ).toBe(200);
+    });
+
+    await test.step('Проверить статус «На согласование» на вкладке «Заявки»', async () => {
+      await expect
+        .poll(
+          async () => {
+            const requisitions = await getWorkRequisitions(apiRequest, workPk);
+            return requisitions.some(
+              (r) =>
+                r.status === 'На согласование' && !requisitionPksBeforeDemobilization.includes(r.pk)
+            );
+          },
+          { timeout: config.timeouts.long }
+        )
+        .toBe(true);
+
+      await requests.openRequestsTab();
+      await expect(requests.locators.requestsTable).toContainText('На согласование', {
+        timeout: config.timeouts.long,
+      });
+    });
+
+    await test.step('Руководитель согласует заявку на демобилизацию', async () => {
       await approval.findAndOpenWork(work.name);
       await approval.openRequisitionCard();
       await approval.selectAllEmployees();

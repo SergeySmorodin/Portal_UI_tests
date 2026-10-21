@@ -161,6 +161,20 @@ export const areVisitsApproved = async (
 };
 
 /**
+ * Уникальные статусы `actual` визитов работы. Для демобилизации заявка
+ * должна быть полностью согласована — все визиты в статусе «Фактическое».
+ */
+export const getVisitsActuals = async (
+  request: APIRequestContext,
+  workPk: string
+): Promise<string[]> => {
+  const reportCard = await getReportCard(request, workPk);
+  const persons = reportCard.personal_project ?? [];
+  const actuals = persons.flatMap((p) => (p.visits ?? []).map((v) => v.actual));
+  return [...new Set(actuals)];
+};
+
+/**
  * Подаёт заявку на командировку (перевод визитов в «На согласовании») через API,
  * повторяя payload, который шлёт модал «Отправить на согласование» в /api/project/opt2/.
  */

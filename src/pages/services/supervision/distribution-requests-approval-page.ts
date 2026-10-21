@@ -19,9 +19,23 @@ export const createDistributionRequestsApprovalPage = (page: Page) => {
       .waitFor({ state: 'visible', timeout: config.timeouts.long })
       .catch(() => {});
 
-    const action = locators.openApprovalButton.or(locators.openWorkButton);
-    await action.first().waitFor({ state: 'visible', timeout: config.timeouts.long });
-    await action.first().click();
+    // У работы может быть несколько заявок (например, демобилизация после
+    // обработанной): карточку раскрывает иконка «Согласовать» у ожидающей строки.
+    const approveIcon = locators.openApprovalButton;
+    const viewIcon = locators.openWorkButton;
+    await approveIcon
+      .or(viewIcon)
+      .first()
+      .waitFor({ state: 'visible', timeout: config.timeouts.long });
+    if ((await approveIcon.count()) > 0) {
+      await approveIcon.first().click();
+    } else {
+      await viewIcon.first().click();
+    }
+    await locators.requisitionComposition.waitFor({
+      state: 'visible',
+      timeout: config.timeouts.long,
+    });
   };
 
   return {
