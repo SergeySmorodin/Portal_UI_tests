@@ -1,4 +1,4 @@
-import { APIRequestContext, Page, test as base, expect } from '@playwright/test';
+import { APIRequestContext, BrowserContext, Page, test as base, expect } from '@playwright/test';
 import { config, type AppConfig } from '../config';
 import { createLoginPage } from '../pages/login/login-page';
 import { createMainPage } from '../pages/main/main-page';
@@ -71,6 +71,26 @@ export type CreateUserPageOptions = CreateUserOptions;
  */
 type CreateUserPage = (options?: CreateUserPageOptions) => Promise<UserContextKit>;
 
+/** Роли с реальными учётными записями портала (см. .env). */
+export type RoleName = 'leader' | 'skip' | 'td' | 'privileged';
+
+export interface RoleSession {
+  page: Page;
+  context: BrowserContext;
+  username: string;
+}
+
+const ROLE_CREDENTIALS: Record<RoleName, { login: string; password: string }> = {
+  leader: { login: 'LOGIN_LEADER', password: 'PASSWORD_LEADER' },
+  skip: { login: 'LOGIN_SKIP', password: 'PASSWORD_SKIP' },
+  td: { login: 'LOGIN_TD', password: 'PASSWORD_TD' },
+  privileged: { login: 'LOGIN_PRIVILEGET', password: 'PASSWORD_PRIVILEGET' },
+};
+
+/** Авторизуется под реальной учётной записью роли (контекст закрывается после теста). */
+type LoginAs = (role: RoleName) => Promise<RoleSession>;
+
+
 export interface TestFixtures {
   testConfig: typeof config;
   loginPage: ReturnType<typeof createLoginPage>;
@@ -103,6 +123,8 @@ export interface TestFixtures {
   authenticatedPage: Page;
   apiRequest: APIRequestContext;
   createUserPage: CreateUserPage;
+  /** Реальные учётные записи ролей согласования табеля. */
+  loginAs: LoginAs;
   /** Фабрика сотрудников для «Доступного персонала» (создаются и удаляются через API). */
   createPortalWorker: CreatePortalWorker;
   createdProject: CreatedProject;
@@ -342,6 +364,32 @@ export const test = base.extend<TestFixtures>({
   },
 
   createPortalWorker: createPortalWorkerFixture,
+
+  loginAs: async ({ browser }, use) => {
+    const contexts: BrowserContext[] = [];
+
+    const loginAs: LoginAs = async (role) => {
+      const env = ROLE_CREDENTIALS[role];
+      const username = process.env[env.login];
+      const password = process.env[env.password];
+      if (!username || !password) {
+        throw new Error(`Не заданы ${env.login}/${env.password} в .env`);
+      }
+
+      const context = await browser.newContext();
+      contexts.push(context);
+      const page = await context.newPage();
+      const loginPage = createLoginPage(page);
+      await loginPage.open();
+      await loginPage.login({ username, password });
+      await loginPage.waitForLoginSuccess();
+
+      return { page, context, username };
+    };
+
+    await use(loginAs);
+    await Promise.all(contexts.map((context) => context.close()));
+  },
 });
 
 export { expect };
