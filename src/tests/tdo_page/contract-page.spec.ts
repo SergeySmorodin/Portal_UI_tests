@@ -2,8 +2,17 @@ import { test, expect } from '../../fixtures/test-fixtures';
 import { config } from '../../config';
 import { contractFactory } from '../../test-data/factory/contract-factory';
 import { api } from '../../test-data/api/api-handles';
+import { deleteContractDocsViaApi } from '../../test-data/api/contract-api';
 
 test.describe('Создание договора', () => {
+  let createdContractPk: string | undefined;
+
+  test.afterEach(async ({ apiRequest }) => {
+    if (!createdContractPk) return;
+    await deleteContractDocsViaApi(apiRequest, createdContractPk);
+    createdContractPk = undefined;
+  });
+
   test(
     'Заполнение формы, сохранение и проверка в списке',
     { tag: '@smoke' },
@@ -50,11 +59,12 @@ test.describe('Создание договора', () => {
       });
 
       await test.step('Сохранить договор', async () => {
-        await contractPage.runAndCheckResponse(
+        const response = await contractPage.runAndCheckResponse(
           api.contract,
           () => contractPage.save(),
           (status) => expect(status).toBeLessThan(400)
         );
+        createdContractPk = ((await response.json()) as { pk: string }).pk;
       });
 
       await test.step('Проверить редирект после успешного сохранения', async () => {

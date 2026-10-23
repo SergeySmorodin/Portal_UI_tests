@@ -1,4 +1,4 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page, Locator, Response, expect } from '@playwright/test';
 import { config } from '../config';
 
 export const createBasePage = (page: Page) => {
@@ -139,7 +139,7 @@ export const createBasePage = (page: Page) => {
       urlPart: string,
       action: () => Promise<void>,
       assertStatus: (status: number) => void = (status) => expect(status).toBe(201)
-    ): Promise<void> => {
+    ): Promise<Response> => {
       const responsePromise = page.waitForResponse(
         (resp) => resp.url().includes(urlPart) && resp.request().method() === 'POST',
         { timeout: config.timeouts.long }
@@ -147,6 +147,7 @@ export const createBasePage = (page: Page) => {
       await action();
       const response = await responsePromise;
       assertStatus(response.status());
+      return response;
     },
   };
 

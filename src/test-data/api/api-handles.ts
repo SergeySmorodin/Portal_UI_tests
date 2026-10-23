@@ -26,6 +26,7 @@ export const api = {
   },
   company: '/api/company/',
   contract: '/api/contract/',
+  contractDocs: '/api/contract/load/docs/',
   curator: '/api/company_physical_person/',
   project: '/api/megaproject/',
   work: '/api/project/create/',

@@ -9,6 +9,7 @@ import { getWorkRequisitions } from '../../../test-data/api/requisition-api';
 import { type WorkData } from '../../../types';
 import { formatDmy, parseDmy, randomDate } from '../../../utils/date';
 
+//todo вынести
 /**
  * Общие шаги супервайзинга: визиты → заявка на командировку → согласование
  * руководителем → обработка в СКИП (визиты становятся «Фактическими»,
