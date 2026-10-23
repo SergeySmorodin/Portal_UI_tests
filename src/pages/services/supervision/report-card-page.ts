@@ -18,6 +18,10 @@ export const createReportCardPage = (page: Page) => {
     ...basePage,
     locators,
 
+    open: async (workPk: string): Promise<void> => {
+      await basePage.openRelative(`/services/supervision/project/${workPk}/reportcard`);
+    },
+
     getHeading: async (): Promise<string> => {
       return (await locators.heading.textContent())?.trim() || '';
     },
@@ -96,7 +100,15 @@ export const createReportCardPage = (page: Page) => {
     },
 
     openApproval: async (): Promise<void> => {
-      await locators.approvalButton.click();
+      const button = locators.approvalButton;
+      await button.waitFor({ state: 'visible', timeout: config.timeouts.long });
+      const enabled = await button.isEnabled();
+      if (!enabled) {
+        throw new Error(
+          `Кнопка согласования недоступна: ${(await button.getAttribute('title')) ?? ''}`
+        );
+      }
+      await button.click();
       await locators.approvalModal.waitFor({ state: 'visible', timeout: config.timeouts.long });
     },
 
@@ -106,6 +118,15 @@ export const createReportCardPage = (page: Page) => {
       await page.keyboard.press('Escape');
       await locators.approvalSubmitButton.click();
       await locators.approvalModal.waitFor({ state: 'hidden', timeout: config.timeouts.long });
+    },
+
+    expectApprovalStagesVisible: async (titles: string[]): Promise<void> => {
+      for (const title of titles) {
+        await locators
+          .approvalStageIcon(title)
+          .first()
+          .waitFor({ state: 'visible', timeout: config.timeouts.long });
+      }
     },
 
     getPeriodsCount: async (): Promise<number> => {

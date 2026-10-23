@@ -6,6 +6,7 @@ export const createWorkPageLocators = (page: Page) => ({
   // Поля формы
   nameInput: page.locator('input[name="name"]'),
   directionSelect: page.locator('select[name="direction"]'),
+  statusSelect: page.locator('select[name="status"]'),
   contractButton: page.getByRole('button', { name: 'Выберите договор' }),
   startFactDateInput: page.locator('#startFactDate'),
   stopFactDateInput: page.locator('#stopFactDate'),
@@ -14,6 +15,7 @@ export const createWorkPageLocators = (page: Page) => ({
 
   // Кнопки управления
   saveButton: page.getByRole('button', { name: 'Создать работу' }),
+  saveChangesButton: page.getByRole('button', { name: 'Сохранить изменения' }),
   backButton: page.getByRole('button', { name: 'Назад' }),
   closeButton: page.getByRole('button', { name: 'Закрыть' }),
 });

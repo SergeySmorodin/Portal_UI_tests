@@ -43,6 +43,22 @@ export const createWorkPage = (page: Page) => {
     save: async (): Promise<void> => {
       await locators.saveButton.click();
     },
+
+    setStatus: async (status: string): Promise<void> => {
+      await locators.statusSelect.selectOption({ label: status });
+    },
+
+    saveChanges: async (): Promise<void> => {
+      const patched = page.waitForResponse(
+        (response) =>
+          response.request().method() === 'PATCH' &&
+          /\/api\/project\/[^/]+\/$/.test(new URL(response.url()).pathname),
+        { timeout: 30_000 }
+      );
+      await locators.saveChangesButton.click();
+      await patched;
+      await page.waitForLoadState('networkidle').catch(() => {});
+    },
   };
 };
 
@@ -62,10 +78,14 @@ export const createWorksListPage = (page: Page) => {
     },
 
     addWork: async (): Promise<void> => {
+      // Ждём отрисовки именно страницы работ: после смены URL React ещё
+      // какое-то время может показывать предыдущую страницу проектов, и
+      // кнопка «+» тогда уводит в создание проекта вместо работы.
+      await basePage.waitForElement(locators.nameFilter, config.timeouts.long);
       await basePage.waitForElement(locators.addWorkButton);
       await locators.addWorkButton.click();
       await page.waitForURL((url) => url.pathname.includes('/TDO/Work/new'), {
-        timeout: config.timeouts.long,
+        timeout: 30_000,
       });
     },
   };

@@ -90,7 +90,6 @@ const ROLE_CREDENTIALS: Record<RoleName, { login: string; password: string }> = 
 /** Авторизуется под реальной учётной записью роли (контекст закрывается после теста). */
 type LoginAs = (role: RoleName) => Promise<RoleSession>;
 
-
 export interface TestFixtures {
   testConfig: typeof config;
   loginPage: ReturnType<typeof createLoginPage>;
@@ -130,6 +129,8 @@ export interface TestFixtures {
   createdProject: CreatedProject;
   createdWork: CreatedWork;
   createdWorkExecution: CreatedWork;
+  /** Работа, созданная через UI, со статусом «Выполнение работы». */
+  createdWorkUi: CreatedWork;
   createdUser: CreatedUser;
 }
 
@@ -319,6 +320,45 @@ export const test = base.extend<TestFixtures>({
       contractPk,
       status: 'Выполнение работы',
     });
+    await use({ ...createdProject, work, workPk });
+  },
+
+  createdWorkUi: async (
+    { createdProject, projectsListPage, worksListPage, workPage, authenticatedPage },
+    use
+  ) => {
+    const { project } = createdProject;
+    const work = workFactory.standard({
+      startDate: formatDmy(addDays(today(), 1)),
+      stopDate: project.stopDate,
+    });
+    const creationTimeout = 60_000;
+
+    await projectsListPage.open();
+    await projectsListPage.searchByCode(project.code);
+    await projectsListPage.openWorks(project.code);
+    await worksListPage.addWork();
+    await authenticatedPage.waitForLoadState('networkidle').catch(() => {});
+
+    await workPage.selectContract();
+    await workPage.fillBasicFields(work);
+
+    const created = authenticatedPage.waitForResponse(
+      (response) =>
+        response.url().includes('/api/project/create/') && response.request().method() === 'POST',
+      { timeout: creationTimeout }
+    );
+    await workPage.save();
+
+    const { pk: workPk } = (await (await created).json()) as { pk: string };
+    await authenticatedPage.waitForURL((url) => url.pathname.includes('/TDO/Work/edit/'), {
+      timeout: creationTimeout,
+    });
+    await authenticatedPage.waitForLoadState('networkidle').catch(() => {});
+
+    await workPage.setStatus('Выполнение работы');
+    await workPage.saveChanges();
+
     await use({ ...createdProject, work, workPk });
   },
 

@@ -1,6 +1,7 @@
 import { Page } from '@playwright/test';
 import { createBasePage } from '../../base-page';
 import { createTimeTableLocators } from '../../../locators/time-table.locators';
+import { createReportCardPage } from './report-card-page';
 import { config } from '../../../config';
 
 export const createTimeTablePage = (page: Page) => {
@@ -59,3 +60,42 @@ export const createTimeTablePage = (page: Page) => {
 };
 
 export type TimeTablePage = ReturnType<typeof createTimeTablePage>;
+
+/**
+ * Очередь согласования табелей для ролей «Отдел планирования» и
+ * «Технический директор»: список работ, открытие табеля и согласование.
+ */
+export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
+  const basePage = createBasePage(page);
+  const locators = createTimeTableLocators(page);
+  const reportCardPage = createReportCardPage(page);
+
+  return {
+    ...basePage,
+    locators,
+
+    open: async (): Promise<void> => {
+      await basePage.openRelative(pagePath);
+      await basePage.expectVisible(locators.heading);
+    },
+
+    expectWorkVisible: async (name: string): Promise<void> => {
+      await locators.workButton(name).waitFor({ state: 'visible', timeout: config.timeouts.long });
+    },
+
+    openWork: async (name: string): Promise<void> => {
+      await basePage.waitForElement(locators.workButton(name), config.timeouts.long);
+      await locators.workButton(name).click();
+      await reportCardPage.locators.approvalButton
+        .first()
+        .waitFor({ state: 'visible', timeout: config.timeouts.long });
+    },
+
+    approve: async (periodEnd: string): Promise<void> => {
+      await reportCardPage.openApproval();
+      await reportCardPage.submitApproval(periodEnd);
+    },
+  };
+};
+
+export type TimeTableApprovalPage = ReturnType<typeof createTimeTableApprovalPage>;

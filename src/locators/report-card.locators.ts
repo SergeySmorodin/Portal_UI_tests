@@ -42,6 +42,7 @@ export const createReportCardLocators = (page: Page) => {
     periodsCount: page.getByText(/Периодов:\s*\d+/),
 
     // Согласование табеля
+    approvalStageIcon: (title: string) => page.locator(`[title*="${title}"]`),
     approvalButton: page.locator('button:has(i.fa-file-signature)'),
     approvalModal,
     approvalPeriodEndInput: approvalModal.locator('input[placeholder="дд-мм-гггг"]'),
