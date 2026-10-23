@@ -25,3 +25,4 @@ reports/
 html-snapshots/
 .playwright-mcp/
 AGENTS.md
+scripts/

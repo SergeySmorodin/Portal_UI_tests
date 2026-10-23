@@ -3,6 +3,8 @@ import 'dotenv/config';
 import { Browser, FullConfig, chromium } from '@playwright/test';
 import path from 'path';
 import fs from 'fs';
+import http from 'http';
+import https from 'https';
 import { createLoginPage } from './src/pages/login/login-page';
 import { config } from './src/config';
 
@@ -14,18 +16,31 @@ export const STORAGE_STATE_PATH = path.join(AUTH_DIR, 'user1.json');
 const BASE_URL = process.env.BASE_URL || 'https://example.com';
 
 const checkServerAvailable = async (): Promise<void> => {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 10_000);
-  try {
-    await fetch(BASE_URL, { signal: controller.signal });
-  } catch (error) {
+  await new Promise<void>((resolve, reject) => {
+    const url = new URL(BASE_URL);
+    const client = url.protocol === 'https:' ? https : http;
+    const request = client.request(
+      url,
+      {
+        method: 'HEAD',
+        timeout: 10_000,
+        // Портал использует самоподписанный сертификат, как и в браузере (ignoreHTTPSErrors)
+        ...(url.protocol === 'https:' ? { rejectUnauthorized: false } : {}),
+      },
+      (response) => {
+        response.resume();
+        resolve();
+      }
+    );
+    request.on('timeout', () => request.destroy(new Error('timeout 10000ms')));
+    request.on('error', reject);
+    request.end();
+  }).catch((error: Error) => {
     throw new Error(
       `Портал недоступен по адресу ${BASE_URL}. Проверьте VPN/сеть/доступность сервера. ` +
-        `Исходная ошибка: ${(error as Error).message}`
+        `Исходная ошибка: ${error.message}`
     );
-  } finally {
-    clearTimeout(timeout);
-  }
+  });
 };
 
 const loginAdmin = async (browser: Browser): Promise<void> => {

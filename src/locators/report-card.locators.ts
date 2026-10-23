@@ -33,7 +33,7 @@ export const createReportCardLocators = (page: Page) => {
         .locator('table tbody tr')
         .filter({ hasText: name })
         .locator('td input')
-        .nth(dayIndex + 2),
+        .nth(dayIndex + 3),
     workerDayCells: (name: string) =>
       page.locator('table tbody tr').filter({ hasText: name }).locator('td'),
 

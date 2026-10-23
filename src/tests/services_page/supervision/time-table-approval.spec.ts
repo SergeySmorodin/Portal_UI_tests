@@ -216,8 +216,11 @@ const fillReportCardAndSend = async (
   const reportCard = createReportCardPage(privileged.page);
   await reportCard.open(workPk);
   await reportCard.waitForLoaded(work.name);
+  await privileged.page.waitForTimeout(2000);
   await reportCard.openRateRows();
+  await privileged.page.waitForTimeout(1000);
   await reportCard.fillRate(workerName, '500');
+  await privileged.page.waitForTimeout(500);
   await reportCard.fillWorkHours(workerName, [0, 1, 2], '8');
   await reportCard.save();
   await reportCard.openApproval();
