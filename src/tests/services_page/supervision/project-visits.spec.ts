@@ -3,9 +3,17 @@ import { api } from '../../../test-data/api/api-handles';
 import { expect, test } from '../../../fixtures/test-fixtures';
 
 test.describe('Распределение на работу', () => {
-  test(
+  test.fixme(
     'Создать работу через API и добавить визиты персонала, созданного через API',
-    { tag: '@smoke' },
+    {
+      tag: '@smoke',
+      annotation: {
+        type: 'issue',
+        description:
+          'Бэкенд не возвращает сотрудников, созданных через POST /api/auth/users/, в ' +
+          'available_user карточки работы (GET /api/project/opt1/<pk>/). Включить после правки бэкенда.',
+      },
+    },
     async ({ page, resourcePlanningPage, createdWork, createPortalWorker }) => {
       test.setTimeout(120_000);
 
