@@ -1,6 +1,12 @@
 import { expect, test } from '../../../fixtures/test-fixtures';
-import { approveVisitsViaApi, areVisitsApproved } from '../../../test-data/api/project-api';
 import { config } from '../../../config';
+import { addDays, formatDmy, parseDmy } from '../../../utils/date';
+import {
+  approveDistributionRequest,
+  expectActualVisits,
+  processRequestInSkip,
+  submitRequestForApproval,
+} from './supervision-flow';
 
 test.describe('Табель работ', () => {
   test(
@@ -9,13 +15,20 @@ test.describe('Табель работ', () => {
     async ({
       resourcePlanningPage,
       workingToolsPage,
-      distributionRequestsPage,
       reportCardPage,
       createdWorkExecution,
       apiRequest,
+      authenticatedPage,
+      loginAs,
     }) => {
+      test.setTimeout(300_000);
       const { project, work, workPk } = createdWorkExecution;
       const VISIT_COUNT = 2;
+      // Фиксированный недельный визит с начала работы: в табеле гарантированно
+      // есть минимум три дня для заполнения часов.
+      const visitStart = parseDmy(work.startDate);
+      const visitStop = addDays(visitStart, 6);
+      const admin = { page: authenticatedPage, context: authenticatedPage.context(), username: '' };
 
       let addedWorkers: string[] = [];
       await test.step('Добавить визиты доступного персонала', async () => {
@@ -28,38 +41,21 @@ test.describe('Табель работ', () => {
         await resourcePlanningPage.saveVisitsPersisted(apiRequest, workPk, VISIT_COUNT);
       });
 
-      await test.step('Отправить заявку на командировку на согласование', async () => {
-        const waitVisitsApproved = async (timeout: number): Promise<boolean> => {
-          try {
-            await expect
-              .poll(
-                async () => {
-                  try {
-                    return await areVisitsApproved(apiRequest, workPk);
-                  } catch {
-                    return false;
-                  }
-                },
-                { timeout }
-              )
-              .toBe(true);
-            return true;
-          } catch {
-            return false;
-          }
-        };
+      await test.step('Подать заявку на командировку и согласовать её руководителем службы', async () => {
+        await submitRequestForApproval(apiRequest, work, workPk, admin, {
+          start: formatDmy(visitStart),
+          stop: formatDmy(visitStop),
+          ticketDate: formatDmy(visitStart),
+        });
+        await approveDistributionRequest(work, await loginAs('leader'));
+      });
 
-        await distributionRequestsPage.submitRequestForLocalTrip(work.name);
-        let approved = await waitVisitsApproved(config.timeouts.long);
-
-        if (!approved) {
-          await distributionRequestsPage.submitRequestForLocalTrip(work.name);
-          approved = await waitVisitsApproved(config.timeouts.long);
-        }
-
-        if (!approved) {
-          await approveVisitsViaApi(apiRequest, workPk);
-        }
+      await test.step('Обработать заявку в СКИП и дождаться фактических визитов', async () => {
+        await processRequestInSkip(work, await loginAs('skip'), {
+          start: visitStart,
+          stop: visitStop,
+        });
+        await expectActualVisits(apiRequest, workPk);
       });
 
       await test.step('Найти созданный мегапроект на странице «Проекты направления супервайзинга»', async () => {
@@ -80,17 +76,13 @@ test.describe('Табель работ', () => {
         expect(heading).toContain('Табель работы');
         expect(heading).toContain(work.name);
 
-        const count = await reportCardPage.getWorkerCount();
-        expect(count).toBe(VISIT_COUNT);
+        await expect(reportCardPage.locators.workerRows).toHaveCount(VISIT_COUNT, {
+          timeout: config.timeouts.long,
+        });
 
         for (const name of addedWorkers) {
           await reportCardPage.expectWorkerVisible(name);
         }
-      });
-
-      await test.step('Создать табели участникам', async () => {
-        await reportCardPage.createPeriods();
-        await reportCardPage.waitForLoaded(work.name);
       });
 
       await test.step('Открыть строки ставок и заполнить значения ставок', async () => {

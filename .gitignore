@@ -1,6 +1,7 @@
 node_modules/
 test-results/
 playwright-report/
+scripts/
 test-results.json
 .tmp*
 playwright/
@@ -15,6 +16,7 @@ debug/
 .cursor/
 .cursorignore
 .opencode/
+.qwen/
 .DS_Store
 Thumbs.db
 *.log
@@ -25,4 +27,3 @@ reports/
 html-snapshots/
 .playwright-mcp/
 AGENTS.md
-scripts/

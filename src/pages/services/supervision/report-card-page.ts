@@ -53,11 +53,6 @@ export const createReportCardPage = (page: Page) => {
         .waitFor({ state: 'visible', timeout: config.timeouts.normal });
     },
 
-    createPeriods: async (): Promise<void> => {
-      await locators.createButton.click();
-      await locators.createConfirmButton.click();
-    },
-
     openRateRows: async (): Promise<void> => {
       await locators.rateRowsButton.click();
     },

@@ -8,8 +8,6 @@ export const createReportCardLocators = (page: Page) => {
   return {
     heading: page.locator('h1'),
     headingTab: (name: string) => page.locator(`h1:has-text("Табель работы ${name}")`),
-    createButton: page.getByRole('button', { name: 'Создать табель' }),
-    createConfirmButton: page.getByRole('button', { name: 'Создать' }).last(),
     rateRowsButton: page.getByRole('button', { name: 'Ставка', exact: true }),
     saveButton: page.getByRole('button', { name: 'Сохранить' }),
 
