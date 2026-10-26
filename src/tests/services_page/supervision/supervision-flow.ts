@@ -6,10 +6,10 @@ import { createDistributionRequestsPage } from '../../../pages/services/supervis
 import { createDistributionRequestsApprovalPage } from '../../../pages/services/supervision/distribution-requests-approval-page';
 import { createSkipRequisitionsPage } from '../../../pages/skip/skip-requisitions-page';
 import { getWorkRequisitions } from '../../../test-data/api/requisition-api';
+import { getAgreements, getReportCard } from '../../../test-data/api/project-api';
 import { type WorkData } from '../../../types';
 import { formatDmy, parseDmy, randomDate } from '../../../utils/date';
 
-//todo вынести
 /**
  * Общие шаги супервайзинга: визиты → заявка на командировку → согласование
  * руководителем → обработка в СКИП (визиты становятся «Фактическими»,
@@ -23,26 +23,6 @@ export const APPROVAL_STAGE_TITLES = [
   'Отдел планирования',
   'Технический директор',
 ];
-
-export interface Agreement {
-  stage?: string;
-  success?: boolean | null;
-  to_user?: { full_name?: string } | null;
-}
-
-export interface ReportCardVisit {
-  actual?: string;
-  new_report_card?: Array<{ agreements_report_card?: Agreement[] }>;
-}
-
-export interface ReportCardPerson {
-  user?: { full_name?: string };
-  visits?: ReportCardVisit[];
-}
-
-export interface ReportCardResponse {
-  personal_project?: ReportCardPerson[];
-}
 
 export interface RequestData {
   start: string;
@@ -59,39 +39,6 @@ export const buildRequestData = (workStart: string, workStop: string): RequestDa
     stop: formatDmy(randomDate(requestStart, stop)),
     ticketDate: formatDmy(requestStart),
   };
-};
-
-export const getReportCard = async (
-  apiRequest: APIRequestContext,
-  workPk: string
-): Promise<ReportCardResponse> =>
-  (await (
-    await apiRequest.get(`/api/project_report_card/${workPk}/`)
-  ).json()) as ReportCardResponse;
-
-export const getAgreements = async (
-  apiRequest: APIRequestContext,
-  workPk: string
-): Promise<string[]> => {
-  const rc = await getReportCard(apiRequest, workPk);
-  return (rc.personal_project ?? []).flatMap((person) =>
-    (person.visits ?? []).flatMap((visit) =>
-      (visit.new_report_card ?? []).flatMap((reportCard) =>
-        (reportCard.agreements_report_card ?? []).map((agreement) => {
-          const to = agreement.to_user;
-          return `${agreement.stage}:${agreement.success === null ? 'null' : String(agreement.success)}:${to?.full_name ?? 'null'}`;
-        })
-      )
-    )
-  );
-};
-
-export const getWorkerName = async (
-  apiRequest: APIRequestContext,
-  workPk: string
-): Promise<string> => {
-  const rc = await getReportCard(apiRequest, workPk);
-  return rc.personal_project?.[0]?.user?.full_name ?? '';
 };
 
 export const expectAgreementStage = async (

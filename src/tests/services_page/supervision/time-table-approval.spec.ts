@@ -10,11 +10,11 @@ import {
   approveDistributionRequest,
   expectActualVisits,
   expectAgreementStage,
-  getWorkerName,
   prepareWorkWithVisits,
   processRequestInSkip,
   submitRequestForApproval,
 } from './supervision-flow';
+import { getWorkerName } from '../../../test-data/api/project-api';
 
 const fillReportCardAndSend = async (
   apiRequest: APIRequestContext,

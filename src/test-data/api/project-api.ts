@@ -93,25 +93,33 @@ export const createWorkViaApi = async (
   return body.pk;
 };
 
-interface RcVisit {
+export interface Agreement {
+  stage?: string;
+  success?: boolean | null;
+  to_user?: { full_name?: string } | null;
+}
+
+export interface RcVisit {
   pk: string;
   start: string;
   stop: string;
   actual: string;
+  new_report_card?: Array<{ agreements_report_card?: Agreement[] }>;
 }
 
-interface RcPerson {
+export interface RcPerson {
   pk: string;
+  user?: { full_name?: string };
   visits?: RcVisit[];
 }
 
-interface ReportCardData {
+export interface ReportCardData {
   pk: string;
   project_supervision?: { equipment?: string };
   personal_project?: RcPerson[];
 }
 
-const getReportCard = async (
+export const getReportCard = async (
   request: APIRequestContext,
   workPk: string
 ): Promise<ReportCardData> => {
@@ -122,6 +130,31 @@ const getReportCard = async (
     );
   }
   return (await response.json()) as ReportCardData;
+};
+
+export const getAgreements = async (
+  request: APIRequestContext,
+  workPk: string
+): Promise<string[]> => {
+  const rc = await getReportCard(request, workPk);
+  return (rc.personal_project ?? []).flatMap((person) =>
+    (person.visits ?? []).flatMap((visit) =>
+      (visit.new_report_card ?? []).flatMap((reportCard) =>
+        (reportCard.agreements_report_card ?? []).map((agreement) => {
+          const to = agreement.to_user;
+          return `${agreement.stage}:${agreement.success === null ? 'null' : String(agreement.success)}:${to?.full_name ?? 'null'}`;
+        })
+      )
+    )
+  );
+};
+
+export const getWorkerName = async (
+  request: APIRequestContext,
+  workPk: string
+): Promise<string> => {
+  const rc = await getReportCard(request, workPk);
+  return rc.personal_project?.[0]?.user?.full_name ?? '';
 };
 
 export interface WorkCompositionInfo {
@@ -216,3 +249,7 @@ export const approveVisitsViaApi = async (
     );
   }
 };
+
+export type ReportCardVisit = RcVisit;
+export type ReportCardPerson = RcPerson;
+export type ReportCardResponse = ReportCardData;
