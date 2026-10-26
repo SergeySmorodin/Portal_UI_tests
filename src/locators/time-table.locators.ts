@@ -25,6 +25,14 @@ export const createTimeTableLocators = (page: Page) => {
     approvalStateTotal: approvalStateSection.getByText(/Всего:\s*\d+/),
     stateItem,
     stateCount: (label: string) => stateItem(label).locator('span.shrink-0.font-bold').first(),
+
+    // Модал решения по табелю (руководитель службы, СКИП, ТД)
+    decisionModal: page
+      .locator('div.fixed.inset-0')
+      .filter({ has: page.getByRole('heading', { name: 'Согласование табеля' }) }),
+    decisionCommentInput: page.getByPlaceholder('Общий комментарий (записывается в результат табеля)'),
+    approveDecisionButton: page.getByRole('button', { name: 'Согласован', exact: true }),
+    rejectDecisionButton: page.getByRole('button', { name: 'Не согласован', exact: true }),
   };
 };
 

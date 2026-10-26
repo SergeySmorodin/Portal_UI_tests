@@ -3,6 +3,7 @@ import { createBasePage } from '../../base-page';
 import { createTimeTableLocators } from '../../../locators/time-table.locators';
 import { createReportCardPage } from './report-card-page';
 import { config } from '../../../config';
+import { api } from '../../../test-data/api/api-handles';
 
 export const createTimeTablePage = (page: Page) => {
   const basePage = createBasePage(page);
@@ -91,9 +92,20 @@ export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
         .waitFor({ state: 'visible', timeout: config.timeouts.long });
     },
 
-    approve: async (periodEnd: string): Promise<void> => {
+    approve: async (): Promise<void> => {
       await reportCardPage.openApproval();
-      await reportCardPage.submitApproval(periodEnd);
+
+      const decided = page.waitForResponse(
+        (resp) =>
+          resp.url().includes(api.reportCard) &&
+          resp.request().method() === 'PATCH' &&
+          resp.ok(),
+        { timeout: config.timeouts.long }
+      );
+
+      await locators.approveDecisionButton.click();
+      await decided;
+      await locators.decisionModal.waitFor({ state: 'hidden', timeout: config.timeouts.long });
     },
   };
 };

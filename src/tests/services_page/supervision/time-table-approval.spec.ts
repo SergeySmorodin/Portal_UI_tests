@@ -5,6 +5,7 @@ import { createTimeTableApprovalPage } from '../../../pages/services/supervision
 import { type WorkData } from '../../../types';
 import {
   APPROVAL_STAGE_TITLES,
+  LEADER_TIME_TABLE_PATH,
   SKIP_TIME_TABLE_PATH,
   TD_TIME_TABLE_PATH,
   approveDistributionRequest,
@@ -39,18 +40,6 @@ const fillReportCardAndSend = async (
   await reportCard.submitApproval(work.stopDate);
 };
 
-const approveReportCard = async (
-  work: WorkData,
-  workPk: string,
-  user: RoleSession
-): Promise<void> => {
-  const reportCard = createReportCardPage(user.page);
-  await reportCard.open(workPk);
-  await reportCard.waitForLoaded(work.name);
-  await reportCard.openApproval();
-  await reportCard.submitApproval(work.stopDate);
-};
-
 const approveTimeTable = async (
   work: WorkData,
   pagePath: string,
@@ -60,7 +49,7 @@ const approveTimeTable = async (
   await approvalPage.open();
   await approvalPage.expectWorkVisible(work.name);
   await approvalPage.openWork(work.name);
-  await approvalPage.approve(work.stopDate);
+  await approvalPage.approve();
 };
 
 /** Готовит работу с фактическими визитами и согласованной заявкой. */
@@ -112,8 +101,7 @@ test.describe('Согласование табеля', () => {
     });
   });
 
-  // TODO: блокер - agreements_report_card.to_user=null, очередь согласования пустая
-  test.skip('СЦЕНАРИЙ 2. Руководитель службы согласовывает табель', async ({
+  test('СЦЕНАРИЙ 2. Руководитель службы согласовывает табель', async ({
     apiRequest,
     createdWorkUi,
     loginAs,
@@ -135,13 +123,12 @@ test.describe('Согласование табеля', () => {
     });
 
     await test.step('Руководитель службы согласовывает табель', async () => {
-      await approveReportCard(work, workPk, leader);
+      await approveTimeTable(work, LEADER_TIME_TABLE_PATH, leader);
       await expectAgreementStage(apiRequest, workPk, 'lvl_1:true');
     });
   });
 
-  // TODO: блокер - agreements_report_card.to_user=null, очередь согласования пустая
-  test.skip('СЦЕНАРИЙ 3. Отдел планирования обрабатывает табель', async ({
+  test('СЦЕНАРИЙ 3. Отдел планирования обрабатывает табель', async ({
     apiRequest,
     createdWorkUi,
     loginAs,
@@ -160,7 +147,7 @@ test.describe('Согласование табеля', () => {
     });
 
     await test.step('Руководитель службы согласовывает табель', async () => {
-      await approveReportCard(work, workPk, leader);
+      await approveTimeTable(work, LEADER_TIME_TABLE_PATH, leader);
       await expectAgreementStage(apiRequest, workPk, 'lvl_1:true');
     });
 
@@ -170,8 +157,7 @@ test.describe('Согласование табеля', () => {
     });
   });
 
-  // TODO: блокер - agreements_report_card.to_user=null, очередь согласования пустая
-  test.skip('СЦЕНАРИЙ 4. Технический директор согласовывает табель', async ({
+  test('СЦЕНАРИЙ 4. Технический директор согласовывает табель', async ({
     apiRequest,
     createdWorkUi,
     loginAs,
@@ -191,7 +177,7 @@ test.describe('Согласование табеля', () => {
     });
 
     await test.step('Руководитель службы согласовывает табель', async () => {
-      await approveReportCard(work, workPk, leader);
+      await approveTimeTable(work, LEADER_TIME_TABLE_PATH, leader);
       await expectAgreementStage(apiRequest, workPk, 'lvl_1:true');
     });
 
@@ -206,8 +192,7 @@ test.describe('Согласование табеля', () => {
     });
   });
 
-  // TODO: блокер - agreements_report_card.to_user=null, очередь согласования пустая
-  test.skip('Сценарий 5. Привилегированный сотрудник проверяет все статусы табеля', async ({
+  test('Сценарий 5. Привилегированный сотрудник проверяет все статусы табеля', async ({
     apiRequest,
     createdWorkUi,
     loginAs,
@@ -224,7 +209,7 @@ test.describe('Согласование табеля', () => {
       await expectActualVisits(apiRequest, workPk);
       await fillReportCardAndSend(apiRequest, work, workPk, privileged);
       await expectAgreementStage(apiRequest, workPk, 'lvl_1:');
-      await approveReportCard(work, workPk, leader);
+      await approveTimeTable(work, LEADER_TIME_TABLE_PATH, leader);
       await expectAgreementStage(apiRequest, workPk, 'lvl_1:true');
       await approveTimeTable(work, SKIP_TIME_TABLE_PATH, skip);
       await expectAgreementStage(apiRequest, workPk, 'lvl_2:true');
