@@ -87,6 +87,7 @@ test.describe('Табель работ', () => {
 
       await test.step('Открыть строки ставок и заполнить значения ставок', async () => {
         await reportCardPage.openRateRows();
+        await reportCardPage.selectAllRows();
 
         for (const name of addedWorkers) {
           await reportCardPage.fillRate(name, '500');

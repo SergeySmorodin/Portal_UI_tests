@@ -57,6 +57,15 @@ export const createReportCardPage = (page: Page) => {
       await locators.rateRowsButton.click();
     },
 
+    selectAllRows: async (): Promise<void> => {
+      const checkbox = locators.headerCheckbox;
+      if (await checkbox.count()) {
+        await checkbox.first().check().catch(async () => {
+          await checkbox.first().click();
+        });
+      }
+    },
+
     getRateInputValue: async (name: string): Promise<string> => {
       return await locators.workerRateInput(name).inputValue();
     },

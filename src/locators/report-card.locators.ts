@@ -10,6 +10,8 @@ export const createReportCardLocators = (page: Page) => {
     headingTab: (name: string) => page.locator(`h1:has-text("Табель работы ${name}")`),
     rateRowsButton: page.getByRole('button', { name: 'Ставка', exact: true }),
     saveButton: page.getByRole('button', { name: 'Сохранить' }),
+    headerCheckbox: page.locator('thead input[type="checkbox"]').first(),
+    allRowCheckboxes: page.locator('tbody input[type="checkbox"]'),
 
     // Таблица персонала
     workerRows: page.locator('table tbody tr'),

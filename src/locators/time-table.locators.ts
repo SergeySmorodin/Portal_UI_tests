@@ -31,8 +31,8 @@ export const createTimeTableLocators = (page: Page) => {
       .locator('div.fixed.inset-0')
       .filter({ has: page.getByRole('heading', { name: 'Согласование табеля' }) }),
     decisionCommentInput: page.getByPlaceholder('Общий комментарий (записывается в результат табеля)'),
-    approveDecisionButton: page.getByRole('button', { name: 'Согласован', exact: true }),
-    rejectDecisionButton: page.getByRole('button', { name: 'Не согласован', exact: true }),
+    approveDecisionButton: page.getByText('Согласован', { exact: true }),
+    rejectDecisionButton: page.getByText('Не согласован', { exact: true }),
   };
 };
 
