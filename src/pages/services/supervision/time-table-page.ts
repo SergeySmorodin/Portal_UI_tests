@@ -80,8 +80,15 @@ export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
       await basePage.expectVisible(locators.heading);
     },
 
+    searchProject: async (code: string): Promise<void> => {
+      await locators.projectSearchInput.fill(code);
+      await locators.projectSearchInput.press('Enter');
+      await page.waitForTimeout(2000);
+      await page.waitForLoadState('networkidle').catch(() => {});
+    },
+
     expectWorkVisible: async (name: string): Promise<void> => {
-      await locators.workButton(name).waitFor({ state: 'visible', timeout: config.timeouts.long });
+      await locators.workRow(name).waitFor({ state: 'visible', timeout: config.timeouts.long });
     },
 
     openWork: async (name: string): Promise<void> => {
@@ -92,17 +99,17 @@ export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
         .waitFor({ state: 'visible', timeout: config.timeouts.long });
     },
 
+    // «Согласование» открывает модал решения; «Согласован» шлёт PATCH табеля
+    // с success=true для текущего этапа и закрывает модал.
     approve: async (): Promise<void> => {
-      await reportCardPage.openApproval();
+      await reportCardPage.locators.approvalButton.first().click();
+      await locators.decisionModal.waitFor({ state: 'visible', timeout: config.timeouts.long });
 
       const decided = page.waitForResponse(
         (resp) =>
-          resp.url().includes(api.reportCard) &&
-          resp.request().method() === 'PATCH' &&
-          resp.ok(),
+          resp.url().includes(api.reportCard) && resp.request().method() === 'PATCH' && resp.ok(),
         { timeout: config.timeouts.long }
       );
-
       await locators.approveDecisionButton.click();
       await decided;
       await locators.decisionModal.waitFor({ state: 'hidden', timeout: config.timeouts.long });

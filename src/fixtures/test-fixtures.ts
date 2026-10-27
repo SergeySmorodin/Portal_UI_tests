@@ -289,7 +289,14 @@ export const test = base.extend<TestFixtures>({
   },
 
   createdProject: async ({ apiRequest }, use) => {
-    const project = projectFactory.active();
+    const project = projectFactory.active({
+      groupProject: 'sk_intra',
+      typeProject: 'Работа (услуга)',
+      departmentProject: '106.01.12.00 Производственная служба',
+      kindProject: 'ЕПС',
+      note: 'Автотест d57f85d8',
+    });
+    project.organization = 'СЕРВИС';
     const { pk, code } = await createProjectViaApi(apiRequest, project);
     await use({ project, projectPk: pk, projectCode: code });
   },

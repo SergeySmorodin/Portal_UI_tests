@@ -53,6 +53,7 @@ export interface ProjectData {
   departmentProject: string;
   kindProject: string;
   note: string;
+  organization?: string;
 }
 
 export interface CertificationData {

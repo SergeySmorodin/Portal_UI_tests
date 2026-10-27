@@ -45,6 +45,7 @@ export const createProjectViaApi = async (
       department_project: project.departmentProject || undefined,
       kind_project: project.kindProject || undefined,
       note: project.note,
+      organization: project.organization || undefined,
     },
   });
 
@@ -94,9 +95,10 @@ export const createWorkViaApi = async (
 };
 
 export interface Agreement {
+  pk?: string;
   stage?: string;
   success?: boolean | null;
-  to_user?: { full_name?: string } | null;
+  to_user?: { pk?: string; full_name?: string } | null;
 }
 
 export interface RcVisit {
@@ -104,7 +106,7 @@ export interface RcVisit {
   start: string;
   stop: string;
   actual: string;
-  new_report_card?: Array<{ agreements_report_card?: Agreement[] }>;
+  new_report_card?: Array<{ pk?: string; agreements_report_card?: Agreement[] }>;
 }
 
 export interface RcPerson {

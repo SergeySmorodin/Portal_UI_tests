@@ -9,6 +9,10 @@ export const createTimeTableLocators = (page: Page) => {
   const stateItem = (label: string) =>
     page.locator('div.flex.items-center.justify-between').filter({ hasText: label }).first();
 
+  const decisionModal = page
+    .locator('div.fixed.inset-0')
+    .filter({ has: page.getByRole('heading', { name: 'Согласование табеля' }) });
+
   return {
     heading: page.locator('h1'),
 
@@ -27,12 +31,13 @@ export const createTimeTableLocators = (page: Page) => {
     stateCount: (label: string) => stateItem(label).locator('span.shrink-0.font-bold').first(),
 
     // Модал решения по табелю (руководитель службы, СКИП, ТД)
-    decisionModal: page
-      .locator('div.fixed.inset-0')
-      .filter({ has: page.getByRole('heading', { name: 'Согласование табеля' }) }),
-    decisionCommentInput: page.getByPlaceholder('Общий комментарий (записывается в результат табеля)'),
-    approveDecisionButton: page.getByText('Согласован', { exact: true }),
-    rejectDecisionButton: page.getByText('Не согласован', { exact: true }),
+    decisionModal,
+    decisionCommentInput: decisionModal.getByPlaceholder(
+      'Общий комментарий (записывается в результат табеля)'
+    ),
+    // Иконка в начале имени кнопки, поэтому матчим по окончанию (регистр отделяет «Не согласован»)
+    approveDecisionButton: decisionModal.getByRole('button', { name: /Согласован$/ }),
+    rejectDecisionButton: decisionModal.getByRole('button', { name: /Не согласован$/ }),
   };
 };
 

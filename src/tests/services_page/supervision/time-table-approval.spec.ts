@@ -3,6 +3,7 @@ import { expect, test, type RoleSession } from '../../../fixtures/test-fixtures'
 import { createReportCardPage } from '../../../pages/services/supervision/report-card-page';
 import { createTimeTableApprovalPage } from '../../../pages/services/supervision/time-table-page';
 import { type WorkData } from '../../../types';
+import { addDays, formatDmy, parseDmy } from '../../../utils/date';
 import {
   APPROVAL_STAGE_TITLES,
   LEADER_TIME_TABLE_PATH,
@@ -17,6 +18,46 @@ import {
 } from './supervision-flow';
 import { getWorkerName } from '../../../test-data/api/project-api';
 
+/**
+ * Фиксированный недельный визит с начала работы: в табеле гарантированно
+ * есть минимум три дня для заполнения часов (случайные даты СКИП могли
+ * давать визит в один день, и ячеек дней не хватало).
+ */
+const visitPeriod = (work: WorkData): { start: Date; stop: Date } => {
+  const start = parseDmy(work.startDate);
+  return { start, stop: addDays(start, 6) };
+};
+
+/** Визиты → заявка → согласование руководителем → обработка в СКИП → «Фактические» визиты. */
+const prepareActualVisits = async (
+  apiRequest: APIRequestContext,
+  work: WorkData,
+  workPk: string,
+  privileged: RoleSession,
+  leader: RoleSession,
+  skip: RoleSession
+): Promise<void> => {
+  const { start, stop } = visitPeriod(work);
+
+  await test.step('Подготовить визиты и подать заявку на командировку', async () => {
+    await prepareWorkWithVisits(apiRequest, workPk, privileged);
+    await submitRequestForApproval(apiRequest, work, workPk, privileged, {
+      start: formatDmy(start),
+      stop: formatDmy(stop),
+      ticketDate: formatDmy(start),
+    });
+  });
+
+  await test.step('Согласовать заявку руководителем службы', async () => {
+    await approveDistributionRequest(work, leader);
+  });
+
+  await test.step('Обработать заявку в СКИП и дождаться фактических визитов', async () => {
+    await processRequestInSkip(work, skip, { start, stop });
+    await expectActualVisits(apiRequest, workPk);
+  });
+};
+
 const fillReportCardAndSend = async (
   apiRequest: APIRequestContext,
   work: WorkData,
@@ -29,11 +70,9 @@ const fillReportCardAndSend = async (
   const reportCard = createReportCardPage(privileged.page);
   await reportCard.open(workPk);
   await reportCard.waitForLoaded(work.name);
-  await privileged.page.waitForTimeout(2000);
+  await reportCard.expectWorkerVisible(workerName);
   await reportCard.openRateRows();
-  await privileged.page.waitForTimeout(1000);
   await reportCard.fillRate(workerName, '500');
-  await privileged.page.waitForTimeout(500);
   await reportCard.fillWorkHours(workerName, [0, 1, 2], '8');
   await reportCard.save();
   await reportCard.openApproval();
@@ -52,19 +91,6 @@ const approveTimeTable = async (
   await approvalPage.approve();
 };
 
-/** Готовит работу с фактическими визитами и согласованной заявкой. */
-const prepareWorkForReportCard = async (
-  apiRequest: APIRequestContext,
-  work: WorkData,
-  workPk: string,
-  privileged: RoleSession,
-  leader: RoleSession
-): Promise<void> => {
-  await prepareWorkWithVisits(apiRequest, workPk, privileged);
-  await submitRequestForApproval(apiRequest, work, workPk, privileged);
-  await approveDistributionRequest(work, leader);
-};
-
 test.describe('Согласование табеля', () => {
   test.describe.configure({ mode: 'serial', timeout: 900_000 });
 
@@ -78,19 +104,7 @@ test.describe('Согласование табеля', () => {
     const leader = await loginAs('leader');
     const skip = await loginAs('skip');
 
-    await test.step('Подготовить визиты и подать заявку на командировку', async () => {
-      await prepareWorkWithVisits(apiRequest, workPk, privileged);
-      await submitRequestForApproval(apiRequest, work, workPk, privileged);
-    });
-
-    await test.step('Согласовать заявку руководителем службы', async () => {
-      await approveDistributionRequest(work, leader);
-    });
-
-    await test.step('Обработать заявку в СКИП и дождаться фактических визитов', async () => {
-      await processRequestInSkip(work, skip);
-      await expectActualVisits(apiRequest, workPk);
-    });
+    await prepareActualVisits(apiRequest, work, workPk, privileged, leader, skip);
 
     await test.step('Заполнить табель и отправить его на согласование', async () => {
       await fillReportCardAndSend(apiRequest, work, workPk, privileged);
@@ -111,11 +125,7 @@ test.describe('Согласование табеля', () => {
     const leader = await loginAs('leader');
     const skip = await loginAs('skip');
 
-    await test.step('Подготовить визиты, согласовать заявку и обработать её в СКИП', async () => {
-      await prepareWorkForReportCard(apiRequest, work, workPk, privileged, leader);
-      await processRequestInSkip(work, skip);
-      await expectActualVisits(apiRequest, workPk);
-    });
+    await prepareActualVisits(apiRequest, work, workPk, privileged, leader, skip);
 
     await test.step('Заполнить табель и отправить на согласование', async () => {
       await fillReportCardAndSend(apiRequest, work, workPk, privileged);
@@ -138,10 +148,9 @@ test.describe('Согласование табеля', () => {
     const leader = await loginAs('leader');
     const skip = await loginAs('skip');
 
-    await test.step('Подготовить визиты, заявку и заполнить табель', async () => {
-      await prepareWorkForReportCard(apiRequest, work, workPk, privileged, leader);
-      await processRequestInSkip(work, skip);
-      await expectActualVisits(apiRequest, workPk);
+    await prepareActualVisits(apiRequest, work, workPk, privileged, leader, skip);
+
+    await test.step('Заполнить табель и отправить на согласование', async () => {
       await fillReportCardAndSend(apiRequest, work, workPk, privileged);
       await expectAgreementStage(apiRequest, workPk, 'lvl_1:');
     });
@@ -168,10 +177,9 @@ test.describe('Согласование табеля', () => {
     const skip = await loginAs('skip');
     const td = await loginAs('td');
 
-    await test.step('Подготовить визиты, заявку и заполнить табель', async () => {
-      await prepareWorkForReportCard(apiRequest, work, workPk, privileged, leader);
-      await processRequestInSkip(work, skip);
-      await expectActualVisits(apiRequest, workPk);
+    await prepareActualVisits(apiRequest, work, workPk, privileged, leader, skip);
+
+    await test.step('Заполнить табель и отправить на согласование', async () => {
       await fillReportCardAndSend(apiRequest, work, workPk, privileged);
       await expectAgreementStage(apiRequest, workPk, 'lvl_1:');
     });
@@ -203,10 +211,9 @@ test.describe('Согласование табеля', () => {
     const skip = await loginAs('skip');
     const td = await loginAs('td');
 
+    await prepareActualVisits(apiRequest, work, workPk, privileged, leader, skip);
+
     await test.step('Пройти табель по всем этапам согласования', async () => {
-      await prepareWorkForReportCard(apiRequest, work, workPk, privileged, leader);
-      await processRequestInSkip(work, skip);
-      await expectActualVisits(apiRequest, workPk);
       await fillReportCardAndSend(apiRequest, work, workPk, privileged);
       await expectAgreementStage(apiRequest, workPk, 'lvl_1:');
       await approveTimeTable(work, LEADER_TIME_TABLE_PATH, leader);
