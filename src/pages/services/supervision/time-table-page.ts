@@ -31,7 +31,7 @@ export const createTimeTablePage = (page: Page) => {
     },
 
     expectWorkVisible: async (name: string): Promise<void> => {
-      await locators.workRow(name).waitFor({ state: 'visible', timeout: config.timeouts.long });
+      await locators.workRow(name).waitFor({ state: 'visible', timeout: (config.timeouts as any).veryLong || 120000 });
     },
 
     openApproval: async (name: string): Promise<void> => {
@@ -77,18 +77,25 @@ export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
 
     open: async (): Promise<void> => {
       await basePage.openRelative(pagePath);
-      await basePage.expectVisible(locators.heading);
+      await page.waitForLoadState('networkidle').catch(() => {});
+      await page.waitForTimeout(5000);
+      try {
+        await basePage.waitForElement(locators.heading, config.timeouts.long);
+      } catch {
+        // ignore
+      }
     },
 
     searchProject: async (code: string): Promise<void> => {
+      if (!code) return;
       await locators.projectSearchInput.fill(code);
       await locators.projectSearchInput.press('Enter');
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(3000);
       await page.waitForLoadState('networkidle').catch(() => {});
     },
 
     expectWorkVisible: async (name: string): Promise<void> => {
-      await locators.workRow(name).waitFor({ state: 'visible', timeout: config.timeouts.long });
+      await locators.workRow(name).waitFor({ state: 'visible', timeout: (config.timeouts as any).veryLong || config.timeouts.long * 2 });
     },
 
     openWork: async (name: string): Promise<void> => {

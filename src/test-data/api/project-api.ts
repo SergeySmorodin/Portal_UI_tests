@@ -255,3 +255,25 @@ export const approveVisitsViaApi = async (
 export type ReportCardVisit = RcVisit;
 export type ReportCardPerson = RcPerson;
 export type ReportCardResponse = ReportCardData;
+
+/**
+ * Назначает сотрудника на проект через API, чтобы он появился в доступном персонале.
+ * Использует endpoint /api/project/opt1/<workPk>/ для добавления сотрудника.
+ */
+export const assignWorkerToProject = async (
+  request: APIRequestContext,
+  workPk: string,
+  userUuid: string
+): Promise<void> => {
+  const response = await request.patch(`${api.resourcePlanning.workOptions}${workPk}/`, {
+    data: {
+      available_user: [{ uuid: userUuid }],
+    },
+  });
+
+  if (!response.ok()) {
+    throw new Error(
+      `Назначение сотрудника на проект не удалось (${response.status()}): ${await response.text()}`
+    );
+  }
+};

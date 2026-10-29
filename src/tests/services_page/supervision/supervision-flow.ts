@@ -1,12 +1,12 @@
 import { APIRequestContext, Page } from '@playwright/test';
 import { config } from '../../../config';
-import { expect, type RoleSession } from '../../../fixtures/test-fixtures';
+import { expect, type RoleSession, type CreatePortalWorker } from '../../../fixtures/test-fixtures';
 import { createResourcePlanningPage } from '../../../pages/services/supervision/resource-planning-page';
 import { createDistributionRequestsPage } from '../../../pages/services/supervision/distribution-requests-page';
 import { createDistributionRequestsApprovalPage } from '../../../pages/services/supervision/distribution-requests-approval-page';
 import { createSkipRequisitionsPage } from '../../../pages/skip/skip-requisitions-page';
 import { getWorkRequisitions } from '../../../test-data/api/requisition-api';
-import { getAgreements, getReportCard } from '../../../test-data/api/project-api';
+import { getAgreements, getReportCard, assignWorkerToProject } from '../../../test-data/api/project-api';
 import { type WorkData } from '../../../types';
 import { formatDmy, parseDmy, randomDate } from '../../../utils/date';
 
@@ -98,6 +98,52 @@ export const prepareWorkWithVisits = async (
   await resourcePlanningPage.openWorkByPk(workPk);
   await resourcePlanningPage.addAvailableWorkers(VISIT_COUNT);
   await resourcePlanningPage.saveVisitsPersisted(apiRequest, workPk, VISIT_COUNT);
+};
+
+export const prepareWorkWithVisitsByNames = async (
+  apiRequest: APIRequestContext,
+  workPk: string,
+  privileged: RoleSession,
+  workerNames: string[]
+): Promise<void> => {
+  const resourcePlanningPage = createResourcePlanningPage(privileged.page);
+  await resourcePlanningPage.openWorkByPk(workPk);
+  await resourcePlanningPage.addAvailableWorkersByNames(workerNames);
+  await resourcePlanningPage.saveVisitsPersisted(apiRequest, workPk, workerNames.length);
+};
+
+/**
+ * Создаёт работников через фикстуру createPortalWorker, назначает их на проект
+ * и добавляет к работе для визитов.
+ */
+export const prepareWorkWithCustomWorkers = async (
+  apiRequest: APIRequestContext,
+  workPk: string,
+  privileged: RoleSession,
+  createPortalWorker: CreatePortalWorker
+): Promise<string[]> => {
+  // Создаём VISIT_COUNT работников
+  const workers: { fullName: string; uuid: string }[] = [];
+  for (let i = 0; i < VISIT_COUNT; i++) {
+    const worker = await createPortalWorker({
+      lastName: `Тестовый${i}`,
+      firstName: `Имя${i}`,
+      patronymic: `Отчество${i}`,
+    });
+    workers.push(worker);
+
+    // Назначаем работника на проект через API
+    await assignWorkerToProject(apiRequest, workPk, worker.uuid);
+  }
+
+  // Добавляем работников к работе через UI
+  const resourcePlanningPage = createResourcePlanningPage(privileged.page);
+  await resourcePlanningPage.openWorkByPk(workPk);
+  const workerNames = workers.map((w) => w.fullName);
+  await resourcePlanningPage.addAvailableWorkersByNames(workerNames);
+  await resourcePlanningPage.saveVisitsPersisted(apiRequest, workPk, VISIT_COUNT);
+
+  return workerNames;
 };
 
 export const submitRequestForApproval = async (
