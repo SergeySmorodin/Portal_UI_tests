@@ -45,6 +45,7 @@ const createPortalWorker =
       position: SUPERVISION_POSITION_PK,
       ratePay: '1.00',
       personalNumber: nextPersonalNumber(),
+      groups: ['supervising_employee'],
       profile: {
         lastName,
         firstName,

@@ -37,7 +37,8 @@ export const PORTAL_GROUPS = [
 
 export type PortalGroup = (typeof PORTAL_GROUPS)[number];
 
-export const SUPERVISION_POSITION_PK = '581';
+export const SUPERVISION_POSITION_PK = '581'; // Ведущий инженер по сварке (супервайзинг)
+// 526 Ведущий инженер-механик
 
 /** Признаки того, что DRF-поле `position` не нашло pk должности в базе. */
 const MISSING_POSITION_RE = /не существует|does not exist|invalid pk|неверный первичный ключ/i;

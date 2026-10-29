@@ -1,4 +1,4 @@
-import { APIRequestContext, Page } from '@playwright/test';
+import { APIRequestContext, Page, expect } from '@playwright/test';
 import { createBasePage } from '../../base-page';
 import { createResourcePlanningLocators } from '../../../locators/resource-planning.locators';
 import { config } from '../../../config';
@@ -13,6 +13,10 @@ export const createResourcePlanningPage = (page: Page) => {
   const openWorkByPkInternal = async (pk: string): Promise<void> => {
     await basePage.openRelative(`${PAGE_PATH}/${pk}`);
     await locators.claimedSection.waitFor({
+      state: 'visible',
+      timeout: config.timeouts.long,
+    });
+    await locators.availableSection.waitFor({
       state: 'visible',
       timeout: config.timeouts.long,
     });
@@ -86,6 +90,11 @@ export const createResourcePlanningPage = (page: Page) => {
       state: 'visible',
       timeout: config.timeouts.long,
     });
+
+    // Дожидаемся, пока все сотрудники загрузятся в Доступном персонале
+    await expect
+      .poll(async () => locators.availableAddButtons.count(), { timeout: config.timeouts.long })
+      .toBeGreaterThanOrEqual(names.length);
 
     const added: string[] = [];
     for (const name of names) {
