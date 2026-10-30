@@ -66,7 +66,7 @@ export const createTimeTablePage = (page: Page) => {
 
     expectTabVisible: async (tabName: string): Promise<void> => {
       try {
-        await expect(locators.tab(tabName)).toBeVisible({ timeout: 5000 });
+        await expect(locators.tab(tabName)).toBeVisible({ timeout: 3000 });
       } catch {
         // Если вкладка не найдена, возможно, она не отображается в текущем состоянии
         // Это нормально, если нет табелей в этом состоянии
@@ -102,7 +102,7 @@ export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
 
       // Переключаемся на вкладку "На согласование" если она есть
       try {
-        await locators.tab('На согласование').click({ timeout: 5000 });
+        await locators.tab('На согласование').click({ timeout: 3000 });
         await page.waitForLoadState('networkidle').catch(() => {});
         await page.waitForTimeout(1000);
       } catch {
@@ -139,7 +139,7 @@ export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
 
     expectTabVisible: async (tabName: string): Promise<void> => {
       try {
-        await expect(locators.tab(tabName)).toBeVisible({ timeout: 5000 });
+        await expect(locators.tab(tabName)).toBeVisible({ timeout: 3000 });
       } catch {
         // Если вкладка не найдена, возможно, она не отображается в текущем состоянии
         // Это нормально, если нет табелей в этом состоянии
@@ -157,9 +157,39 @@ export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
 
       // Ждем появления модального окна подтверждения и нажимаем "Да"
       try {
-        await locators.confirmModal.waitFor({ state: 'visible', timeout: 5000 });
+        await locators.confirmModal.waitFor({ state: 'visible', timeout: 3000 });
         await locators.confirmYesButton.click();
         await locators.confirmModal.waitFor({ state: 'hidden', timeout: config.timeouts.long });
+      } catch {
+        // Если модального окна подтверждения нет, возможно, подтверждение не требуется
+      }
+
+      // Ждем закрытия модального окна решения
+      try {
+        await locators.decisionModal.waitFor({ state: 'hidden', timeout: config.timeouts.long });
+      } catch {
+        // Если модальное окно не закрылось, пробуем закрыть его другим способом
+        await page.waitForTimeout(2000);
+        if (await locators.decisionModal.isVisible()) {
+          await page.keyboard.press('Escape');
+          await page.waitForTimeout(1000);
+        }
+      }
+    },
+
+    // Отклонение табеля на текущем этапе
+    reject: async (): Promise<void> => {
+      await reportCardPage.locators.approvalButton.first().click();
+      await locators.decisionModal.waitFor({ state: 'visible', timeout: config.timeouts.long });
+
+      await locators.decisionCommentInput.fill('Автотест - отклонение');
+      await locators.rejectDecisionButton.click();
+
+      // Ждем появления модального окна подтверждения отклонения и нажимаем "Да"
+      try {
+        await locators.rejectConfirmModal.waitFor({ state: 'visible', timeout: 3000 });
+        await locators.rejectConfirmYesButton.click();
+        await locators.rejectConfirmModal.waitFor({ state: 'hidden', timeout: config.timeouts.long });
       } catch {
         // Если модального окна подтверждения нет, возможно, подтверждение не требуется
       }

@@ -4,6 +4,7 @@ import { createReportCardPage } from '../../../pages/services/supervision/report
 import { createTimeTableApprovalPage, createTimeTablePage } from '../../../pages/services/supervision/time-table-page';
 import { type WorkData } from '../../../types';
 import { addDays, formatDmy, parseDmy } from '../../../utils/date';
+import { config } from '../../../config';
 import {
   APPROVAL_STAGE_TITLES,
   HEAD_TIME_TABLE_PATH,
@@ -67,7 +68,7 @@ const fillReportCardAndSend = async (
   await reportCard.expectWorkerVisible(workerName);
   await reportCard.openRateRows();
   await reportCard.fillRate(workerName, '500');
-  await reportCard.fillWorkHours(workerName, [0], '8');
+  await reportCard.fillWorkHours(workerName, [0, 1, 2], '8');
   await reportCard.save();
   await reportCard.openApproval();
   await reportCard.submitApproval(work.stopDate);
@@ -85,6 +86,20 @@ const approveTimeTable = async (
   await approvalPage.expectWorkVisible(workName);
   await approvalPage.openWork(workName);
   await approvalPage.approve();
+};
+
+const rejectTimeTable = async (
+  workPk: string,
+  workName: string,
+  pagePath: string,
+  user: RoleSession
+): Promise<void> => {
+  const approvalPage = createTimeTableApprovalPage(user.page, pagePath);
+  await approvalPage.open();
+  await approvalPage.searchProject(workName);
+  await approvalPage.expectWorkVisible(workName);
+  await approvalPage.openWork(workName);
+  await approvalPage.reject();
 };
 
 // Проверка наличия вкладок на странице согласования табелей
@@ -165,6 +180,94 @@ test.describe('Согласование табеля', () => {
       await reportCard.open(workPk);
       await reportCard.waitForLoaded(work.name);
       await reportCard.expectApprovalStagesVisible(APPROVAL_STAGE_TITLES);
+    });
+  });
+
+  test('Табель отклонен руководителем службы', async ({
+    apiRequest,
+    createdWorkUi,
+    loginAs,
+  }) => {
+    const { work, workPk } = createdWorkUi;
+    const privileged = await loginAs('privileged');
+    const leader = await loginAs('leader');
+    const head = await loginAs('head');
+    const skip = await loginAs('skip');
+
+    await test.step('Подготовка визитов и подача заявки на командировку', async () => {
+      await prepareActualVisits(apiRequest, work, workPk, privileged, leader, skip);
+    });
+
+    await test.step('Заполнение табеля и отправка на согласование', async () => {
+      await fillReportCardAndSend(apiRequest, work, workPk, privileged);
+      await expectAgreementStage(apiRequest, workPk, 'lvl_1:');
+    });
+
+    await test.step('Проверка вкладки «На согласование» для руководителя службы', async () => {
+      await verifyTabs(head, 'На согласование');
+    });
+
+    await test.step('Отклонение табеля руководителем службы', async () => {
+      await rejectTimeTable(workPk, work.name, HEAD_TIME_TABLE_PATH, head);
+      // После отклонения проверяем, что табель вернулся на доработку
+      await page.waitForTimeout(3000);
+    });
+
+    await test.step('Проверка, что табель вернулся на доработку', async () => {
+      const reportCard = createReportCardPage(privileged.page);
+      await reportCard.open(workPk);
+      await reportCard.waitForLoaded(work.name);
+      // Проверяем, что кнопка согласования видима (значит табель на доработке)
+      await reportCard.locators.approvalButton.waitFor({ state: 'visible', timeout: config.timeouts.long });
+    });
+  });
+
+  test('Табель отклонен техническим директором', async ({
+    apiRequest,
+    createdWorkUi,
+    loginAs,
+  }) => {
+    const { work, workPk } = createdWorkUi;
+    const privileged = await loginAs('privileged');
+    const leader = await loginAs('leader');
+    const head = await loginAs('head');
+    const skip = await loginAs('skip');
+    const td = await loginAs('td');
+
+    await test.step('Подготовка визитов и подача заявки на командировку', async () => {
+      await prepareActualVisits(apiRequest, work, workPk, privileged, leader, skip);
+    });
+
+    await test.step('Заполнение табеля и отправка на согласование', async () => {
+      await fillReportCardAndSend(apiRequest, work, workPk, privileged);
+      await expectAgreementStage(apiRequest, workPk, 'lvl_1:');
+    });
+
+    await test.step('Согласование табеля руководителем службы', async () => {
+      await approveTimeTable(workPk, work.name, HEAD_TIME_TABLE_PATH, head);
+      await expectAgreementStage(apiRequest, workPk, 'lvl_1:true');
+    });
+
+    await test.step('Согласование табеля отделом планирования (СКИП)', async () => {
+      await approveTimeTable(workPk, work.name, SKIP_TIME_TABLE_PATH, skip);
+      await expectAgreementStage(apiRequest, workPk, 'lvl_2:true');
+    });
+
+    await test.step('Проверка вкладки «На согласование» для технического директора', async () => {
+      await verifyTabs(td, 'На согласование');
+    });
+
+    await test.step('Отклонение табеля техническим директором', async () => {
+      await rejectTimeTable(workPk, work.name, TD_TIME_TABLE_PATH, td);
+      await expectAgreementStage(apiRequest, workPk, 'lvl_3:false');
+    });
+
+    await test.step('Проверка, что табель вернулся на доработку', async () => {
+      const reportCard = createReportCardPage(privileged.page);
+      await reportCard.open(workPk);
+      await reportCard.waitForLoaded(work.name);
+      // Проверяем, что кнопка согласования видима (значит табель на доработке)
+      await reportCard.locators.approvalButton.waitFor({ state: 'visible', timeout: config.timeouts.long });
     });
   });
 });

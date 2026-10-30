@@ -52,6 +52,15 @@ export const createTimeTableLocators = (page: Page) => {
     confirmModal,
     confirmYesButton: confirmModal.getByRole('button', { name: 'Да' }),
     confirmNoButton: confirmModal.getByRole('button', { name: 'Нет' }),
+
+    // Модал подтверждения несогласования
+    rejectConfirmModal: page
+      .locator('div.fixed.inset-0')
+      .filter({ hasText: 'Табель будет отклонен' }),
+    rejectConfirmYesButton: page
+      .locator('div.fixed.inset-0')
+      .filter({ hasText: 'Табель будет отклонен' })
+      .getByRole('button', { name: 'Да' }),
   };
 };
 
