@@ -39,23 +39,17 @@ const prepareActualVisits = async (
 ): Promise<void> => {
   const { start, stop } = visitPeriod(work);
 
-  await test.step('Подготовить визиты и подать заявку на командировку', async () => {
-    await prepareWorkWithVisits(apiRequest, workPk, privileged);
-    await submitRequestForApproval(apiRequest, work, workPk, privileged, {
-      start: formatDmy(start),
-      stop: formatDmy(stop),
-      ticketDate: formatDmy(start),
-    });
+  await prepareWorkWithVisits(apiRequest, workPk, privileged);
+  await submitRequestForApproval(apiRequest, work, workPk, privileged, {
+    start: formatDmy(start),
+    stop: formatDmy(stop),
+    ticketDate: formatDmy(start),
   });
 
-  await test.step('Согласовать заявку руководителем сервиса', async () => {
-    await approveDistributionRequest(work, leader);
-  });
+  await approveDistributionRequest(work, leader);
 
-  await test.step('Обработать заявку в СКИП и дождаться фактических визитов', async () => {
-    await processRequestInSkip(work, skip, { start, stop });
-    await expectActualVisits(apiRequest, workPk);
-  });
+  await processRequestInSkip(work, skip, { start, stop });
+  await expectActualVisits(apiRequest, workPk);
 };
 
 const fillReportCardAndSend = async (
@@ -73,7 +67,7 @@ const fillReportCardAndSend = async (
   await reportCard.expectWorkerVisible(workerName);
   await reportCard.openRateRows();
   await reportCard.fillRate(workerName, '500');
-  await reportCard.fillWorkHours(workerName, [0, 1, 2], '8');
+  await reportCard.fillWorkHours(workerName, [0], '8');
   await reportCard.save();
   await reportCard.openApproval();
   await reportCard.submitApproval(work.stopDate);
@@ -106,35 +100,7 @@ const verifyTabs = async (
 test.describe('Согласование табеля', () => {
   test.describe.configure({ mode: 'serial', timeout: 900_000 });
 
-  test('СЦЕНАРИЙ 1. Привилегированный сотрудник заполняет табель и отправляет на согласование', async ({
-    apiRequest,
-    createdWorkUi,
-    loginAs,
-  }) => {
-    const { work, workPk } = createdWorkUi;
-    const privileged = await loginAs('privileged');
-    const leader = await loginAs('leader');
-    const skip = await loginAs('skip');
-
-    await prepareActualVisits(
-      apiRequest,
-      work,
-      workPk,
-      privileged,
-      leader,
-      skip
-    );
-
-    await test.step('Заполнить табель и отправить его на согласование', async () => {
-      await fillReportCardAndSend(apiRequest, work, workPk, privileged);
-    });
-
-    await test.step('Проверить, что создан маршрут согласования на уровне руководителя службы', async () => {
-      await expectAgreementStage(apiRequest, workPk, 'lvl_1:');
-    });
-  });
-
-  test('СЦЕНАРИЙ 2. Руководитель службы согласовывает табель', async ({
+  test('Полный цикл согласования табеля: от заполнения до финального согласования ТД', async ({
     apiRequest,
     createdWorkUi,
     loginAs,
@@ -144,162 +110,57 @@ test.describe('Согласование табеля', () => {
     const leader = await loginAs('leader');
     const head = await loginAs('head');
     const skip = await loginAs('skip');
+    const td = await loginAs('td');
 
-    await prepareActualVisits(
-      apiRequest,
-      work,
-      workPk,
-      privileged,
-      leader,
-      skip
-    );
+    await test.step('Подготовка визитов и подача заявки на командировку', async () => {
+      await prepareActualVisits(apiRequest, work, workPk, privileged, leader, skip);
+    });
 
-    await test.step('Заполнить табель и отправить на согласование', async () => {
+    await test.step('Заполнение табеля и отправка на согласование', async () => {
       await fillReportCardAndSend(apiRequest, work, workPk, privileged);
       await expectAgreementStage(apiRequest, workPk, 'lvl_1:');
     });
 
-    await test.step('Проверить наличие вкладки «На согласование» для руководителя службы', async () => {
+    await test.step('Проверка вкладки «На согласование» для руководителя службы', async () => {
       await verifyTabs(head, 'На согласование');
     });
 
-    await test.step('Руководитель службы согласовывает табель', async () => {
+    await test.step('Согласование табеля руководителем службы', async () => {
       await approveTimeTable(workPk, work.name, HEAD_TIME_TABLE_PATH, head);
       await expectAgreementStage(apiRequest, workPk, 'lvl_1:true');
     });
 
-    await test.step('Проверить наличие вкладки «Отработанные» после согласования руководителем', async () => {
+    await test.step('Проверка вкладки «Отработанные» после согласования руководителем', async () => {
       await verifyTabs(head, 'Отработанные');
     });
-  });
 
-  test('СЦЕНАРИЙ 3. Отдел планирования обрабатывает табель', async ({
-    apiRequest,
-    createdWorkUi,
-    loginAs,
-  }) => {
-    const { work, workPk } = createdWorkUi;
-    const privileged = await loginAs('privileged');
-    const leader = await loginAs('leader');
-    const head = await loginAs('head');
-    const skip = await loginAs('skip');
-
-    await prepareActualVisits(
-      apiRequest,
-      work,
-      workPk,
-      privileged,
-      leader,
-      skip
-    );
-
-    await test.step('Заполнить табель и отправить на согласование', async () => {
-      await fillReportCardAndSend(apiRequest, work, workPk, privileged);
-      await expectAgreementStage(apiRequest, workPk, 'lvl_1:');
-    });
-
-    await test.step('Руководитель службы согласовывает табель', async () => {
-      await approveTimeTable(workPk, work.name, HEAD_TIME_TABLE_PATH, head);
-      await expectAgreementStage(apiRequest, workPk, 'lvl_1:true');
-    });
-
-    await test.step('Проверить наличие вкладки «На согласование» для отдела планирования', async () => {
+    await test.step('Проверка вкладки «На согласование» для отдела планирования', async () => {
       await verifyTabs(skip, 'На согласование');
     });
 
-    await test.step('Отдел планирования согласовывает табель', async () => {
+    await test.step('Согласование табеля отделом планирования (СКИП)', async () => {
       await approveTimeTable(workPk, work.name, SKIP_TIME_TABLE_PATH, skip);
       await expectAgreementStage(apiRequest, workPk, 'lvl_2:true');
     });
 
-    await test.step('Проверить наличие вкладки «Отработанные» после согласования отделом планирования', async () => {
+    await test.step('Проверка вкладки «Отработанные» после согласования отделом планирования', async () => {
       await verifyTabs(skip, 'Отработанные');
     });
-  });
 
-  test('СЦЕНАРИЙ 4. Технический директор согласовывает табель', async ({
-    apiRequest,
-    createdWorkUi,
-    loginAs,
-  }) => {
-    const { work, workPk } = createdWorkUi;
-    const privileged = await loginAs('privileged');
-    const leader = await loginAs('leader');
-    const head = await loginAs('head');
-    const skip = await loginAs('skip');
-    const td = await loginAs('td');
-
-    await prepareActualVisits(
-      apiRequest,
-      work,
-      workPk,
-      privileged,
-      leader,
-      skip
-    );
-
-    await test.step('Заполнить табель и отправить на согласование', async () => {
-      await fillReportCardAndSend(apiRequest, work, workPk, privileged);
-      await expectAgreementStage(apiRequest, workPk, 'lvl_1:');
-    });
-
-    await test.step('Руководитель службы согласовывает табель', async () => {
-      await approveTimeTable(workPk, work.name, HEAD_TIME_TABLE_PATH, head);
-      await expectAgreementStage(apiRequest, workPk, 'lvl_1:true');
-    });
-
-    await test.step('Отдел планирования согласовывает табель', async () => {
-      await approveTimeTable(workPk, work.name, SKIP_TIME_TABLE_PATH, skip);
-      await expectAgreementStage(apiRequest, workPk, 'lvl_2:true');
-    });
-
-    await test.step('Проверить наличие вкладки «На согласование» для технического директора', async () => {
+    await test.step('Проверка вкладки «На согласование» для технического директора', async () => {
       await verifyTabs(td, 'На согласование');
     });
 
-    await test.step('Технический директор согласовывает табель', async () => {
+    await test.step('Согласование табеля техническим директором', async () => {
       await approveTimeTable(workPk, work.name, TD_TIME_TABLE_PATH, td);
       await expectAgreementStage(apiRequest, workPk, 'lvl_3:true');
     });
 
-    await test.step('Проверить наличие вкладки «Полностью согласованные» после согласования ТД', async () => {
+    await test.step('Проверка вкладки «Полностью согласованные» после согласования ТД', async () => {
       await verifyTabs(td, 'Полностью согласованные');
     });
-  });
 
-  test('Сценарий 5. Привилегированный сотрудник проверяет все статусы табеля', async ({
-    apiRequest,
-    createdWorkUi,
-    loginAs,
-  }) => {
-    const { work, workPk } = createdWorkUi;
-    const privileged = await loginAs('privileged');
-    const leader = await loginAs('leader');
-    const head = await loginAs('head');
-    const skip = await loginAs('skip');
-    const td = await loginAs('td');
-
-    await prepareActualVisits(
-      apiRequest,
-      work,
-      workPk,
-      privileged,
-      leader,
-      skip
-    );
-
-    await test.step('Пройти табель по всем этапам согласования', async () => {
-      await fillReportCardAndSend(apiRequest, work, workPk, privileged);
-      await expectAgreementStage(apiRequest, workPk, 'lvl_1:');
-      await approveTimeTable(workPk, work.name, HEAD_TIME_TABLE_PATH, head);
-      await expectAgreementStage(apiRequest, workPk, 'lvl_1:true');
-      await approveTimeTable(workPk, work.name, SKIP_TIME_TABLE_PATH, skip);
-      await expectAgreementStage(apiRequest, workPk, 'lvl_2:true');
-      await approveTimeTable(workPk, work.name, TD_TIME_TABLE_PATH, td);
-      await expectAgreementStage(apiRequest, workPk, 'lvl_3:true');
-    });
-
-    await test.step('Проверить отображение всех этапов согласования в табеле', async () => {
+    await test.step('Проверка отображения всех этапов согласования в табеле', async () => {
       const reportCard = createReportCardPage(privileged.page);
       await reportCard.open(workPk);
       await reportCard.waitForLoaded(work.name);

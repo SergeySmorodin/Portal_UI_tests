@@ -47,6 +47,7 @@ import { createPortalWorkerFixture, type CreatePortalWorker } from './portal-wor
 import type { ProjectData, WorkData } from '../types';
 
 export type { CreatedUser, UserContextKit } from './user-kit';
+export type { CreatePortalWorker } from './portal-worker.fixtures';
 
 export interface CreatedProject {
   /** Данные созданного мегапроекта (для обращения в тесте). */

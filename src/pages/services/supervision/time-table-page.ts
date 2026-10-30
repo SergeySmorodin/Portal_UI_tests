@@ -99,6 +99,15 @@ export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
       } catch {
         // ignore
       }
+
+      // Переключаемся на вкладку "На согласование" если она есть
+      try {
+        await locators.tab('На согласование').click({ timeout: 5000 });
+        await page.waitForLoadState('networkidle').catch(() => {});
+        await page.waitForTimeout(1000);
+      } catch {
+        // Если вкладки нет или не удалось переключиться, продолжаем
+      }
     },
 
     searchProject: async (code: string): Promise<void> => {
