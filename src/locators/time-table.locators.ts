@@ -13,6 +13,10 @@ export const createTimeTableLocators = (page: Page) => {
     .locator('div.fixed.inset-0')
     .filter({ has: page.getByRole('heading', { name: 'Согласование табеля' }) });
 
+  const confirmModal = page
+    .locator('div.fixed.inset-0')
+    .filter({ hasText: 'Табель будет согласован' });
+
   return {
     heading: page.locator('h1'),
 
@@ -21,6 +25,11 @@ export const createTimeTableLocators = (page: Page) => {
     workRow: (name: string) =>
       page.locator('table tbody tr').filter({ has: page.getByRole('button', { name }) }),
     workButton: (name: string) => page.getByRole('button', { name }).first(),
+
+    // Вкладки на странице согласования табелей
+    tabs: page.locator('button[role="tab"]'),
+    tab: (name: string) => page.getByRole('tab', { name }).first(),
+    activeTab: page.locator('button[role="tab"][aria-selected="true"]'),
 
     // Страница согласования табеля работы
     approvalHeading: (name: string) =>
@@ -38,6 +47,11 @@ export const createTimeTableLocators = (page: Page) => {
     // Иконка в начале имени кнопки, поэтому матчим по окончанию (регистр отделяет «Не согласован»)
     approveDecisionButton: decisionModal.getByRole('button', { name: /Согласован$/ }),
     rejectDecisionButton: decisionModal.getByRole('button', { name: /Не согласован$/ }),
+
+    // Модал подтверждения согласования
+    confirmModal,
+    confirmYesButton: confirmModal.getByRole('button', { name: 'Да' }),
+    confirmNoButton: confirmModal.getByRole('button', { name: 'Нет' }),
   };
 };
 

@@ -86,6 +86,8 @@ export interface CreateUserOptions {
   groups?: readonly PortalGroup[];
   /** Заменить текущие группы, а не добавить к ним. */
   replace?: boolean;
+  /** Категория сотрудника (worker, itr) */
+  kind?: string;
 }
 
 /** Порталу нужен числовой pk должности: строковые pk из констант приводим к числу. */

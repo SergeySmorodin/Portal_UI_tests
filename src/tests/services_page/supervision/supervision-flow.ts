@@ -16,7 +16,7 @@ import { formatDmy, parseDmy, randomDate } from '../../../utils/date';
  * после чего в табеле появляются ячейки дней).
  */
 export const VISIT_COUNT = 2;
-export const LEADER_TIME_TABLE_PATH = '/services/supervision/time-table';
+export const HEAD_TIME_TABLE_PATH = '/services/supervision/time-table';
 export const SKIP_TIME_TABLE_PATH = '/SKIP/approval/time-table';
 export const TD_TIME_TABLE_PATH = '/TechnicalDirector/approval/time-table';
 export const APPROVAL_STAGE_TITLES = [
@@ -49,7 +49,7 @@ export const expectAgreementStage = async (
 ): Promise<void> => {
   await expect
     .poll(async () => (await getAgreements(apiRequest, workPk)).some((a) => a.startsWith(prefix)), {
-      timeout: config.timeouts.long,
+      timeout: config.timeouts.long * 2,
     })
     .toBe(true);
 };

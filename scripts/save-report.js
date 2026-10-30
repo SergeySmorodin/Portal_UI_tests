@@ -3,6 +3,7 @@ import path from 'node:path';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
+
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPORT_SOURCE = path.join(ROOT, 'playwright-report');
 const JSON_REPORT = path.join(ROOT, 'test-results.json');
@@ -81,6 +82,8 @@ function parseStats(data) {
     flaky: s.flaky ?? 0,
     skipped: s.skipped ?? 0,
     duration: s.duration ?? 0,
+    // общее количество = все прошедшие + упавшие + flaky + пропущенные
+    total: (s.expected ?? 0) + (s.unexpected ?? 0) + (s.flaky ?? 0) + (s.skipped ?? 0),
   };
 }
 
@@ -109,7 +112,7 @@ function generateIndex(reportsDir) {
       }
       const date = formatDate(run);
       if (!summary) {
-        return `<tr><td>${i + 1}</td><td><a href="${run}/index.html">${date}</a></td><td colspan="5">—</td></tr>`;
+        return `<tr><td>${i + 1}</td><td><a href="${run}/index.html">${date}</a></td><td colspan="6">—</td></tr>`;
       }
       const status =
         summary.unexpected === 0
@@ -117,7 +120,7 @@ function generateIndex(reportsDir) {
           : '<span style="color:#f85149;font-weight:bold">FAIL</span>';
       const d = summary.duration;
       const dur = d >= 60000 ? `${Math.round(d / 60000)} min` : `${Math.round(d / 1000)} sec`;
-      return `<tr><td>${i + 1}</td><td><a href="${run}/index.html">${date}</a></td><td>${status}</td><td>${summary.expected}</td><td>${summary.unexpected}</td><td>${summary.flaky}</td><td>${summary.skipped}</td><td>${dur}</td></tr>`;
+      return `<tr><td>${i + 1}</td><td><a href="${run}/index.html">${date}</a></td><td>${status}</td><td>${summary.total}</td><td>${summary.expected}</td><td>${summary.unexpected}</td><td>${summary.flaky}</td><td>${summary.skipped}</td><td>${dur}</td></tr>`;
     })
     .join('\n');
 
@@ -144,7 +147,7 @@ function generateIndex(reportsDir) {
 <body>
   <h1>Playwright Test Reports</h1>
   <table>
-    <thead><tr><th>#</th><th>Date</th><th>Status</th><th>Passed</th><th>Failed</th><th>Flaky</th><th>Skipped</th><th>Duration</th></tr></thead>
+    <thead><tr><th>#</th><th>Date</th><th>Status</th><th>Total</th><th>Passed</th><th>Failed</th><th>Flaky</th><th>Skipped</th><th>Duration</th></tr></thead>
     <tbody>${rows}</tbody>
   </table>
 </body>

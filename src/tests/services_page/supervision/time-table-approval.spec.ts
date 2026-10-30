@@ -1,19 +1,18 @@
 import { APIRequestContext } from '@playwright/test';
 import { expect, test, type RoleSession } from '../../../fixtures/test-fixtures';
-import { type CreatePortalWorker } from '../../../fixtures/portal-worker.fixtures';
 import { createReportCardPage } from '../../../pages/services/supervision/report-card-page';
-import { createTimeTableApprovalPage } from '../../../pages/services/supervision/time-table-page';
+import { createTimeTableApprovalPage, createTimeTablePage } from '../../../pages/services/supervision/time-table-page';
 import { type WorkData } from '../../../types';
 import { addDays, formatDmy, parseDmy } from '../../../utils/date';
 import {
   APPROVAL_STAGE_TITLES,
-  LEADER_TIME_TABLE_PATH,
+  HEAD_TIME_TABLE_PATH,
   SKIP_TIME_TABLE_PATH,
   TD_TIME_TABLE_PATH,
   approveDistributionRequest,
   expectActualVisits,
   expectAgreementStage,
-  prepareWorkWithCustomWorkers,
+  prepareWorkWithVisits,
   processRequestInSkip,
   submitRequestForApproval,
 } from './supervision-flow';
@@ -36,13 +35,12 @@ const prepareActualVisits = async (
   workPk: string,
   privileged: RoleSession,
   leader: RoleSession,
-  skip: RoleSession,
-  createPortalWorker: CreatePortalWorker
+  skip: RoleSession
 ): Promise<void> => {
   const { start, stop } = visitPeriod(work);
 
   await test.step('Подготовить визиты и подать заявку на командировку', async () => {
-    await prepareWorkWithCustomWorkers(apiRequest, workPk, privileged, createPortalWorker);
+    await prepareWorkWithVisits(apiRequest, workPk, privileged);
     await submitRequestForApproval(apiRequest, work, workPk, privileged, {
       start: formatDmy(start),
       stop: formatDmy(stop),
@@ -50,7 +48,7 @@ const prepareActualVisits = async (
     });
   });
 
-  await test.step('Согласовать заявку руководителем службы', async () => {
+  await test.step('Согласовать заявку руководителем сервиса', async () => {
     await approveDistributionRequest(work, leader);
   });
 
@@ -83,15 +81,26 @@ const fillReportCardAndSend = async (
 
 const approveTimeTable = async (
   workPk: string,
+  workName: string,
   pagePath: string,
   user: RoleSession
 ): Promise<void> => {
-  // Открываем работу напрямую по URL
-  await user.page.goto(`/services/supervision/time-table/approval/${workPk}`);
-  await user.page.waitForTimeout(3000);
-
   const approvalPage = createTimeTableApprovalPage(user.page, pagePath);
+  await approvalPage.open();
+  await approvalPage.searchProject(workName);
+  await approvalPage.expectWorkVisible(workName);
+  await approvalPage.openWork(workName);
   await approvalPage.approve();
+};
+
+// Проверка наличия вкладок на странице согласования табелей
+const verifyTabs = async (
+  user: RoleSession,
+  expectedTab: string
+): Promise<void> => {
+  const timeTablePage = createTimeTablePage(user.page);
+  await timeTablePage.open();
+  await timeTablePage.expectTabVisible(expectedTab);
 };
 
 test.describe('Согласование табеля', () => {
@@ -101,7 +110,6 @@ test.describe('Согласование табеля', () => {
     apiRequest,
     createdWorkUi,
     loginAs,
-    createPortalWorker,
   }) => {
     const { work, workPk } = createdWorkUi;
     const privileged = await loginAs('privileged');
@@ -114,8 +122,7 @@ test.describe('Согласование табеля', () => {
       workPk,
       privileged,
       leader,
-      skip,
-      createPortalWorker
+      skip
     );
 
     await test.step('Заполнить табель и отправить его на согласование', async () => {
@@ -131,11 +138,11 @@ test.describe('Согласование табеля', () => {
     apiRequest,
     createdWorkUi,
     loginAs,
-    createPortalWorker,
   }) => {
     const { work, workPk } = createdWorkUi;
     const privileged = await loginAs('privileged');
     const leader = await loginAs('leader');
+    const head = await loginAs('head');
     const skip = await loginAs('skip');
 
     await prepareActualVisits(
@@ -144,8 +151,7 @@ test.describe('Согласование табеля', () => {
       workPk,
       privileged,
       leader,
-      skip,
-      createPortalWorker
+      skip
     );
 
     await test.step('Заполнить табель и отправить на согласование', async () => {
@@ -153,9 +159,17 @@ test.describe('Согласование табеля', () => {
       await expectAgreementStage(apiRequest, workPk, 'lvl_1:');
     });
 
+    await test.step('Проверить наличие вкладки «На согласование» для руководителя службы', async () => {
+      await verifyTabs(head, 'На согласование');
+    });
+
     await test.step('Руководитель службы согласовывает табель', async () => {
-      await approveTimeTable(workPk, LEADER_TIME_TABLE_PATH, leader);
+      await approveTimeTable(workPk, work.name, HEAD_TIME_TABLE_PATH, head);
       await expectAgreementStage(apiRequest, workPk, 'lvl_1:true');
+    });
+
+    await test.step('Проверить наличие вкладки «Отработанные» после согласования руководителем', async () => {
+      await verifyTabs(head, 'Отработанные');
     });
   });
 
@@ -163,11 +177,11 @@ test.describe('Согласование табеля', () => {
     apiRequest,
     createdWorkUi,
     loginAs,
-    createPortalWorker,
   }) => {
     const { work, workPk } = createdWorkUi;
     const privileged = await loginAs('privileged');
     const leader = await loginAs('leader');
+    const head = await loginAs('head');
     const skip = await loginAs('skip');
 
     await prepareActualVisits(
@@ -176,8 +190,7 @@ test.describe('Согласование табеля', () => {
       workPk,
       privileged,
       leader,
-      skip,
-      createPortalWorker
+      skip
     );
 
     await test.step('Заполнить табель и отправить на согласование', async () => {
@@ -186,13 +199,21 @@ test.describe('Согласование табеля', () => {
     });
 
     await test.step('Руководитель службы согласовывает табель', async () => {
-      await approveTimeTable(workPk, LEADER_TIME_TABLE_PATH, leader);
+      await approveTimeTable(workPk, work.name, HEAD_TIME_TABLE_PATH, head);
       await expectAgreementStage(apiRequest, workPk, 'lvl_1:true');
     });
 
+    await test.step('Проверить наличие вкладки «На согласование» для отдела планирования', async () => {
+      await verifyTabs(skip, 'На согласование');
+    });
+
     await test.step('Отдел планирования согласовывает табель', async () => {
-      await approveTimeTable(workPk, SKIP_TIME_TABLE_PATH, skip);
+      await approveTimeTable(workPk, work.name, SKIP_TIME_TABLE_PATH, skip);
       await expectAgreementStage(apiRequest, workPk, 'lvl_2:true');
+    });
+
+    await test.step('Проверить наличие вкладки «Отработанные» после согласования отделом планирования', async () => {
+      await verifyTabs(skip, 'Отработанные');
     });
   });
 
@@ -200,11 +221,11 @@ test.describe('Согласование табеля', () => {
     apiRequest,
     createdWorkUi,
     loginAs,
-    createPortalWorker,
   }) => {
     const { work, workPk } = createdWorkUi;
     const privileged = await loginAs('privileged');
     const leader = await loginAs('leader');
+    const head = await loginAs('head');
     const skip = await loginAs('skip');
     const td = await loginAs('td');
 
@@ -214,8 +235,7 @@ test.describe('Согласование табеля', () => {
       workPk,
       privileged,
       leader,
-      skip,
-      createPortalWorker
+      skip
     );
 
     await test.step('Заполнить табель и отправить на согласование', async () => {
@@ -224,18 +244,26 @@ test.describe('Согласование табеля', () => {
     });
 
     await test.step('Руководитель службы согласовывает табель', async () => {
-      await approveTimeTable(workPk, LEADER_TIME_TABLE_PATH, leader);
+      await approveTimeTable(workPk, work.name, HEAD_TIME_TABLE_PATH, head);
       await expectAgreementStage(apiRequest, workPk, 'lvl_1:true');
     });
 
     await test.step('Отдел планирования согласовывает табель', async () => {
-      await approveTimeTable(workPk, SKIP_TIME_TABLE_PATH, skip);
+      await approveTimeTable(workPk, work.name, SKIP_TIME_TABLE_PATH, skip);
       await expectAgreementStage(apiRequest, workPk, 'lvl_2:true');
     });
 
+    await test.step('Проверить наличие вкладки «На согласование» для технического директора', async () => {
+      await verifyTabs(td, 'На согласование');
+    });
+
     await test.step('Технический директор согласовывает табель', async () => {
-      await approveTimeTable(workPk, TD_TIME_TABLE_PATH, td);
+      await approveTimeTable(workPk, work.name, TD_TIME_TABLE_PATH, td);
       await expectAgreementStage(apiRequest, workPk, 'lvl_3:true');
+    });
+
+    await test.step('Проверить наличие вкладки «Полностью согласованные» после согласования ТД', async () => {
+      await verifyTabs(td, 'Полностью согласованные');
     });
   });
 
@@ -243,11 +271,11 @@ test.describe('Согласование табеля', () => {
     apiRequest,
     createdWorkUi,
     loginAs,
-    createPortalWorker,
   }) => {
     const { work, workPk } = createdWorkUi;
     const privileged = await loginAs('privileged');
     const leader = await loginAs('leader');
+    const head = await loginAs('head');
     const skip = await loginAs('skip');
     const td = await loginAs('td');
 
@@ -257,18 +285,17 @@ test.describe('Согласование табеля', () => {
       workPk,
       privileged,
       leader,
-      skip,
-      createPortalWorker
+      skip
     );
 
     await test.step('Пройти табель по всем этапам согласования', async () => {
       await fillReportCardAndSend(apiRequest, work, workPk, privileged);
       await expectAgreementStage(apiRequest, workPk, 'lvl_1:');
-      await approveTimeTable(workPk, LEADER_TIME_TABLE_PATH, leader);
+      await approveTimeTable(workPk, work.name, HEAD_TIME_TABLE_PATH, head);
       await expectAgreementStage(apiRequest, workPk, 'lvl_1:true');
-      await approveTimeTable(workPk, SKIP_TIME_TABLE_PATH, skip);
+      await approveTimeTable(workPk, work.name, SKIP_TIME_TABLE_PATH, skip);
       await expectAgreementStage(apiRequest, workPk, 'lvl_2:true');
-      await approveTimeTable(workPk, TD_TIME_TABLE_PATH, td);
+      await approveTimeTable(workPk, work.name, TD_TIME_TABLE_PATH, td);
       await expectAgreementStage(apiRequest, workPk, 'lvl_3:true');
     });
 

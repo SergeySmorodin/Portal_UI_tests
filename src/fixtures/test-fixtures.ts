@@ -72,7 +72,7 @@ export type CreateUserPageOptions = CreateUserOptions;
 type CreateUserPage = (options?: CreateUserPageOptions) => Promise<UserContextKit>;
 
 /** Роли с реальными учётными записями портала (см. .env). */
-export type RoleName = 'leader' | 'skip' | 'td' | 'privileged';
+export type RoleName = 'leader' | 'head' | 'skip' | 'td' | 'privileged';
 
 export interface RoleSession {
   page: Page;
@@ -82,6 +82,7 @@ export interface RoleSession {
 
 const ROLE_CREDENTIALS: Record<RoleName, { login: string; password: string }> = {
   leader: { login: 'LOGIN_LEADER', password: 'PASSWORD_LEADER' },
+  head: { login: 'LOGIN_HEAD', password: 'PASSWORD_HEAD' },
   skip: { login: 'LOGIN_SKIP', password: 'PASSWORD_SKIP' },
   td: { login: 'LOGIN_TD', password: 'PASSWORD_TD' },
   privileged: { login: 'LOGIN_PRIVILEGET', password: 'PASSWORD_PRIVILEGET' },
