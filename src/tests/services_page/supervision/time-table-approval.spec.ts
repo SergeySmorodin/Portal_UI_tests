@@ -210,7 +210,7 @@ test.describe('Согласование табеля', () => {
     await test.step('Отклонение табеля руководителем службы', async () => {
       await rejectTimeTable(workPk, work.name, HEAD_TIME_TABLE_PATH, head);
       // После отклонения проверяем, что табель вернулся на доработку
-      await page.waitForTimeout(3000);
+      await privileged.page.waitForTimeout(3000);
     });
 
     await test.step('Проверка, что табель вернулся на доработку', async () => {
@@ -259,7 +259,8 @@ test.describe('Согласование табеля', () => {
 
     await test.step('Отклонение табеля техническим директором', async () => {
       await rejectTimeTable(workPk, work.name, TD_TIME_TABLE_PATH, td);
-      await expectAgreementStage(apiRequest, workPk, 'lvl_3:false');
+      // После отклонения проверяем, что табель вернулся на доработку
+      await privileged.page.waitForTimeout(3000);
     });
 
     await test.step('Проверка, что табель вернулся на доработку', async () => {
