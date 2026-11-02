@@ -6,7 +6,11 @@ import { createDistributionRequestsPage } from '../../../pages/services/supervis
 import { createDistributionRequestsApprovalPage } from '../../../pages/services/supervision/distribution-requests-approval-page';
 import { createSkipRequisitionsPage } from '../../../pages/skip/skip-requisitions-page';
 import { getWorkRequisitions } from '../../../test-data/api/requisition-api';
-import { getAgreements, getReportCard, assignWorkerToProject } from '../../../test-data/api/project-api';
+import {
+  getAgreements,
+  getReportCard,
+  assignWorkerToProject,
+} from '../../../test-data/api/project-api';
 import { type WorkData } from '../../../types';
 import { formatDmy, parseDmy, randomDate } from '../../../utils/date';
 

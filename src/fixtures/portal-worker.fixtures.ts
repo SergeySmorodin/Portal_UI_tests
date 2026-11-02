@@ -1,11 +1,13 @@
-import { APIRequestContext } from '@playwright/test';
+import { APIRequestContext, BrowserContext, Page } from '@playwright/test';
 import { userFactory } from '../test-data/factory/user-factory';
 import {
   createUserViaApi,
   nextPersonalNumber,
   SUPERVISION_POSITION_PK,
+  type PortalGroup,
 } from '../test-data/api/user-api';
 import { createUserCleanup } from './user-kit';
+import { createLoginPage } from '../pages/login/login-page';
 
 /** ФИО создаваемого сотрудника (полное имя = «Фамилия Имя Отчество»). */
 export interface PortalWorkerName {
@@ -17,6 +19,8 @@ export interface PortalWorkerName {
 /** Созданный через API сотрудник, добавляемый в «Доступный персонал». */
 export interface CreatedPortalWorker {
   uuid: string;
+  username: string;
+  password: string;
   /** Полное имя в том виде, в котором его показывает портал. */
   fullName: string;
 }
@@ -54,7 +58,7 @@ const createPortalWorker =
       },
     });
 
-    return { uuid: created.uuid, fullName: `${lastName} ${firstName} ${patronymic}` };
+    return { uuid: created.uuid, username: user.username, password: user.password, fullName: `${lastName} ${firstName} ${patronymic}` };
   };
 
 type CreatePortalWorkerFixture = (
@@ -82,4 +86,87 @@ export const createPortalWorkerFixture: CreatePortalWorkerFixture = async (
   });
 
   await cleanup.run();
+};
+
+/** Создает согласующего с нужной группой (head, skip, td, leader, privileged). */
+export interface ApproverName {
+  lastName: string;
+  firstName: string;
+  patronymic: string;
+  group: PortalGroup;
+}
+
+export interface CreatedApprover {
+  uuid: string;
+  username: string;
+  password: string;
+  fullName: string;
+  page: Page;
+  context: BrowserContext;
+}
+
+export type CreateApprover = (name: ApproverName) => Promise<CreatedApprover>;
+
+interface CreateApproverArgs {
+  request: APIRequestContext;
+  browser: any;
+}
+
+const createApprover =
+  ({ request, browser }: CreateApproverArgs) =>
+  async ({ lastName, firstName, patronymic, group }: ApproverName): Promise<CreatedApprover> => {
+    const user = userFactory.regular();
+
+    const created = await createUserViaApi(request, user, {
+      position: SUPERVISION_POSITION_PK,
+      ratePay: '1.00',
+      personalNumber: nextPersonalNumber(),
+      groups: [group],
+      profile: {
+        lastName,
+        firstName,
+        patronymic,
+        email: `${user.username}@example.com`,
+      },
+    });
+
+    // Создаем контекст и страницу для авторизации
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    const loginPage = createLoginPage(page);
+    await loginPage.open();
+    await loginPage.login({ username: user.username, password: user.password });
+    await loginPage.waitForLoginSuccess();
+
+    return {
+      uuid: created.uuid,
+      username: user.username,
+      password: user.password,
+      fullName: `${lastName} ${firstName} ${patronymic}`,
+      page,
+      context,
+    };
+  };
+
+type CreateApproverFixture = (
+  args: CreateApproverArgs,
+  use: (createApprover: CreateApprover) => Promise<void>
+) => Promise<void>;
+
+export const createApproverFixture: CreateApproverFixture = async (
+  { request, browser },
+  use
+) => {
+  const cleanup = createUserCleanup(request);
+  const contexts: BrowserContext[] = [];
+
+  await use(async (name) => {
+    const approver = await createApprover({ request, browser })(name);
+    cleanup.track(approver.uuid);
+    contexts.push(approver.context);
+    return approver;
+  });
+
+  await cleanup.run();
+  await Promise.all(contexts.map((ctx) => ctx.close()));
 };

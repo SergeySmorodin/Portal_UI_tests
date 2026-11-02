@@ -1,7 +1,10 @@
 import { APIRequestContext } from '@playwright/test';
 import { expect, test, type RoleSession } from '../../../fixtures/test-fixtures';
 import { createReportCardPage } from '../../../pages/services/supervision/report-card-page';
-import { createTimeTableApprovalPage, createTimeTablePage } from '../../../pages/services/supervision/time-table-page';
+import {
+  createTimeTableApprovalPage,
+  createTimeTablePage,
+} from '../../../pages/services/supervision/time-table-page';
 import { type WorkData } from '../../../types';
 import { addDays, formatDmy, parseDmy } from '../../../utils/date';
 import { config } from '../../../config';
@@ -103,10 +106,7 @@ const rejectTimeTable = async (
 };
 
 // Проверка наличия вкладок на странице согласования табелей
-const verifyTabs = async (
-  user: RoleSession,
-  expectedTab: string
-): Promise<void> => {
+const verifyTabs = async (user: RoleSession, expectedTab: string): Promise<void> => {
   const timeTablePage = createTimeTablePage(user.page);
   await timeTablePage.open();
   await timeTablePage.expectTabVisible(expectedTab);
@@ -183,11 +183,7 @@ test.describe('Согласование табеля', () => {
     });
   });
 
-  test('Табель отклонен руководителем службы', async ({
-    apiRequest,
-    createdWorkUi,
-    loginAs,
-  }) => {
+  test('Табель отклонен руководителем службы', async ({ apiRequest, createdWorkUi, loginAs }) => {
     const { work, workPk } = createdWorkUi;
     const privileged = await loginAs('privileged');
     const leader = await loginAs('leader');
@@ -218,15 +214,14 @@ test.describe('Согласование табеля', () => {
       await reportCard.open(workPk);
       await reportCard.waitForLoaded(work.name);
       // Проверяем, что кнопка согласования видима (значит табель на доработке)
-      await reportCard.locators.approvalButton.waitFor({ state: 'visible', timeout: config.timeouts.long });
+      await reportCard.locators.approvalButton.waitFor({
+        state: 'visible',
+        timeout: config.timeouts.long,
+      });
     });
   });
 
-  test('Табель отклонен техническим директором', async ({
-    apiRequest,
-    createdWorkUi,
-    loginAs,
-  }) => {
+  test('Табель отклонен техническим директором', async ({ apiRequest, createdWorkUi, loginAs }) => {
     const { work, workPk } = createdWorkUi;
     const privileged = await loginAs('privileged');
     const leader = await loginAs('leader');
@@ -268,7 +263,10 @@ test.describe('Согласование табеля', () => {
       await reportCard.open(workPk);
       await reportCard.waitForLoaded(work.name);
       // Проверяем, что кнопка согласования видима (значит табель на доработке)
-      await reportCard.locators.approvalButton.waitFor({ state: 'visible', timeout: config.timeouts.long });
+      await reportCard.locators.approvalButton.waitFor({
+        state: 'visible',
+        timeout: config.timeouts.long,
+      });
     });
   });
 });

@@ -2,6 +2,7 @@ import { APIRequestContext } from '@playwright/test';
 import { config } from '../../config';
 import { UserRegistrationData } from '../../types';
 import { api } from './api-handles';
+import { userFactory } from '../factory/user-factory';
 
 export interface CreatedApiUser extends UserRegistrationData {
   uuid: string;
@@ -39,6 +40,29 @@ export type PortalGroup = (typeof PORTAL_GROUPS)[number];
 
 export const SUPERVISION_POSITION_PK = '581'; // Ведущий инженер по сварке (супервайзинг)
 // 526 Ведущий инженер-механик
+
+/** Создает суперюзера для API запросов через фикстуру. Возвращает uuid и учётные данные. */
+export const createSuperUser = async (
+  request: APIRequestContext
+): Promise<{ uuid: string; username: string; password: string }> => {
+  const user = userFactory.regular();
+
+  const created = await createUserViaApi(request, user, {
+    position: SUPERVISION_POSITION_PK,
+    ratePay: '1.00',
+    personalNumber: nextPersonalNumber(),
+    groups: PORTAL_GROUPS,
+    isSuperuser: true,
+    profile: {
+      lastName: 'API',
+      firstName: 'SuperUser',
+      patronymic: 'Тестовый',
+      email: `${user.username}@example.com`,
+    },
+  });
+
+  return { uuid: created.uuid, username: user.username, password: user.password };
+};
 
 /** Признаки того, что DRF-поле `position` не нашло pk должности в базе. */
 const MISSING_POSITION_RE = /не существует|does not exist|invalid pk|неверный первичный ключ/i;
@@ -88,6 +112,8 @@ export interface CreateUserOptions {
   replace?: boolean;
   /** Категория сотрудника (worker, itr) */
   kind?: string;
+  /** Флаг суперпользователя (is_superuser). */
+  isSuperuser?: boolean;
 }
 
 /** Порталу нужен числовой pk должности: строковые pk из констант приводим к числу. */
@@ -137,6 +163,7 @@ export const createUserViaApi = async (
 
   if (options.groups?.length) data.groups = options.groups;
   if (options.replace !== undefined) data.replace = options.replace;
+  if (options.isSuperuser !== undefined) data.is_superuser = options.isSuperuser;
 
   const response = await request.post(api.auth.add_user, { data });
 

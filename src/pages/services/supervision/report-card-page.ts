@@ -60,9 +60,12 @@ export const createReportCardPage = (page: Page) => {
     selectAllRows: async (): Promise<void> => {
       const checkbox = locators.headerCheckbox;
       if (await checkbox.count()) {
-        await checkbox.first().check().catch(async () => {
-          await checkbox.first().click();
-        });
+        await checkbox
+          .first()
+          .check()
+          .catch(async () => {
+            await checkbox.first().click();
+          });
       }
     },
 

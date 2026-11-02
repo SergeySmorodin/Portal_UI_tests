@@ -30,7 +30,9 @@ export const createTimeTablePage = (page: Page) => {
     },
 
     expectWorkVisible: async (name: string): Promise<void> => {
-      await locators.workRow(name).waitFor({ state: 'visible', timeout: (config.timeouts as any).veryLong || 120000 });
+      await locators
+        .workRow(name)
+        .waitFor({ state: 'visible', timeout: (config.timeouts as any).veryLong || 120000 });
     },
 
     openApproval: async (name: string): Promise<void> => {
@@ -119,7 +121,12 @@ export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
     },
 
     expectWorkVisible: async (name: string): Promise<void> => {
-      await locators.workRow(name).waitFor({ state: 'visible', timeout: (config.timeouts as any).veryLong || config.timeouts.long * 2 });
+      await locators
+        .workRow(name)
+        .waitFor({
+          state: 'visible',
+          timeout: (config.timeouts as any).veryLong || config.timeouts.long * 2,
+        });
     },
 
     openWork: async (name: string): Promise<void> => {
@@ -189,7 +196,10 @@ export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
       try {
         await locators.rejectConfirmModal.waitFor({ state: 'visible', timeout: 3000 });
         await locators.rejectConfirmYesButton.click();
-        await locators.rejectConfirmModal.waitFor({ state: 'hidden', timeout: config.timeouts.long });
+        await locators.rejectConfirmModal.waitFor({
+          state: 'hidden',
+          timeout: config.timeouts.long,
+        });
       } catch {
         // Если модального окна подтверждения нет, возможно, подтверждение не требуется
       }

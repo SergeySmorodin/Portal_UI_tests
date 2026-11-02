@@ -41,13 +41,19 @@ import {
   deleteUserViaApi,
   nextPersonalNumber,
   type CreateUserOptions,
+  createSuperUser,
 } from '../test-data/api/user-api';
 import { createUserCleanup, type CreatedUser, type UserContextKit } from './user-kit';
-import { createPortalWorkerFixture, type CreatePortalWorker } from './portal-worker.fixtures';
+import {
+  createPortalWorkerFixture,
+  type CreatePortalWorker,
+  createApproverFixture,
+  type CreateApprover,
+} from './portal-worker.fixtures';
 import type { ProjectData, WorkData } from '../types';
 
 export type { CreatedUser, UserContextKit } from './user-kit';
-export type { CreatePortalWorker } from './portal-worker.fixtures';
+export type { CreatePortalWorker, CreateApprover } from './portal-worker.fixtures';
 
 export interface CreatedProject {
   /** Данные созданного мегапроекта (для обращения в тесте). */
@@ -128,6 +134,12 @@ export interface TestFixtures {
   loginAs: LoginAs;
   /** Фабрика сотрудников для «Доступного персонала» (создаются и удаляются через API). */
   createPortalWorker: CreatePortalWorker;
+  /** Фабрика согласующих для табеля (создаются и удаляются через API). */
+  createApprover: CreateApprover;
+  /** Суперюзер для API запросов. */
+  createSuperUser: any;
+  /** APIRequestContext, авторизованный под суперпользователем. */
+  superUserRequest: APIRequestContext;
   createdProject: CreatedProject;
   createdWork: CreatedWork;
   createdWorkExecution: CreatedWork;
@@ -413,6 +425,59 @@ export const test = base.extend<TestFixtures>({
   },
 
   createPortalWorker: createPortalWorkerFixture,
+  createApprover: createApproverFixture,
+
+  createSuperUser: async ({ request, browser, apiRequest }, use) => {
+    const cleanup = createUserCleanup(apiRequest);
+    const superUser = await createSuperUser(request);
+
+    // Создаем браузерный контекст и логинимся под суперпользователем,
+    // чтобы все API-запросы шли от его имени.
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    const loginPage = createLoginPage(page);
+    await loginPage.open();
+    await loginPage.login({ username: superUser.username, password: superUser.password });
+    await loginPage.waitForLoginSuccess();
+
+    const superUserRequest = context.request;
+    cleanup.track(superUser.uuid, context);
+
+    await use(superUserRequest);
+
+    await context.close();
+    try {
+      await deleteUserViaApi(apiRequest, superUser.uuid);
+    } catch (error) {
+      // Не прерываем выполнение при ошибке удаления
+    }
+  },
+
+  superUserRequest: async ({ request, browser, apiRequest }, use) => {
+    const cleanup = createUserCleanup(apiRequest);
+    const superUser = await createSuperUser(request);
+
+    // Создаем браузерный контекст и логинимся под суперпользователем,
+    // чтобы все API-запросы шли от его имени.
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    const loginPage = createLoginPage(page);
+    await loginPage.open();
+    await loginPage.login({ username: superUser.username, password: superUser.password });
+    await loginPage.waitForLoginSuccess();
+
+    const superUserRequest = context.request;
+    cleanup.track(superUser.uuid, context);
+
+    await use(superUserRequest);
+
+    await context.close();
+    try {
+      await deleteUserViaApi(apiRequest, superUser.uuid);
+    } catch (error) {
+      // Не прерываем выполнение при ошибке удаления
+    }
+  },
 
   loginAs: async ({ browser }, use) => {
     const contexts: BrowserContext[] = [];
