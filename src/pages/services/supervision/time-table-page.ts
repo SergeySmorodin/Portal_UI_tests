@@ -1,10 +1,12 @@
-import { Page, expect } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { createBasePage } from '../../base-page';
 import { createTimeTableLocators } from '../../../locators/time-table.locators';
 import { createReportCardPage } from './report-card-page';
 import { config } from '../../../config';
+import { resolvePage, type PageSource } from '../../page-source';
 
-export const createTimeTablePage = (page: Page) => {
+export const createTimeTablePage = (source: PageSource) => {
+  const page = resolvePage(source);
   const basePage = createBasePage(page);
   const PAGE_PATH = '/services/supervision/time-table';
 
@@ -82,7 +84,8 @@ export type TimeTablePage = ReturnType<typeof createTimeTablePage>;
  * Очередь согласования табелей для ролей «Отдел планирования» и
  * «Технический директор»: список работ, открытие табеля и согласование.
  */
-export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
+export const createTimeTableApprovalPage = (source: PageSource, pagePath: string) => {
+  const page = resolvePage(source);
   const basePage = createBasePage(page);
   const locators = createTimeTableLocators(page);
   const reportCardPage = createReportCardPage(page);
@@ -117,12 +120,10 @@ export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
     },
 
     expectWorkVisible: async (name: string): Promise<void> => {
-      await locators
-        .workRow(name)
-        .waitFor({
-          state: 'visible',
-          timeout: (config.timeouts as any).veryLong || config.timeouts.long * 2,
-        });
+      await locators.workRow(name).waitFor({
+        state: 'visible',
+        timeout: (config.timeouts as any).veryLong || config.timeouts.long * 2,
+      });
     },
 
     openWork: async (name: string): Promise<void> => {

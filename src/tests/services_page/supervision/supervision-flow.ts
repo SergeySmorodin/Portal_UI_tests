@@ -1,6 +1,7 @@
-import { APIRequestContext, Page } from '@playwright/test';
+import { APIRequestContext } from '@playwright/test';
 import { config } from '../../../config';
 import { expect, type RoleSession, type CreatePortalWorker } from '../../../fixtures/test-fixtures';
+import { resolvePage, type PageSource } from '../../../pages/page-source';
 import { createResourcePlanningPage } from '../../../pages/services/supervision/resource-planning-page';
 import { createDistributionRequestsPage } from '../../../pages/services/supervision/distribution-requests-page';
 import { createDistributionRequestsApprovalPage } from '../../../pages/services/supervision/distribution-requests-approval-page';
@@ -59,8 +60,9 @@ export const expectAgreementStage = async (
 };
 
 /** Проводит заявку по модалу «Управление заявками» до отправки на согласование. */
-export const submitRequest = async (page: Page, data: RequestData): Promise<void> => {
-  const requests = createDistributionRequestsPage(page);
+export const submitRequest = async (source: PageSource, data: RequestData): Promise<void> => {
+  const page = resolvePage(source);
+  const requests = createDistributionRequestsPage(source);
 
   await requests.createRequest();
   await requests.fillRequestCommon({
@@ -98,7 +100,7 @@ export const prepareWorkWithVisits = async (
   workPk: string,
   privileged: RoleSession
 ): Promise<void> => {
-  const resourcePlanningPage = createResourcePlanningPage(privileged.page);
+  const resourcePlanningPage = createResourcePlanningPage(privileged);
   await resourcePlanningPage.openWorkByPk(workPk);
   await resourcePlanningPage.addAvailableWorkers(VISIT_COUNT);
   await resourcePlanningPage.saveVisitsPersisted(apiRequest, workPk, VISIT_COUNT);
@@ -110,7 +112,7 @@ export const prepareWorkWithVisitsByNames = async (
   privileged: RoleSession,
   workerNames: string[]
 ): Promise<void> => {
-  const resourcePlanningPage = createResourcePlanningPage(privileged.page);
+  const resourcePlanningPage = createResourcePlanningPage(privileged);
   await resourcePlanningPage.openWorkByPk(workPk);
   await resourcePlanningPage.addAvailableWorkersByNames(workerNames);
   await resourcePlanningPage.saveVisitsPersisted(apiRequest, workPk, workerNames.length);
@@ -144,7 +146,7 @@ export const prepareWorkWithCustomWorkers = async (
   }
 
   // Добавляем работников к работе через UI (первые доступные, без поиска по имени)
-  const resourcePlanningPage = createResourcePlanningPage(privileged.page);
+  const resourcePlanningPage = createResourcePlanningPage(privileged);
   await resourcePlanningPage.openWorkByPk(workPk);
   await resourcePlanningPage.addAvailableWorkers(VISIT_COUNT);
   await resourcePlanningPage.saveVisitsPersisted(apiRequest, workPk, VISIT_COUNT);
@@ -159,10 +161,10 @@ export const submitRequestForApproval = async (
   privileged: RoleSession,
   data: RequestData = buildRequestData(work.startDate, work.stopDate)
 ): Promise<void> => {
-  const requests = createDistributionRequestsPage(privileged.page);
+  const requests = createDistributionRequestsPage(privileged);
   await requests.open();
   await requests.findWork(work.name);
-  await submitRequest(privileged.page, data);
+  await submitRequest(privileged, data);
 
   await expect
     .poll(async () => (await getWorkRequisitions(apiRequest, workPk))[0]?.status, {
@@ -175,7 +177,7 @@ export const approveDistributionRequest = async (
   work: WorkData,
   leader: RoleSession
 ): Promise<void> => {
-  const approval = createDistributionRequestsApprovalPage(leader.page);
+  const approval = createDistributionRequestsApprovalPage(leader);
   await approval.findAndOpenWork(work.name);
   await approval.openRequisitionCard();
   await approval.selectAllEmployees();
@@ -188,7 +190,7 @@ export const processRequestInSkip = async (
   skip: RoleSession,
   dates?: { start: Date; stop: Date }
 ): Promise<void> => {
-  const skipPage = createSkipRequisitionsPage(skip.page);
+  const skipPage = createSkipRequisitionsPage(skip);
   await skipPage.open();
   await skipPage.findWork(work.name);
   await skipPage.openWork(work.name);

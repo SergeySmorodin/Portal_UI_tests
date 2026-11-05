@@ -1,10 +1,35 @@
-import { Page } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { createBasePage } from '../../base-page';
 import { createReportCardLocators } from '../../../locators/report-card.locators';
 import { config } from '../../../config';
 import { api } from '../../../test-data/api/api-handles';
+import { resolvePage, type PageSource } from '../../page-source';
 
-export const createReportCardPage = (page: Page) => {
+/**
+ * Значения по умолчанию для заполнения табеля: стоимость часа, часы в день
+ * и дни, за которые эти часы вносятся (первые три дня визита).
+ *
+ * Ожидаемые итоги считаются из них же, поэтому в тестах не нужно повторять
+ * магические «24» и «12000».
+ */
+export const REPORT_CARD_FILL = {
+  rate: '500',
+  hoursPerDay: '8',
+  dayIndexes: [0, 1, 2],
+} as const;
+
+/** Параметры заполнения табеля; не заданные поля берутся из REPORT_CARD_FILL. */
+export interface ReportCardFill {
+  /** Стоимость часа. */
+  rate?: string;
+  /** Часы в день. */
+  hoursPerDay?: string;
+  /** Индексы дней, за которые вносятся часы. */
+  dayIndexes?: readonly number[];
+}
+
+export const createReportCardPage = (source: PageSource) => {
+  const page = resolvePage(source);
   const basePage = createBasePage(page);
   const locators = createReportCardLocators(page);
 
@@ -12,6 +37,20 @@ export const createReportCardPage = (page: Page) => {
     const cells = locators.workerDayCells(name);
     const count = await cells.count();
     return (await cells.nth(count - offsetFromEnd).textContent())?.trim() || '';
+  };
+
+  const fillRate = async (name: string, value: string): Promise<void> => {
+    await locators.workerRateInput(name).fill(value);
+  };
+
+  const fillWorkHours = async (
+    name: string,
+    dayIndexes: readonly number[],
+    value: string
+  ): Promise<void> => {
+    for (const dayIndex of dayIndexes) {
+      await locators.workerDayInput(name, dayIndex).fill(value);
+    }
   };
 
   return {
@@ -73,13 +112,49 @@ export const createReportCardPage = (page: Page) => {
       return await locators.workerRateInput(name).inputValue();
     },
 
-    fillRate: async (name: string, value: string): Promise<void> => {
-      await locators.workerRateInput(name).fill(value);
+    fillRate,
+
+    fillWorkHours,
+
+    /** Заполняет ставку всем сотрудникам и проверяет, что портал её принял. */
+    fillRateFor: async (workers: string[], rate: string = REPORT_CARD_FILL.rate): Promise<void> => {
+      for (const name of workers) {
+        await fillRate(name, rate);
+        await expect(locators.workerRateInput(name)).toHaveValue(rate);
+      }
     },
 
-    fillWorkHours: async (name: string, dayIndexes: number[], value: string): Promise<void> => {
-      for (const dayIndex of dayIndexes) {
-        await locators.workerDayInput(name, dayIndex).fill(value);
+    /** Заполняет часы всем сотрудникам за указанные дни (по умолчанию — первые три). */
+    fillHoursFor: async (
+      workers: string[],
+      {
+        hoursPerDay = REPORT_CARD_FILL.hoursPerDay,
+        dayIndexes = REPORT_CARD_FILL.dayIndexes,
+      }: ReportCardFill = {}
+    ): Promise<void> => {
+      for (const name of workers) {
+        await fillWorkHours(name, dayIndexes, hoursPerDay);
+      }
+    },
+
+    /**
+     * Проверяет итоги табеля по тем же параметрам, которыми его заполняли:
+     * сумма часов = часы в день × количество дней,
+     * сумма денег = ставка × сумма часов.
+     */
+    expectTotals: async (
+      workers: string[],
+      {
+        rate = REPORT_CARD_FILL.rate,
+        hoursPerDay = REPORT_CARD_FILL.hoursPerDay,
+        dayIndexes = REPORT_CARD_FILL.dayIndexes,
+      }: ReportCardFill = {}
+    ): Promise<void> => {
+      const hours = String(Number(hoursPerDay) * dayIndexes.length);
+      const sum = String(Number(rate) * Number(hours));
+      for (const name of workers) {
+        await expect.poll(() => lastCellValue(name, 2)).toBe(hours);
+        await expect.poll(() => lastCellValue(name, 1)).toBe(sum);
       }
     },
 

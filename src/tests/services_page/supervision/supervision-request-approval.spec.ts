@@ -1,6 +1,7 @@
-import { APIRequestContext, Page } from '@playwright/test';
+import { type APIRequestContext } from '@playwright/test';
 import { config } from '../../../config';
 import { expect, test } from '../../../fixtures/test-fixtures';
+import { resolvePage, type PageSource } from '../../../pages/page-source';
 import { createDistributionRequestsPage } from '../../../pages/services/supervision/distribution-requests-page';
 import { createDistributionRequestsApprovalPage } from '../../../pages/services/supervision/distribution-requests-approval-page';
 import { createSkipRequisitionsPage } from '../../../pages/skip/skip-requisitions-page';
@@ -29,8 +30,9 @@ const buildRequestData = (workStart: string, workStop: string): RequestData => {
 };
 
 /** Проводит заявку по модалу «Управление заявками» до отправки на согласование. */
-const submitRequest = async (page: Page, data: RequestData): Promise<void> => {
-  const requests = createDistributionRequestsPage(page);
+const submitRequest = async (source: PageSource, data: RequestData): Promise<void> => {
+  const page = resolvePage(source);
+  const requests = createDistributionRequestsPage(source);
 
   await requests.createRequest();
   await requests.fillRequestCommon({
@@ -94,9 +96,9 @@ test.describe('Согласование заявки на командировк
   }) => {
     const { work, workPk } = createdWork;
     const { privileged, leader, skip } = await createApprovers();
-    const requests = createDistributionRequestsPage(privileged.page);
-    const approval = createDistributionRequestsApprovalPage(leader.page);
-    const skipPage = createSkipRequisitionsPage(skip.page);
+    const requests = createDistributionRequestsPage(privileged);
+    const approval = createDistributionRequestsApprovalPage(leader);
+    const skipPage = createSkipRequisitionsPage(skip);
     const rejectionReason = 'Некорректная дата вылета, требуется корректировка';
     let requisitionPksBeforeDemobilization: string[] = [];
 

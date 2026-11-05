@@ -1,7 +1,8 @@
-import { expect, Page } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { createBasePage } from '../../base-page';
 import { createDistributionRequestsLocators } from '../../../locators/distribution-requests.locators';
 import { config } from '../../../config';
+import { resolvePage, type PageSource } from '../../page-source';
 
 export interface CommonFields {
   living: string;
@@ -20,7 +21,8 @@ export interface MassEditFields {
   transport: string;
 }
 
-export const createDistributionRequestsPage = (page: Page) => {
+export const createDistributionRequestsPage = (source: PageSource) => {
+  const page = resolvePage(source);
   const basePage = createBasePage(page);
   const PAGE_PATH = '/services/supervision/distribution-requests/select-project';
 

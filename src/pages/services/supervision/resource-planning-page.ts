@@ -1,10 +1,12 @@
-import { APIRequestContext, Page, expect } from '@playwright/test';
+import { APIRequestContext, expect } from '@playwright/test';
 import { createBasePage } from '../../base-page';
 import { createResourcePlanningLocators } from '../../../locators/resource-planning.locators';
 import { config } from '../../../config';
 import { getWorkCompositionInfo, WorkCompositionInfo } from '../../../test-data/api/project-api';
+import { resolvePage, type PageSource } from '../../page-source';
 
-export const createResourcePlanningPage = (page: Page) => {
+export const createResourcePlanningPage = (source: PageSource) => {
+  const page = resolvePage(source);
   const basePage = createBasePage(page);
   const PAGE_PATH = '/services/supervision/resource-planning';
 
@@ -113,9 +115,7 @@ export const createResourcePlanningPage = (page: Page) => {
     timeout: number
   ): Promise<boolean> => {
     try {
-      await expect
-        .poll(async () => await predicate(), { timeout })
-        .toBe(true);
+      await expect.poll(async () => await predicate(), { timeout }).toBe(true);
       return true;
     } catch {
       return false;

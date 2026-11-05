@@ -88,17 +88,11 @@ test.describe('Табель работ', () => {
       await test.step('Открыть строки ставок и заполнить значения ставок', async () => {
         await reportCardPage.openRateRows();
         await reportCardPage.selectAllRows();
-
-        for (const name of addedWorkers) {
-          await reportCardPage.fillRate(name, '500');
-          expect(await reportCardPage.getRateInputValue(name)).toBe('500');
-        }
+        await reportCardPage.fillRateFor(addedWorkers);
       });
 
       await test.step('Заполнить рабочие часы первых трёх дней', async () => {
-        for (const name of addedWorkers) {
-          await reportCardPage.fillWorkHours(name, [0, 1, 2], '8');
-        }
+        await reportCardPage.fillHoursFor(addedWorkers);
       });
 
       await test.step('Сохранить табель', async () => {
@@ -107,11 +101,7 @@ test.describe('Табель работ', () => {
 
       await test.step('Проверить сумму часов и сумму денег', async () => {
         await reportCardPage.waitForLoaded(work.name);
-
-        for (const name of addedWorkers) {
-          await expect.poll(async () => reportCardPage.getHours(name)).toBe('24');
-          await expect.poll(async () => reportCardPage.getSum(name)).toBe('12000');
-        }
+        await reportCardPage.expectTotals(addedWorkers);
       });
 
       await test.step('Отправить табель на согласование', async () => {

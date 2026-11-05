@@ -1,9 +1,11 @@
-import { expect, Locator, Page } from '@playwright/test';
+import { expect, Locator } from '@playwright/test';
 import { createBasePage } from '../base-page';
 import { createSkipRequisitionsLocators } from '../../locators/skip-requisitions.locators';
 import { config } from '../../config';
+import { resolvePage, type PageSource } from '../page-source';
 
-export const createSkipRequisitionsPage = (page: Page) => {
+export const createSkipRequisitionsPage = (source: PageSource) => {
+  const page = resolvePage(source);
   const basePage = createBasePage(page);
   const PAGE_PATH = '/SKIP/requisitions';
 

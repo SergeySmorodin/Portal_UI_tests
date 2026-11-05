@@ -1,9 +1,11 @@
-import { expect, Page } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { createBasePage } from '../../base-page';
 import { createDistributionRequestsApprovalLocators } from '../../../locators/distribution-requests-approval.locators';
 import { config } from '../../../config';
+import { resolvePage, type PageSource } from '../../page-source';
 
-export const createDistributionRequestsApprovalPage = (page: Page) => {
+export const createDistributionRequestsApprovalPage = (source: PageSource) => {
+  const page = resolvePage(source);
   const basePage = createBasePage(page);
   const PAGE_PATH = '/services/supervision/distribution-requests/approval';
 

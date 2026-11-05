@@ -46,13 +46,13 @@ const fillReportCardAndSend = async (
   const workerName = await getWorkerName(apiRequest, workPk);
   expect(workerName, 'В табеле нет сотрудника для заполнения').not.toBe('');
 
-  const reportCard = createReportCardPage(privileged.page);
+  const reportCard = createReportCardPage(privileged);
   await reportCard.open(workPk);
   await reportCard.waitForLoaded(work.name);
   await reportCard.expectWorkerVisible(workerName);
   await reportCard.openRateRows();
-  await reportCard.fillRate(workerName, '500');
-  await reportCard.fillWorkHours(workerName, [0, 1, 2], '8');
+  await reportCard.fillRateFor([workerName]);
+  await reportCard.fillHoursFor([workerName]);
   await reportCard.save();
   await reportCard.openApproval();
   await reportCard.submitApproval(work.stopDate);
@@ -64,7 +64,7 @@ const approveTimeTable = async (
   pagePath: string,
   approver: CreatedApprover
 ): Promise<void> => {
-  const approvalPage = createTimeTableApprovalPage(approver.page, pagePath);
+  const approvalPage = createTimeTableApprovalPage(approver, pagePath);
   await approvalPage.open();
   await approvalPage.searchProject(workName);
   await approvalPage.expectWorkVisible(workName);
@@ -78,7 +78,7 @@ const rejectTimeTable = async (
   pagePath: string,
   approver: CreatedApprover
 ): Promise<void> => {
-  const approvalPage = createTimeTableApprovalPage(approver.page, pagePath);
+  const approvalPage = createTimeTableApprovalPage(approver, pagePath);
   await approvalPage.open();
   await approvalPage.searchProject(workName);
   await approvalPage.expectWorkVisible(workName);
@@ -87,7 +87,7 @@ const rejectTimeTable = async (
 };
 
 const verifyTabs = async (approver: CreatedApprover, expectedTab: string): Promise<void> => {
-  const timeTablePage = createTimeTablePage(approver.page);
+  const timeTablePage = createTimeTablePage(approver);
   await timeTablePage.open();
   await timeTablePage.expectTabVisible(expectedTab);
 };
@@ -181,7 +181,7 @@ test.describe('Согласование табеля (пользователи �
     });
 
     await test.step('Проверка отображения всех этапов согласования в табеле', async () => {
-      const reportCard = createReportCardPage(privileged.page);
+      const reportCard = createReportCardPage(privileged);
       await reportCard.open(workPk);
       await reportCard.waitForLoaded(work.name);
       await reportCard.expectApprovalStagesVisible(APPROVAL_STAGE_TITLES);
@@ -223,7 +223,7 @@ test.describe('Согласование табеля (пользователи �
     });
 
     await test.step('Проверка, что табель вернулся на доработку', async () => {
-      const reportCard = createReportCardPage(privileged.page);
+      const reportCard = createReportCardPage(privileged);
       await reportCard.open(workPk);
       await reportCard.waitForLoaded(work.name);
       await reportCard.locators.approvalButton.waitFor({
@@ -278,7 +278,7 @@ test.describe('Согласование табеля (пользователи �
     });
 
     await test.step('Проверка, что табель вернулся на доработку', async () => {
-      const reportCard = createReportCardPage(privileged.page);
+      const reportCard = createReportCardPage(privileged);
       await reportCard.open(workPk);
       await reportCard.waitForLoaded(work.name);
       await reportCard.locators.approvalButton.waitFor({
