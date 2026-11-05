@@ -50,6 +50,7 @@ const createPortalWorker =
       ratePay: '1.00',
       personalNumber: nextPersonalNumber(),
       groups: ['supervising_employee'],
+      kind: 'worker',
       profile: {
         lastName,
         firstName,

@@ -164,6 +164,7 @@ export const createUserViaApi = async (
   if (options.groups?.length) data.groups = options.groups;
   if (options.replace !== undefined) data.replace = options.replace;
   if (options.isSuperuser !== undefined) data.is_superuser = options.isSuperuser;
+  if (options.kind) data.kind = options.kind;
 
   const response = await request.post(api.auth.add_user, { data });
 

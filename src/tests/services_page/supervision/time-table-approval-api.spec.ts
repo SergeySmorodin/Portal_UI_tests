@@ -16,11 +16,11 @@ import {
   approveDistributionRequest,
   expectActualVisits,
   expectAgreementStage,
-  prepareWorkWithVisits,
+  prepareWorkWithCustomWorkers,
   processRequestInSkip,
   submitRequestForApproval,
 } from './supervision-flow';
-import { getWorkerName, assignWorkerToProject } from '../../../test-data/api/project-api'; // todo assignWorkerToProject
+import { getWorkerName } from '../../../test-data/api/project-api';
 
 /**
  * Фиксированный недельный визит с начала работы: в табеле гарантированно
@@ -87,6 +87,70 @@ const verifyTabs = async (approver: any, expectedTab: string): Promise<void> => 
   await timeTablePage.expectTabVisible(expectedTab);
 };
 
+const createApprovers = async (
+  createApprover: any,
+  names?: {
+    privileged?: { lastName: string; firstName: string; patronymic: string };
+    leader?: { lastName: string; firstName: string; patronymic: string };
+    head?: { lastName: string; firstName: string; patronymic: string };
+    skip?: { lastName: string; firstName: string; patronymic: string };
+    td?: { lastName: string; firstName: string; patronymic: string };
+  }
+) => {
+  const n = names ?? {};
+  const privileged = await createApprover({
+    lastName: n.privileged?.lastName ?? 'Привилегированный',
+    firstName: n.privileged?.firstName ?? 'Сотрудник',
+    patronymic: n.privileged?.patronymic ?? 'Супервайзинга',
+    group: 'supervising_privileged_employee',
+  });
+  const leader = await createApprover({
+    lastName: n.leader?.lastName ?? 'Руководитель',
+    firstName: n.leader?.firstName ?? 'Подразделения',
+    patronymic: n.leader?.patronymic ?? 'Супервайзинга',
+    group: 'supervising_leader',
+  });
+  const head = await createApprover({
+    lastName: n.head?.lastName ?? 'Руководитель',
+    firstName: n.head?.firstName ?? 'Всех',
+    patronymic: n.head?.patronymic ?? 'Сервисов',
+    group: 'head_of_service',
+  });
+  const skip = await createApprover({
+    lastName: n.skip?.lastName ?? 'Сотрудник',
+    firstName: n.skip?.firstName ?? 'Отдела',
+    patronymic: n.skip?.patronymic ?? 'Планирования',
+    group: 'skip_employee',
+  });
+  const td = await createApprover({
+    lastName: n.td?.lastName ?? 'Технический',
+    firstName: n.td?.firstName ?? 'Директор',
+    patronymic: n.td?.patronymic ?? 'Производства',
+    group: 'origin_service_director',
+  });
+  return { privileged, leader, head, skip, td };
+};
+
+const setupAndSubmit = async (
+  superUserRequest: APIRequestContext,
+  workPk: string,
+  work: WorkData,
+  privileged: any,
+  leader: any,
+  skip: any,
+  createPortalWorker: any
+): Promise<void> => {
+  await prepareWorkWithCustomWorkers(superUserRequest, workPk, privileged, createPortalWorker);
+  await submitRequestForApproval(superUserRequest, work, workPk, privileged, {
+    start: formatDmy(visitPeriod(work).start),
+    stop: formatDmy(visitPeriod(work).stop),
+    ticketDate: formatDmy(visitPeriod(work).start),
+  });
+  await approveDistributionRequest(work, leader);
+  await processRequestInSkip(work, skip, visitPeriod(work));
+  await expectActualVisits(superUserRequest, workPk);
+};
+
 test.describe('Согласование табеля (пользователи и API-запросы через API суперпользователя)', () => {
   test.describe.configure({ mode: 'serial', timeout: 900_000 });
 
@@ -94,49 +158,13 @@ test.describe('Согласование табеля (пользователи �
     superUserRequest,
     createdWorkExecution,
     createApprover,
+    createPortalWorker,
   }) => {
     const { work, workPk } = createdWorkExecution;
-    const privileged = await createApprover({
-      lastName: 'Соловьёв',
-      firstName: 'Иван',
-      patronymic: 'Сергеевич',
-      group: 'supervising_privileged_employee',
-    });
-    const leader = await createApprover({
-      lastName: 'Колесников',
-      firstName: 'Дмитрий',
-      patronymic: 'Юрьевич',
-      group: 'supervising_leader',
-    });
-    const head = await createApprover({
-      lastName: 'Шевелёв',
-      firstName: 'Дмитрий',
-      patronymic: 'Андреевич',
-      group: 'head_of_service',
-    });
-    const skip = await createApprover({
-      lastName: 'Кузнецова',
-      firstName: 'Елена',
-      patronymic: 'Анатольевна',
-      group: 'skip_employee',
-    });
-    const td = await createApprover({
-      lastName: 'Антонюк',
-      firstName: 'Василий',
-      patronymic: 'Викторович',
-      group: 'origin_service_director',
-    });
+    const { privileged, leader, head, skip, td } = await createApprovers(createApprover);
 
     await test.step('Подготовка визитов и подача заявки на командировку', async () => {
-      await prepareWorkWithVisits(superUserRequest, workPk, privileged);
-      await submitRequestForApproval(superUserRequest, work, workPk, privileged, {
-        start: formatDmy(visitPeriod(work).start),
-        stop: formatDmy(visitPeriod(work).stop),
-        ticketDate: formatDmy(visitPeriod(work).start),
-      });
-      await approveDistributionRequest(work, leader);
-      await processRequestInSkip(work, skip, visitPeriod(work));
-      await expectActualVisits(superUserRequest, workPk);
+      await setupAndSubmit(superUserRequest, workPk, work, privileged, leader, skip, createPortalWorker);
     });
 
     await test.step('Заполнение табеля и отправка на согласование', async () => {
@@ -195,43 +223,13 @@ test.describe('Согласование табеля (пользователи �
     superUserRequest,
     createdWorkExecution,
     createApprover,
+    createPortalWorker,
   }) => {
     const { work, workPk } = createdWorkExecution;
-    const privileged = await createApprover({
-      lastName: 'Соловьёв',
-      firstName: 'Иван',
-      patronymic: 'Сергеевич',
-      group: 'supervising_privileged_employee',
-    });
-    const leader = await createApprover({
-      lastName: 'Колесников',
-      firstName: 'Дмитрий',
-      patronymic: 'Юрьевич',
-      group: 'supervising_leader',
-    });
-    const head = await createApprover({
-      lastName: 'Шевелёв',
-      firstName: 'Дмитрий',
-      patronymic: 'Андреевич',
-      group: 'head_of_service',
-    });
-    const skip = await createApprover({
-      lastName: 'Кузнецова',
-      firstName: 'Елена',
-      patronymic: 'Анатольевна',
-      group: 'skip_employee',
-    });
+    const { privileged, leader, head, skip } = await createApprovers(createApprover);
 
     await test.step('Подготовка визитов и подача заявки на командировку', async () => {
-      await prepareWorkWithVisits(superUserRequest, workPk, privileged);
-      await submitRequestForApproval(superUserRequest, work, workPk, privileged, {
-        start: formatDmy(visitPeriod(work).start),
-        stop: formatDmy(visitPeriod(work).stop),
-        ticketDate: formatDmy(visitPeriod(work).start),
-      });
-      await approveDistributionRequest(work, leader);
-      await processRequestInSkip(work, skip, visitPeriod(work));
-      await expectActualVisits(superUserRequest, workPk);
+      await setupAndSubmit(superUserRequest, workPk, work, privileged, leader, skip, createPortalWorker);
     });
 
     await test.step('Заполнение табеля и отправка на согласование', async () => {
@@ -263,49 +261,13 @@ test.describe('Согласование табеля (пользователи �
     superUserRequest,
     createdWorkExecution,
     createApprover,
+    createPortalWorker,
   }) => {
     const { work, workPk } = createdWorkExecution;
-    const privileged = await createApprover({
-      lastName: 'Соловьёв',
-      firstName: 'Иван',
-      patronymic: 'Сергеевич',
-      group: 'supervising_privileged_employee',
-    });
-    const leader = await createApprover({
-      lastName: 'Колесников',
-      firstName: 'Дмитрий',
-      patronymic: 'Юрьевич',
-      group: 'supervising_leader',
-    });
-    const head = await createApprover({
-      lastName: 'Шевелёв',
-      firstName: 'Дмитрий',
-      patronymic: 'Андреевич',
-      group: 'head_of_service',
-    });
-    const skip = await createApprover({
-      lastName: 'Кузнецова',
-      firstName: 'Елена',
-      patronymic: 'Анатольевна',
-      group: 'skip_employee',
-    });
-    const td = await createApprover({
-      lastName: 'Антонюк',
-      firstName: 'Василий',
-      patronymic: 'Викторович',
-      group: 'origin_service_director',
-    });
+    const { privileged, leader, head, skip, td } = await createApprovers(createApprover);
 
     await test.step('Подготовка визитов и подача заявки на командировку', async () => {
-      await prepareWorkWithVisits(superUserRequest, workPk, privileged);
-      await submitRequestForApproval(superUserRequest, work, workPk, privileged, {
-        start: formatDmy(visitPeriod(work).start),
-        stop: formatDmy(visitPeriod(work).stop),
-        ticketDate: formatDmy(visitPeriod(work).start),
-      });
-      await approveDistributionRequest(work, leader);
-      await processRequestInSkip(work, skip, visitPeriod(work));
-      await expectActualVisits(superUserRequest, workPk);
+      await setupAndSubmit(superUserRequest, workPk, work, privileged, leader, skip, createPortalWorker);
     });
 
     await test.step('Заполнение табеля и отправка на согласование', async () => {
