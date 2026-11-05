@@ -173,7 +173,7 @@ export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
         // Если модальное окно не закрылось, пробуем закрыть его другим способом
         if (await locators.decisionModal.isVisible()) {
           await page.keyboard.press('Escape');
-          await locators.decisionModal.waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
+          await locators.decisionModal.waitFor({ state: 'hidden', timeout: 3000 }).catch(() => {});
         }
       }
     },
@@ -205,7 +205,7 @@ export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
         // Если модальное окно не закрылось, пробуем закрыть его другим способом
         if (await locators.decisionModal.isVisible()) {
           await page.keyboard.press('Escape');
-          await locators.decisionModal.waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
+          await locators.decisionModal.waitFor({ state: 'hidden', timeout: 3000 }).catch(() => {});
         }
       }
     },

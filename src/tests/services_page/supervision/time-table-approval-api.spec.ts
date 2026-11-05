@@ -1,5 +1,10 @@
 ﻿import { APIRequestContext } from '@playwright/test';
-import { expect, test } from '../../../fixtures/test-fixtures';
+import {
+  expect,
+  test,
+  type CreatePortalWorker,
+  type CreatedApprover,
+} from '../../../fixtures/test-fixtures';
 import { createReportCardPage } from '../../../pages/services/supervision/report-card-page';
 import {
   createTimeTableApprovalPage,
@@ -36,7 +41,7 @@ const fillReportCardAndSend = async (
   apiRequest: APIRequestContext,
   work: WorkData,
   workPk: string,
-  privileged: any
+  privileged: CreatedApprover
 ): Promise<void> => {
   const workerName = await getWorkerName(apiRequest, workPk);
   expect(workerName, 'В табеле нет сотрудника для заполнения').not.toBe('');
@@ -57,7 +62,7 @@ const approveTimeTable = async (
   workPk: string,
   workName: string,
   pagePath: string,
-  approver: any
+  approver: CreatedApprover
 ): Promise<void> => {
   const approvalPage = createTimeTableApprovalPage(approver.page, pagePath);
   await approvalPage.open();
@@ -71,7 +76,7 @@ const rejectTimeTable = async (
   workPk: string,
   workName: string,
   pagePath: string,
-  approver: any
+  approver: CreatedApprover
 ): Promise<void> => {
   const approvalPage = createTimeTableApprovalPage(approver.page, pagePath);
   await approvalPage.open();
@@ -81,64 +86,20 @@ const rejectTimeTable = async (
   await approvalPage.reject();
 };
 
-const verifyTabs = async (approver: any, expectedTab: string): Promise<void> => {
+const verifyTabs = async (approver: CreatedApprover, expectedTab: string): Promise<void> => {
   const timeTablePage = createTimeTablePage(approver.page);
   await timeTablePage.open();
   await timeTablePage.expectTabVisible(expectedTab);
-};
-
-const createApprovers = async (
-  createApprover: any,
-  names?: {
-    privileged?: { lastName: string; firstName: string; patronymic: string };
-    leader?: { lastName: string; firstName: string; patronymic: string };
-    head?: { lastName: string; firstName: string; patronymic: string };
-    skip?: { lastName: string; firstName: string; patronymic: string };
-    td?: { lastName: string; firstName: string; patronymic: string };
-  }
-) => {
-  const n = names ?? {};
-  const privileged = await createApprover({
-    lastName: n.privileged?.lastName ?? 'Привилегированный',
-    firstName: n.privileged?.firstName ?? 'Сотрудник',
-    patronymic: n.privileged?.patronymic ?? 'Супервайзинга',
-    group: 'supervising_privileged_employee',
-  });
-  const leader = await createApprover({
-    lastName: n.leader?.lastName ?? 'Руководитель',
-    firstName: n.leader?.firstName ?? 'Подразделения',
-    patronymic: n.leader?.patronymic ?? 'Супервайзинга',
-    group: 'supervising_leader',
-  });
-  const head = await createApprover({
-    lastName: n.head?.lastName ?? 'Руководитель',
-    firstName: n.head?.firstName ?? 'Всех',
-    patronymic: n.head?.patronymic ?? 'Сервисов',
-    group: 'head_of_service',
-  });
-  const skip = await createApprover({
-    lastName: n.skip?.lastName ?? 'Сотрудник',
-    firstName: n.skip?.firstName ?? 'Отдела',
-    patronymic: n.skip?.patronymic ?? 'Планирования',
-    group: 'skip_employee',
-  });
-  const td = await createApprover({
-    lastName: n.td?.lastName ?? 'Технический',
-    firstName: n.td?.firstName ?? 'Директор',
-    patronymic: n.td?.patronymic ?? 'Производства',
-    group: 'origin_service_director',
-  });
-  return { privileged, leader, head, skip, td };
 };
 
 const setupAndSubmit = async (
   superUserRequest: APIRequestContext,
   workPk: string,
   work: WorkData,
-  privileged: any,
-  leader: any,
-  skip: any,
-  createPortalWorker: any
+  privileged: CreatedApprover,
+  leader: CreatedApprover,
+  skip: CreatedApprover,
+  createPortalWorker: CreatePortalWorker
 ): Promise<void> => {
   await prepareWorkWithCustomWorkers(superUserRequest, workPk, privileged, createPortalWorker);
   await submitRequestForApproval(superUserRequest, work, workPk, privileged, {
@@ -157,14 +118,22 @@ test.describe('Согласование табеля (пользователи �
   test('Полный цикл согласования табеля: от заполнения до финального согласования ТД', async ({
     superUserRequest,
     createdWorkExecution,
-    createApprover,
+    createApprovers,
     createPortalWorker,
   }) => {
     const { work, workPk } = createdWorkExecution;
-    const { privileged, leader, head, skip, td } = await createApprovers(createApprover);
+    const { privileged, leader, head, skip, td } = await createApprovers();
 
     await test.step('Подготовка визитов и подача заявки на командировку', async () => {
-      await setupAndSubmit(superUserRequest, workPk, work, privileged, leader, skip, createPortalWorker);
+      await setupAndSubmit(
+        superUserRequest,
+        workPk,
+        work,
+        privileged,
+        leader,
+        skip,
+        createPortalWorker
+      );
     });
 
     await test.step('Заполнение табеля и отправка на согласование', async () => {
@@ -222,14 +191,22 @@ test.describe('Согласование табеля (пользователи �
   test('Табель отклонен руководителем службы', async ({
     superUserRequest,
     createdWorkExecution,
-    createApprover,
+    createApprovers,
     createPortalWorker,
   }) => {
     const { work, workPk } = createdWorkExecution;
-    const { privileged, leader, head, skip } = await createApprovers(createApprover);
+    const { privileged, leader, head, skip } = await createApprovers();
 
     await test.step('Подготовка визитов и подача заявки на командировку', async () => {
-      await setupAndSubmit(superUserRequest, workPk, work, privileged, leader, skip, createPortalWorker);
+      await setupAndSubmit(
+        superUserRequest,
+        workPk,
+        work,
+        privileged,
+        leader,
+        skip,
+        createPortalWorker
+      );
     });
 
     await test.step('Заполнение табеля и отправка на согласование', async () => {
@@ -259,14 +236,22 @@ test.describe('Согласование табеля (пользователи �
   test('Табель отклонен техническим директором', async ({
     superUserRequest,
     createdWorkExecution,
-    createApprover,
+    createApprovers,
     createPortalWorker,
   }) => {
     const { work, workPk } = createdWorkExecution;
-    const { privileged, leader, head, skip, td } = await createApprovers(createApprover);
+    const { privileged, leader, head, skip, td } = await createApprovers();
 
     await test.step('Подготовка визитов и подача заявки на командировку', async () => {
-      await setupAndSubmit(superUserRequest, workPk, work, privileged, leader, skip, createPortalWorker);
+      await setupAndSubmit(
+        superUserRequest,
+        workPk,
+        work,
+        privileged,
+        leader,
+        skip,
+        createPortalWorker
+      );
     });
 
     await test.step('Заполнение табеля и отправка на согласование', async () => {

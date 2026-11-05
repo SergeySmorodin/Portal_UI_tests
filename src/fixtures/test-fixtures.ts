@@ -49,11 +49,18 @@ import {
   type CreatePortalWorker,
   createApproverFixture,
   type CreateApprover,
+  createApproversFixture,
+  type CreateApprovers,
 } from './portal-worker.fixtures';
 import type { ProjectData, WorkData } from '../types';
 
 export type { CreatedUser, UserContextKit } from './user-kit';
-export type { CreatePortalWorker, CreateApprover } from './portal-worker.fixtures';
+export type {
+  CreatePortalWorker,
+  CreateApprover,
+  CreatedApprover,
+  CreateApprovers,
+} from './portal-worker.fixtures';
 
 export interface CreatedProject {
   /** Данные созданного мегапроекта (для обращения в тесте). */
@@ -136,6 +143,8 @@ export interface TestFixtures {
   createPortalWorker: CreatePortalWorker;
   /** Фабрика согласующих для табеля (создаются и удаляются через API). */
   createApprover: CreateApprover;
+  /** Фабрика согласующих для заявок супервайзинга (создаются и удаляются через API). */
+  createApprovers: CreateApprovers;
   /** Суперюзер для API запросов. */
   createSuperUser: any;
   /** APIRequestContext, авторизованный под суперпользователем. */
@@ -426,6 +435,7 @@ export const test = base.extend<TestFixtures>({
 
   createPortalWorker: createPortalWorkerFixture,
   createApprover: createApproverFixture,
+  createApprovers: createApproversFixture,
 
   createSuperUser: async ({ request, browser, apiRequest }, use) => {
     const cleanup = createUserCleanup(apiRequest);

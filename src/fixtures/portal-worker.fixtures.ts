@@ -59,7 +59,12 @@ const createPortalWorker =
       },
     });
 
-    return { uuid: created.uuid, username: user.username, password: user.password, fullName: `${lastName} ${firstName} ${patronymic}` };
+    return {
+      uuid: created.uuid,
+      username: user.username,
+      password: user.password,
+      fullName: `${lastName} ${firstName} ${patronymic}`,
+    };
   };
 
 type CreatePortalWorkerFixture = (
@@ -108,6 +113,24 @@ export interface CreatedApprover {
 
 export type CreateApprover = (name: ApproverName) => Promise<CreatedApprover>;
 
+export interface ApproversNames {
+  privileged?: PortalWorkerName;
+  leader?: PortalWorkerName;
+  head?: PortalWorkerName;
+  skip?: PortalWorkerName;
+  td?: PortalWorkerName;
+}
+
+export type CreatedApprovers = {
+  privileged: CreatedApprover;
+  leader: CreatedApprover;
+  head: CreatedApprover;
+  skip: CreatedApprover;
+  td: CreatedApprover;
+};
+
+export type CreateApprovers = (names?: ApproversNames) => Promise<CreatedApprovers>;
+
 interface CreateApproverArgs {
   request: APIRequestContext;
   browser: any;
@@ -154,10 +177,7 @@ type CreateApproverFixture = (
   use: (createApprover: CreateApprover) => Promise<void>
 ) => Promise<void>;
 
-export const createApproverFixture: CreateApproverFixture = async (
-  { request, browser },
-  use
-) => {
+export const createApproverFixture: CreateApproverFixture = async ({ request, browser }, use) => {
   const cleanup = createUserCleanup(request);
   const contexts: BrowserContext[] = [];
 
@@ -170,4 +190,46 @@ export const createApproverFixture: CreateApproverFixture = async (
 
   await cleanup.run();
   await Promise.all(contexts.map((ctx) => ctx.close()));
+};
+
+/** Фикстура-фабрика согласующих для супервайзинга (privileged, leader, head, skip, td). */
+export const createApproversFixture = async (
+  { createApprover }: { createApprover: CreateApprover },
+  use: (createApprovers: CreateApprovers) => Promise<void>
+) => {
+  const createApprovers: CreateApprovers = async (names = {}) => {
+    const n = names ?? {};
+    const privileged = await createApprover({
+      lastName: n.privileged?.lastName ?? 'Привилегированный',
+      firstName: n.privileged?.firstName ?? 'Сотрудник',
+      patronymic: n.privileged?.patronymic ?? 'Супервайзинга',
+      group: 'supervising_privileged_employee',
+    });
+    const leader = await createApprover({
+      lastName: n.leader?.lastName ?? 'Руководитель',
+      firstName: n.leader?.firstName ?? 'Подразделения',
+      patronymic: n.leader?.patronymic ?? 'Супервайзинга',
+      group: 'supervising_leader',
+    });
+    const head = await createApprover({
+      lastName: n.head?.lastName ?? 'Руководитель',
+      firstName: n.head?.firstName ?? 'Всех',
+      patronymic: n.head?.patronymic ?? 'Сервисов',
+      group: 'head_of_service',
+    });
+    const skip = await createApprover({
+      lastName: n.skip?.lastName ?? 'Сотрудник',
+      firstName: n.skip?.firstName ?? 'Отдела',
+      patronymic: n.skip?.patronymic ?? 'Планирования',
+      group: 'skip_employee',
+    });
+    const td = await createApprover({
+      lastName: n.td?.lastName ?? 'Технический',
+      firstName: n.td?.firstName ?? 'Директор',
+      patronymic: n.td?.patronymic ?? 'Производства',
+      group: 'origin_service_director',
+    });
+    return { privileged, leader, head, skip, td };
+  };
+  await use(createApprovers);
 };
