@@ -79,7 +79,6 @@ export const createResourcePlanningPage = (page: Page) => {
         .hover()
         .catch(() => {});
       await page.mouse.wheel(0, 800);
-      await page.waitForTimeout(300);
       index = await scan();
     }
     return index;
@@ -113,14 +112,14 @@ export const createResourcePlanningPage = (page: Page) => {
     predicate: () => Promise<boolean>,
     timeout: number
   ): Promise<boolean> => {
-    const deadline = Date.now() + timeout;
-    while (Date.now() < deadline) {
-      if (await predicate()) {
-        return true;
-      }
-      await page.waitForTimeout(500);
+    try {
+      await expect
+        .poll(async () => await predicate(), { timeout })
+        .toBe(true);
+      return true;
+    } catch {
+      return false;
     }
-    return false;
   };
 
   return {

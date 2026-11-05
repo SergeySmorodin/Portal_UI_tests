@@ -151,7 +151,7 @@ const setupAndSubmit = async (
   await expectActualVisits(superUserRequest, workPk);
 };
 
-test.describe('Согласование табеля (пользователи и API-запросы через API суперпользователя)', () => {
+test.describe('Согласование табеля (пользователи с ролями через API-запросы)', () => {
   test.describe.configure({ mode: 'serial', timeout: 900_000 });
 
   test('Полный цикл согласования табеля: от заполнения до финального согласования ТД', async ({
@@ -243,7 +243,6 @@ test.describe('Согласование табеля (пользователи �
 
     await test.step('Отклонение табеля руководителем службы', async () => {
       await rejectTimeTable(workPk, work.name, HEAD_TIME_TABLE_PATH, head);
-      await privileged.page.waitForTimeout(1500);
     });
 
     await test.step('Проверка, что табель вернулся на доработку', async () => {
@@ -291,7 +290,6 @@ test.describe('Согласование табеля (пользователи �
 
     await test.step('Отклонение табеля техническим директором', async () => {
       await rejectTimeTable(workPk, work.name, TD_TIME_TABLE_PATH, td);
-      await privileged.page.waitForTimeout(1500);
     });
 
     await test.step('Проверка, что табель вернулся на доработку', async () => {

@@ -63,7 +63,6 @@ export const createTimeTablePage = (page: Page) => {
     switchTab: async (tabName: string): Promise<void> => {
       await locators.tab(tabName).click();
       await page.waitForLoadState('networkidle').catch(() => {});
-      await page.waitForTimeout(1000);
     },
 
     expectTabVisible: async (tabName: string): Promise<void> => {
@@ -95,7 +94,6 @@ export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
     open: async (): Promise<void> => {
       await basePage.openRelative(pagePath);
       await page.waitForLoadState('networkidle').catch(() => {});
-      await page.waitForTimeout(5000);
       try {
         await basePage.waitForElement(locators.heading, config.timeouts.long);
       } catch {
@@ -106,7 +104,6 @@ export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
       try {
         await locators.tab('На согласование').click({ timeout: 3000 });
         await page.waitForLoadState('networkidle').catch(() => {});
-        await page.waitForTimeout(1000);
       } catch {
         // Если вкладки нет или не удалось переключиться, продолжаем
       }
@@ -116,7 +113,6 @@ export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
       if (!code) return;
       await locators.projectSearchInput.fill(code);
       await locators.projectSearchInput.press('Enter');
-      await page.waitForTimeout(3000);
       await page.waitForLoadState('networkidle').catch(() => {});
     },
 
@@ -141,7 +137,6 @@ export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
     switchTab: async (tabName: string): Promise<void> => {
       await locators.tab(tabName).click();
       await page.waitForLoadState('networkidle').catch(() => {});
-      await page.waitForTimeout(1000);
     },
 
     expectTabVisible: async (tabName: string): Promise<void> => {
@@ -176,10 +171,9 @@ export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
         await locators.decisionModal.waitFor({ state: 'hidden', timeout: config.timeouts.long });
       } catch {
         // Если модальное окно не закрылось, пробуем закрыть его другим способом
-        await page.waitForTimeout(2000);
         if (await locators.decisionModal.isVisible()) {
           await page.keyboard.press('Escape');
-          await page.waitForTimeout(1000);
+          await locators.decisionModal.waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
         }
       }
     },
@@ -209,10 +203,9 @@ export const createTimeTableApprovalPage = (page: Page, pagePath: string) => {
         await locators.decisionModal.waitFor({ state: 'hidden', timeout: config.timeouts.long });
       } catch {
         // Если модальное окно не закрылось, пробуем закрыть его другим способом
-        await page.waitForTimeout(2000);
         if (await locators.decisionModal.isVisible()) {
           await page.keyboard.press('Escape');
-          await page.waitForTimeout(1000);
+          await locators.decisionModal.waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
         }
       }
     },
