@@ -119,6 +119,9 @@ export const prepareWorkWithVisitsByNames = async (
 /**
  * Создаёт работников через фикстуру createPortalWorker, назначает их на проект
  * и добавляет к работе для визитов.
+ *
+ * Не ищет сотрудников в UI-списке по имени (зависимость от отображения
+ * available_user в бэкенде), а нажимает первые VISIT_COUNT доступных кнопок.
  */
 export const prepareWorkWithCustomWorkers = async (
   apiRequest: APIRequestContext,
@@ -140,14 +143,13 @@ export const prepareWorkWithCustomWorkers = async (
     await assignWorkerToProject(apiRequest, workPk, worker.uuid);
   }
 
-  // Добавляем работников к работе через UI
+  // Добавляем работников к работе через UI (первые доступные, без поиска по имени)
   const resourcePlanningPage = createResourcePlanningPage(privileged.page);
   await resourcePlanningPage.openWorkByPk(workPk);
-  const workerNames = workers.map((w) => w.fullName);
-  await resourcePlanningPage.addAvailableWorkersByNames(workerNames);
+  await resourcePlanningPage.addAvailableWorkers(VISIT_COUNT);
   await resourcePlanningPage.saveVisitsPersisted(apiRequest, workPk, VISIT_COUNT);
 
-  return workerNames;
+  return workers.map((w) => w.fullName);
 };
 
 export const submitRequestForApproval = async (
