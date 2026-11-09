@@ -2,6 +2,12 @@ export interface AppConfig {
   login: string;
   password: string;
   headless: boolean;
+  /**
+   * Базовый адрес API. Нужен, когда фронтенд и бэкенд подняты на разных
+   * origin (локально: UI на :3000, Django на :8000). Пусто — запросы идут на
+   * baseURL браузера, как на стенде, где фронт и API на одном адресе.
+   */
+  apiUrl: string;
   timeouts: {
     short: number;
     normal: number;
@@ -21,6 +27,7 @@ if (!login || !password) {
 export const config: AppConfig = {
   login,
   password,
+  apiUrl: process.env.API_URL || '',
   headless: (process.env.HEADLESS || 'false').toLowerCase() === 'true',
   timeouts: {
     short: base,

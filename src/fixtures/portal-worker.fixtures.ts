@@ -1,4 +1,4 @@
-import { APIRequestContext, BrowserContext, Page } from '@playwright/test';
+import { APIRequestContext, Browser, BrowserContext, Page } from '@playwright/test';
 import { userFactory } from '../test-data/factory/user-factory';
 import {
   createUserViaApi,
@@ -8,6 +8,7 @@ import {
 } from '../test-data/api/user-api';
 import { createUserCleanup } from './user-kit';
 import { createLoginPage } from '../pages/login/login-page';
+
 
 /** ФИО создаваемого сотрудника (полное имя = «Фамилия Имя Отчество»). */
 export interface PortalWorkerName {
@@ -133,7 +134,7 @@ export type CreateApprovers = (names?: ApproversNames) => Promise<CreatedApprove
 
 interface CreateApproverArgs {
   request: APIRequestContext;
-  browser: any;
+  browser: Browser;
 }
 
 const createApprover =

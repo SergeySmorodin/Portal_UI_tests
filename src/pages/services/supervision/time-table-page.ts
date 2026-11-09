@@ -34,7 +34,7 @@ export const createTimeTablePage = (source: PageSource) => {
     expectWorkVisible: async (name: string): Promise<void> => {
       await locators
         .workRow(name)
-        .waitFor({ state: 'visible', timeout: (config.timeouts as any).veryLong || 120000 });
+        .waitFor({ state: 'visible', timeout: config.timeouts.long });
     },
 
     openApproval: async (name: string): Promise<void> => {
@@ -122,7 +122,7 @@ export const createTimeTableApprovalPage = (source: PageSource, pagePath: string
     expectWorkVisible: async (name: string): Promise<void> => {
       await locators.workRow(name).waitFor({
         state: 'visible',
-        timeout: (config.timeouts as any).veryLong || config.timeouts.long * 2,
+        timeout: config.timeouts.long * 2,
       });
     },
 

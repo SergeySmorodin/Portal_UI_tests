@@ -146,7 +146,7 @@ export interface TestFixtures {
   /** Фабрика согласующих для заявок супервайзинга (создаются и удаляются через API). */
   createApprovers: CreateApprovers;
   /** Суперюзер для API запросов. */
-  createSuperUser: any;
+  createSuperUser: APIRequestContext;
   /** APIRequestContext, авторизованный под суперпользователем. */
   superUserRequest: APIRequestContext;
   createdProject: CreatedProject;
@@ -458,7 +458,7 @@ export const test = base.extend<TestFixtures>({
     await context.close();
     try {
       await deleteUserViaApi(apiRequest, superUser.uuid);
-    } catch (error) {
+    } catch {
       // Не прерываем выполнение при ошибке удаления
     }
   },
@@ -484,7 +484,7 @@ export const test = base.extend<TestFixtures>({
     await context.close();
     try {
       await deleteUserViaApi(apiRequest, superUser.uuid);
-    } catch (error) {
+    } catch {
       // Не прерываем выполнение при ошибке удаления
     }
   },

@@ -1,3 +1,5 @@
+import { config } from '../../config';
+
 /** Тип документа формы загрузки (значение селекта resource_type) -> раздел API сертификации. */
 const CERTIFICATION_ENDPOINTS = {
   certificate: '/api/certifications/certificates/',
@@ -9,41 +11,51 @@ const CERTIFICATION_ENDPOINTS = {
 
 export type CertificationResourceType = keyof typeof CERTIFICATION_ENDPOINTS;
 
+/**
+ * Полный адрес API-эндпоинта.
+ *
+ * По умолчанию пути относительные и резолвятся от `baseURL` браузера — так было
+ * всегда. Когда задан `API_URL`, пути становятся абсолютными: локально фронтенд
+ * и Django живут на разных портах (UI :3000, API :8000), и относительный путь
+ * ушёл бы на dev-сервер, где `/api/...` отвечает 404.
+ */
+export const apiUrl = (path: string): string => `${config.apiUrl}${path}`;
+
 /** API-эндпоинт списка документов по типу документа. */
 export const certificationEndpoint = (resourceType: CertificationResourceType): string =>
-  CERTIFICATION_ENDPOINTS[resourceType];
+  apiUrl(CERTIFICATION_ENDPOINTS[resourceType]);
 
 /** API-эндпоинт конкретного документа: /api/certifications/<раздел>/<pk>/. */
 export const certificationItemEndpoint = (
   resourceType: CertificationResourceType,
   pk: string
-): string => `${CERTIFICATION_ENDPOINTS[resourceType]}${pk}/`;
+): string => apiUrl(`${CERTIFICATION_ENDPOINTS[resourceType]}${pk}/`);
 
 export const api = {
   auth: {
-    login: '/api/auth/jwt/create/',
-    add_user: '/api/auth/users/',
+    login: apiUrl('/api/auth/jwt/create/'),
+    add_user: apiUrl('/api/auth/users/'),
   },
-  company: '/api/company/',
-  contract: '/api/contract/',
-  contractDocs: '/api/contract/load/docs/',
-  curator: '/api/company_physical_person/',
-  project: '/api/megaproject/',
-  work: '/api/project/create/',
+  company: apiUrl('/api/company/'),
+  contract: apiUrl('/api/contract/'),
+  contractDocs: apiUrl('/api/contract/load/docs/'),
+  curator: apiUrl('/api/company_physical_person/'),
+  project: apiUrl('/api/megaproject/'),
+  work: apiUrl('/api/project/create/'),
   resourcePlanning: {
-    workOptions: '/api/project/opt1/',
+    workOptions: apiUrl('/api/project/opt1/'),
   },
-  reportCard: '/api/project_report_card/',
-  projectOpt2: '/api/project/opt2/',
-  requisition: '/api/requisition/',
+  reportCard: apiUrl('/api/project_report_card/'),
+  projectOpt2: apiUrl('/api/project/opt2/'),
+  requisition: apiUrl('/api/requisition/'),
   certification: {
-    certificate: CERTIFICATION_ENDPOINTS.certificate,
-    protocol: CERTIFICATION_ENDPOINTS.protocol,
-    techSpec: CERTIFICATION_ENDPOINTS.tech_spec,
-    manual: CERTIFICATION_ENDPOINTS.manual,
-    passport: CERTIFICATION_ENDPOINTS.passport,
+    certificate: apiUrl(CERTIFICATION_ENDPOINTS.certificate),
+    protocol: apiUrl(CERTIFICATION_ENDPOINTS.protocol),
+    techSpec: apiUrl(CERTIFICATION_ENDPOINTS.tech_spec),
+    manual: apiUrl(CERTIFICATION_ENDPOINTS.manual),
+    passport: apiUrl(CERTIFICATION_ENDPOINTS.passport),
   },
-  safety_all: '/api/users/safety_all/',
+  safety_all: apiUrl('/api/users/safety_all/'),
 } as const;
 
 export type ApiPath = (typeof api)[keyof typeof api];
