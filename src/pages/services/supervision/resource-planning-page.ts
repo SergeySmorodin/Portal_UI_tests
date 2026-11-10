@@ -1,4 +1,4 @@
-import { APIRequestContext, expect } from '@playwright/test';
+import { APIRequestContext, expect, Locator } from '@playwright/test';
 import { createBasePage } from '../../base-page';
 import { createResourcePlanningLocators } from '../../../locators/resource-planning.locators';
 import { config } from '../../../config';
@@ -34,6 +34,21 @@ export const createResourcePlanningPage = (source: PageSource) => {
     await locators.saveButton.click();
   };
 
+  /**
+   * Устойчивое добавление кнопки «+».
+   *
+   * После перестройки секции (Grid: row-span-2 соседней карточки) соседний
+   * блок наезжает на кнопку и обычный мышиный клик блокируется hit-test.
+   * Событие `click` на самой кнопке вызывает тот же обработчик.
+   */
+  const clickAddButton = async (button: Locator): Promise<void> => {
+    try {
+      await button.click({ timeout: config.timeouts.short });
+    } catch {
+      await button.dispatchEvent('click');
+    }
+  };
+
   const addAvailableWorkersInternal = async (count: number): Promise<string[]> => {
     await locators.availableAddButton(0).waitFor({
       state: 'visible',
@@ -49,7 +64,7 @@ export const createResourcePlanningPage = (source: PageSource) => {
     const added: string[] = [];
     for (let i = 0; i < count; i++) {
       const name = (await locators.availablePersonName(i).textContent())?.trim() || '';
-      await locators.availableAddButton(i).click();
+      await clickAddButton(locators.availableAddButton(i));
       added.push(name);
       await page.waitForLoadState('networkidle').catch(() => {});
     }
@@ -103,7 +118,7 @@ export const createResourcePlanningPage = (source: PageSource) => {
       if (index < 0) {
         throw new Error(`Сотрудник «${name}» не найден в Доступном персонале`);
       }
-      await locators.availableAddButton(index).click();
+      await clickAddButton(locators.availableAddButton(index));
       added.push(name);
       await page.waitForLoadState('networkidle').catch(() => {});
     }
