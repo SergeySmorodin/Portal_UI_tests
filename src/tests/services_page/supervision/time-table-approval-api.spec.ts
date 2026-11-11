@@ -18,10 +18,11 @@ import {
   HEAD_TIME_TABLE_PATH,
   SKIP_TIME_TABLE_PATH,
   TD_TIME_TABLE_PATH,
+  VISIT_COUNT,
   approveDistributionRequest,
   expectActualVisits,
   expectAgreementStage,
-  prepareWorkWithCustomWorkers,
+  prepareWorkWithVisitsByNames,
   processRequestInSkip,
   submitRequestForApproval,
 } from './supervision-flow';
@@ -101,7 +102,27 @@ const setupAndSubmit = async (
   skip: CreatedApprover,
   createPortalWorker: CreatePortalWorker
 ): Promise<void> => {
-  await prepareWorkWithCustomWorkers(superUserRequest, workPk, privileged, createPortalWorker);
+  // Сотрудники создаются до открытия карточки работы: «Доступный персонал»
+  // подгружается при открытии и не подтягивает новых людей. Сотрудники с
+  // должностью потока «Супервайзинг» (фикстура createPortalWorker) попадают
+  // в «Доступный персонал» без дополнительного назначения через API.
+  const workerNames = await test.step(`Создать через API ${VISIT_COUNT} сотрудников`, async () => {
+    const names: string[] = [];
+    for (let i = 1; i <= VISIT_COUNT; i++) {
+      const worker = await createPortalWorker({
+        lastName: 'Табельных',
+        firstName: `Сотрудник${i}`,
+        patronymic: 'Тестович',
+      });
+      names.push(worker.fullName);
+    }
+    return names;
+  });
+
+  await test.step('Распределить созданных сотрудников на проект из доступного персонала', async () => {
+    await prepareWorkWithVisitsByNames(superUserRequest, workPk, privileged, workerNames);
+  });
+
   await submitRequestForApproval(superUserRequest, work, workPk, privileged, {
     start: formatDmy(visitPeriod(work).start),
     stop: formatDmy(visitPeriod(work).stop),

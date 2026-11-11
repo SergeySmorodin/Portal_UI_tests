@@ -1,6 +1,6 @@
 import { APIRequestContext } from '@playwright/test';
 import { config } from '../../../config';
-import { expect, type RoleSession, type CreatePortalWorker } from '../../../fixtures/test-fixtures';
+import { expect, type RoleSession } from '../../../fixtures/test-fixtures';
 import { resolvePage, type PageSource } from '../../../pages/page-source';
 import { createResourcePlanningPage } from '../../../pages/services/supervision/resource-planning-page';
 import { createDistributionRequestsPage } from '../../../pages/services/supervision/distribution-requests-page';
@@ -10,7 +10,6 @@ import { getWorkRequisitions } from '../../../test-data/api/requisition-api';
 import {
   getAgreements,
   getReportCard,
-  assignWorkerToProject,
 } from '../../../test-data/api/project-api';
 import { type WorkData } from '../../../types';
 import { formatDmy, parseDmy, randomDate } from '../../../utils/date';
@@ -116,42 +115,6 @@ export const prepareWorkWithVisitsByNames = async (
   await resourcePlanningPage.openWorkByPk(workPk);
   await resourcePlanningPage.addAvailableWorkersByNames(workerNames);
   await resourcePlanningPage.saveVisitsPersisted(apiRequest, workPk, workerNames.length);
-};
-
-/**
- * Создаёт работников через фикстуру createPortalWorker, назначает их на проект
- * и добавляет к работе для визитов.
- *
- * Не ищет сотрудников в UI-списке по имени (зависимость от отображения
- * available_user в бэкенде), а нажимает первые VISIT_COUNT доступных кнопок.
- */
-export const prepareWorkWithCustomWorkers = async (
-  apiRequest: APIRequestContext,
-  workPk: string,
-  privileged: RoleSession,
-  createPortalWorker: CreatePortalWorker
-): Promise<string[]> => {
-  // Создаём VISIT_COUNT работников
-  const workers: { fullName: string; uuid: string }[] = [];
-  for (let i = 0; i < VISIT_COUNT; i++) {
-    const worker = await createPortalWorker({
-      lastName: `Тестовый${i}`,
-      firstName: `Имя${i}`,
-      patronymic: `Отчество${i}`,
-    });
-    workers.push(worker);
-
-    // Назначаем работника на проект через API
-    await assignWorkerToProject(apiRequest, workPk, worker.uuid);
-  }
-
-  // Добавляем работников к работе через UI (первые доступные, без поиска по имени)
-  const resourcePlanningPage = createResourcePlanningPage(privileged);
-  await resourcePlanningPage.openWorkByPk(workPk);
-  await resourcePlanningPage.addAvailableWorkers(VISIT_COUNT);
-  await resourcePlanningPage.saveVisitsPersisted(apiRequest, workPk, VISIT_COUNT);
-
-  return workers.map((w) => w.fullName);
 };
 
 export const submitRequestForApproval = async (
